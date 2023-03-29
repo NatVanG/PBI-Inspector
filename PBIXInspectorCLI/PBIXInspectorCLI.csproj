@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <StartupObject>Program</StartupObject>
+    <SignAssembly>False</SignAssembly>
+    <IsPublishable>True</IsPublishable>
+    <FileVersion>1.1.0.0</FileVersion>
+    <AssemblyVersion>1.1.0</AssemblyVersion>
+    <VersionPrefix>1.1.0</VersionPrefix>
+    <Version>$(VersionPrefix)</Version>
+    <Product>$(AssembblyName)</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PBIXInspectorLibrary\PBIXInspectorLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\Inventory rules sample.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\Inventory sample.pbix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+  
+</Project>
