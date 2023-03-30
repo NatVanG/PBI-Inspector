@@ -9,7 +9,9 @@
 
 ```C:\> PBIXInspectorCLI.exe -pbix "Adventure Works.pbix" -rules "Adv Works rules.json"```
 
-If run without any parameters PBIX inspector will use sample PBIX and rules files under the "Files" folder. 
+If run without any parameters as shown below, PBIX inspector will use sample PBIX and rules files under the "Files" folder:
+
+```C:\> PBIXInspectorCLI.exe```
 
 
 
