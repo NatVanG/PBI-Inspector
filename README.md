@@ -19,7 +19,7 @@ See rules examples below.
 ![Rules Example 1](DocsImages/RulesExample1.png)
 
 - Check visuals interactivity setting:
-![Rules Example 2](DocsImages/RulesExample3.png)
+![Rules Example 2](DocsImages/RulesExample2.png)
 
 - Check that slow data source settings are all disabled:
 ![Rules Example 3](DocsImages/RulesExample3.png)
@@ -27,7 +27,7 @@ See rules examples below.
 - Check report theme title font attributes:
 ![Rules Example 4](DocsImages/RulesExample4.png)
 
-- Check the number of report pages (could this wrap in a less than "<" test to ensure the number of pages in report are below a certain number for performance reasons for example) - showcasing the ability to express complex logic:
+- Check the number of report pages (could also wrap this in a less than "<" test to ensure the number of pages in report are below a certain number for performance reasons for example) - showcasing the ability to express complex logic:
 ![Rules Example 5](DocsImages/RulesExample5.png)
 
 Here's a sample console output:
