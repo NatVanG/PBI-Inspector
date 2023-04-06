@@ -28,6 +28,7 @@ See rules examples below.
 ![Rules Example 4](DocsImages/RulesExample4.png)
 
 - Check the number of report pages (could also wrap this in a less than "<" test to ensure the number of pages in report are below a certain number for performance reasons for example) - showcasing the ability to express complex logic:
+
 ![Rules Example 5](DocsImages/RulesExample5.png)
 
 Here's a sample console output:
