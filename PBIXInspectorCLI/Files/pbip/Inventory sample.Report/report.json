@@ -1,0 +1,113 @@
+{
+  "config": "{\"version\":\"5.40\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY22SU11\",\"version\":\"5.40\",\"type\":2}},\"activeSectionIndex\":0,\"defaultDrillFilterOtherVisuals\":true,\"slowDataSourceSettings\":{\"isCrossHighlightingDisabled\":false,\"isSlicerSelectionsButtonEnabled\":false,\"isFilterSelectionsButtonEnabled\":false,\"isFieldWellButtonEnabled\":false,\"isApplyAllButtonEnabled\":false},\"linguisticSchemaSyncVersion\":2,\"settings\":{\"isPersistentUserStateDisabled\":true,\"hideVisualContainerHeader\":false,\"useStylableVisualContainerHeader\":true,\"exportDataMode\":1,\"useNewFilterPaneExperience\":true,\"optOutNewFilterPaneExperience\":false,\"defaultFilterActionIsDataFilter\":true,\"useCrossReportDrillthrough\":false,\"allowChangeFilterTypes\":true,\"allowInlineExploration\":false,\"disableFilterPaneSearch\":false,\"enableDeveloperMode\":false,\"useEnhancedTooltips\":true,\"useDefaultAggregateDisplayName\":true},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Middle'\"}}}}}]}}",
+  "layoutOptimization": 0,
+  "resourcePackages": [
+    {
+      "resourcePackage": {
+        "disabled": false,
+        "items": [
+          {
+            "name": "CY22SU11",
+            "path": "BaseThemes/CY22SU11.json",
+            "type": 202
+          }
+        ],
+        "name": "SharedResources",
+        "type": 2
+      }
+    },
+    {
+      "resourcePackage": {
+        "disabled": false,
+        "items": [
+          {
+            "name": "pbilogo011716949638171492.png",
+            "path": "pbilogo011716949638171492.png",
+            "type": 100
+          }
+        ],
+        "name": "RegisteredResources",
+        "type": 1
+      }
+    }
+  ],
+  "sections": [
+    {
+      "config": "{}",
+      "displayName": "Overview",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "ReportSection",
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"004ba1a278a57081b35c\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":0,\"z\":4500,\"width\":263.1111111111111,\"height\":109.5111111111111,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"image\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"imageUrl\":{\"expr\":{\"ResourcePackageItem\":{\"PackageName\":\"RegisteredResources\",\"PackageType\":1,\"ItemName\":\"pbilogo011716949638171492.png\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 109.51,
+          "width": 263.11,
+          "x": 0.00,
+          "y": 0.00,
+          "z": 4500.00
+        },
+        {
+          "config": "{\"name\":\"3f7d302598c1e81e7e78\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":142.22222222222223,\"z\":3000,\"width\":1280,\"height\":288.7111111111111,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"barChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Inventory.Item\",\"active\":true}],\"Y\":[{\"queryRef\":\"Sum(Inventory.Quantity)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"i\",\"Entity\":\"Inventory\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Item\"},\"Name\":\"Inventory.Item\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Quantity\"}},\"Function\":0},\"Name\":\"Sum(Inventory.Quantity)\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Quantity\"}},\"Function\":0}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Quantity Bar Chart'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 288.71,
+          "width": 1280.00,
+          "x": 0.00,
+          "y": 142.22,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"5094f3ff553da63e610e\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":430.93333333333334,\"z\":1000,\"width\":1280,\"height\":288.7111111111111,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"columnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Inventory.Item\",\"active\":true}],\"Y\":[{\"queryRef\":\"Sum(Inventory.Quantity)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"i\",\"Entity\":\"Inventory\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Item\"},\"Name\":\"Inventory.Item\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Quantity\"}},\"Function\":0},\"Name\":\"Sum(Inventory.Quantity)\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Quantity\"}},\"Function\":0}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Quantity Column chart'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 288.71,
+          "width": 1280.00,
+          "x": 0.00,
+          "y": 430.93,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"9fc6ae0a41d3cd37389c\",\"layouts\":[{\"id\":0,\"position\":{\"x\":995.5555555555555,\"y\":0,\"z\":4000,\"width\":284.44444444444446,\"height\":142.22222222222223,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Inventory.Item\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"i\",\"Entity\":\"Inventory\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Item\"},\"Name\":\"Inventory.Item\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{}}]}}}",
+          "filters": "[]",
+          "height": 142.22,
+          "width": 284.44,
+          "x": 995.56,
+          "y": 0.00,
+          "z": 4000.00
+        },
+        {
+          "config": "{\"name\":\"f33c36cc9219f5796fa7\",\"layouts\":[{\"id\":0,\"position\":{\"x\":263.1111111111111,\"y\":0,\"z\":4250,\"width\":207.64444444444445,\"height\":109.5111111111111,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Sum(Inventory.Quantity)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"i\",\"Entity\":\"Inventory\",\"Type\":0}],\"Select\":[{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Quantity\"}},\"Function\":0},\"Name\":\"Sum(Inventory.Quantity)\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Quantity\"}},\"Function\":0}}}]},\"columnProperties\":{\"Sum(Inventory.Quantity)\":{\"displayName\":\"Quantity\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 109.51,
+          "width": 207.64,
+          "x": 263.11,
+          "y": 0.00,
+          "z": 4250.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Detail",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "ReportSection8952e5fd70dcea579d3b",
+      "ordinal": 1,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"c923890a1b150c50c526\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":81.06666666666666,\"z\":0,\"width\":1280,\"height\":638.5777777777778}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Inventory.Item\"},{\"queryRef\":\"Sum(Inventory.Quantity)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"i\",\"Entity\":\"Inventory\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Item\"},\"Name\":\"Inventory.Item\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Quantity\"}},\"Function\":0},\"Name\":\"Sum(Inventory.Quantity)\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 638.58,
+          "width": 1280.00,
+          "x": 0.00,
+          "y": 81.07,
+          "z": 0.00
+        }
+      ],
+      "width": 1280.00
+    }
+  ]
+}

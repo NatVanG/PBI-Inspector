@@ -8,6 +8,8 @@ internal partial class Program
     {
         const string SamplePBIXFilePath = @"Files\Inventory sample.pbix";
         const string SampleRulesFilePath = @"Files\Inventory rules sample.json";
+        const bool Verbose = true;
+        
 
         Inspector? insp = null;
 
@@ -16,15 +18,14 @@ internal partial class Program
         try
         {
             var parsedArgs = CLIArgsUtils.ParseArgs(args);
-            insp = RunInspector(parsedArgs.PBIXFilePath, parsedArgs.RulesFilePath);
+            insp = RunInspector(parsedArgs.PBIXFilePath, parsedArgs.RulesFilePath, parsedArgs.Verbose);
         }
         catch (ArgumentNullException)
         {
-            //Console.WriteLine(e.Message);
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("\nRunning with sample files for demo purposes.\nSample .pbix file is at \"{0}\".\nSample inspection rules json file is at \"{1}\".\n", Path.Combine(AppContext.BaseDirectory, SamplePBIXFilePath), Path.Combine(AppContext.BaseDirectory, SampleRulesFilePath));
             Console.ResetColor();
-            insp = RunInspector(SamplePBIXFilePath, SampleRulesFilePath);
+            insp = RunInspector(SamplePBIXFilePath, SampleRulesFilePath, Verbose);
         }
         catch (ArgumentException e)
         {
@@ -48,7 +49,7 @@ internal partial class Program
         Console.ResetColor();
     }
 
-    private static Inspector RunInspector(string PBIXFilePath, string RulesFilePath)
+    private static Inspector RunInspector(string PBIXFilePath, string RulesFilePath, bool Verbose)
     {
         Inspector insp = new Inspector(PBIXFilePath, RulesFilePath);
         insp.MessageIssued += Insp_MessageIssued;
@@ -57,8 +58,10 @@ internal partial class Program
         {
             var testResults = insp.Inspect();
 
+            if (!Verbose) { Console.WriteLine("Verbose param is set to false so only list test failures."); }
             foreach (var result in testResults)
             {
+                if (result.Result && !Verbose) continue; //skip if verbose is false
                 Console.WriteLine();
                 Console.ForegroundColor = result.Result ? ConsoleColor.Green : ConsoleColor.Red;
                 Console.WriteLine(result.ResultMessage);

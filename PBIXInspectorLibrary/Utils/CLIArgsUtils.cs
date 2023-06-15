@@ -5,8 +5,8 @@
         //TODO: additional error handling required.
         public static CLIArgs ParseArgs(string[] args)
         {
-            const string PBIX = "-pbix", RULES = "-rules";
-            string[] validOptions = { PBIX, RULES };
+            const string PBIX = "-pbix", RULES = "-rules", VERBOSE = "-verbose";
+            string[] validOptions = { PBIX, RULES, VERBOSE };
             // Test if input arguments were supplied.
             if (args == null || args.Length < 4) { throw new ArgumentNullException("Missing arguments, ensure both -pbix and -rules are provided."); }
 
@@ -26,7 +26,7 @@
                 }
             }
 
-            return new CLIArgs { PBIXFilePath = dic[PBIX], RulesFilePath = dic[RULES] }; ;
+            return new CLIArgs { PBIXFilePath = dic[PBIX], RulesFilePath = dic[RULES], VerboseString = dic[VERBOSE] };
         }
     }
 }
