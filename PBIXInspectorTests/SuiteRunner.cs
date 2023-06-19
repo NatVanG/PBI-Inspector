@@ -30,7 +30,7 @@ namespace PBIXInspectorTests;
 /// </summary>
 public class SuiteRunner
 {
-    public static IEnumerable<TestCaseData> TestSuite()
+    public static IEnumerable<TestCaseData> PbixTestSuite()
     {
         string PBIXFilePath = @"Files\Inventory test.pbix";
         string RulesFilePath = @"Files\Inventory rules test.json";
@@ -39,8 +39,23 @@ public class SuiteRunner
         return Suite(PBIXFilePath, RulesFilePath);
     }
 
-    [TestCaseSource(nameof(TestSuite))]
-    public void RunTest(PBIXInspectorLibrary.TestResult testResult)
+    [TestCaseSource(nameof(PbixTestSuite))]
+    public void RunPbixTest(PBIXInspectorLibrary.TestResult testResult)
+    {
+        Assert.True(testResult.Result, testResult.ResultMessage);
+    }
+
+    public static IEnumerable<TestCaseData> PbipTestSuite()
+    {
+        string PBIPFilePath = @"Files\pbip\Inventory test.pbip";
+        string RulesFilePath = @"Files\Inventory rules test.json";
+
+        Console.WriteLine("Running test suite...");
+        return Suite(PBIPFilePath, RulesFilePath);
+    }
+
+    [TestCaseSource(nameof(PbipTestSuite))]
+    public void RunPbipTest(PBIXInspectorLibrary.TestResult testResult)
     {
         Assert.True(testResult.Result, testResult.ResultMessage);
     }
@@ -73,7 +88,7 @@ public class SuiteRunner
             var testSuite = JsonSerializer.Deserialize<JsonLogicTestSuite>(content);
             var inspectionRules = new InspectionRules();
             var rules = testSuite!.Tests.Select(t => new PBIXInspectorLibrary.Rule() { Name = t.Logic, Path = "$", PathErrorWhenNoMatch = false, Test = new PBIXInspectorLibrary.Test() { Logic = t.Logic!, Data = t.Data!, Expected = t.Expected! } });
-            inspectionRules.PbixEntries = new List<PbixEntry> { new PbixEntry() { Name = "stub", Path = "Report/Layout", ContentType = "json", CodePage = 1200, Description = "", Rules = rules } };
+            inspectionRules.PbiEntries = new List<PbiEntry> { new PbiEntry() { Name = "stub", PbixEntryPath = "Report/Layout", ContentType = "json", CodePage = 1200, Description = "", Rules = rules } };
 
             return Suite(PBIXFilePath, inspectionRules);
         }).Result;

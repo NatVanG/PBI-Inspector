@@ -2,7 +2,7 @@
 {
     public class CLIArgs
     {
-        public string PBIXFilePath { get; set; }
+        public string PBIFilePath { get; set; }
 
         public string RulesFilePath { get; set; }
 

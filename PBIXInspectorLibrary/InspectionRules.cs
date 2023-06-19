@@ -5,16 +5,18 @@
     /// </summary>
     public class InspectionRules : IInspectionRules
     {
-        public List<PbixEntry> PbixEntries { get; set; }
+        public List<PbiEntry> PbiEntries { get; set; }
     }
 
-    public class PbixEntry
+    public class PbiEntry
     {
         public string Name { get; set; }
 
         public string Description { get; set; }
 
-        public string Path { get; set; }
+        public string PbixEntryPath { get; set; }
+
+        public string PbipEntryPath { get; set; }
 
         //TODO: use string enum converter deserialiser
         public string ContentType { get; set; }

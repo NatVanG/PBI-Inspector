@@ -1,8 +1,9 @@
 {
-  "pbixEntries": [
+  "pbiEntries": [
     {
       "name": "reportLayout",
-      "path": "Report/Layout",
+      "pbixEntryPath": "Report/Layout",
+      "pbipEntryPath":  "Inventory sample.Report\\report.json",
       "contentType": "json",
       "codepage": 1200,
       "rules": [
@@ -43,7 +44,7 @@
         },
         {
           "name": "Sample - NumberOfChartsInOverviewPage3",
-          "description": "Counts the number of chart per page in the report.",
+          "description": "Counts the number of charts in the overview page.",
           "path": "$.sections[?(@.displayName == 'Overview')]",
           "pathErrorWhenNoMatch": true,
           "test": [
@@ -193,6 +194,22 @@
               ]
             },
             { "d": "/sections" },
+            true
+          ]
+        },
+        {
+          "name": "Check that visual at x=0 and y=0 position is logo.",
+          "description": "This is a way to ensure we're not looping through the outer path results array but instead letting JsonLogic do an internal loop on the /sections array.'",
+          "path": "$.sections[*].visualContainers[?(@.x == 0 && @.y == 0)].config",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "==": [
+                { "var": "chartType" },
+                "image"
+              ]
+            },
+            { "chartType": "/singleVisual/visualType" },
             true
           ]
         },

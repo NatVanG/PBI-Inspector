@@ -1,9 +1,10 @@
 {
-  "pbixEntries": [
+  "pbiEntries": [
     {
       "name": "reportLayoutBadEncoding",
       "description": "Bad encoding.",
-      "path": "Report/Layout",
+      "pbixEntryPath": "Report/Layout",
+      "pbipEntryPath": "Inventory test.Report\\report.json",
       "contentType": "json",
       "codepage": 9999,
       "rules": []
@@ -11,14 +12,16 @@
     {
       "name": "reportLayoutBadEntryPath",
       "description": "Bad entry path.",
-      "path": "bad path",
+      "pbixEntryPath": "bad path",
+      "pbipEntryPath": "bad path",
       "contentType": "json",
       "codepage": 1200,
       "rules": []
     },
     {
       "name": "reportLayout",
-      "path": "Report/Layout",
+      "pbixEntryPath": "Report/Layout",
+      "pbipEntryPath": "Inventory test.Report\\report.json",
       "contentType": "json",
       "codepage": 1200,
       "rules": [
@@ -30,40 +33,6 @@
             { "+": [ 1, 1 ] },
             {},
             2
-          ]
-        },
-        {
-          "name": "testJsonLogic2",
-          "path": "$.sections[0].visualContainers[0]",
-          "pathErrorWhenNoMatch": true,
-          "test": [
-            {
-              "+": [
-                { "var": "x" },
-                5
-              ]
-            },
-            {
-              "x": "/x"
-            },
-            15
-          ]
-        },
-        {
-          "name": "testJsonLogic3",
-          "path": "$.sections[0].visualContainers[0]",
-          "pathErrorWhenNoMatch": true,
-          "test": [
-            {
-              "+": [
-                { "var": "x" },
-                5
-              ]
-            },
-            {
-              "x": "/x"
-            },
-            15
           ]
         },
         {

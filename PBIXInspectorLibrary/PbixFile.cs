@@ -1,48 +1,25 @@
-﻿using System.IO.Compression;
+﻿using System.Data;
+using System.IO.Compression;
 
 namespace PBIXInspectorLibrary
 {
-    public class PbixFile : IDisposable
+    internal class PbixFile : PbiFile, IDisposable
     {
-        private string _filePath = null;
-        private FileInfo _fileInfo = null;
+     
         private ZipArchive _za = null;
-
         private bool disposedValue;
 
-        public string ReportName
+        public PbixFile(string pbiFilePath) : base(pbiFilePath)
         {
-            get { return _fileInfo.Name; }
         }
 
-        public string FilePath
-        {
-            get { return _filePath; }
-        }
-
-        public string DirectoryPath
-        {
-            get { return _fileInfo.DirectoryName; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pbixFilePath"></param>
-        /// TODO: check Power BI Desktop version is supported
-        public PbixFile(string pbixFilePath)
-        {
-            this._filePath = pbixFilePath;
-            this._fileInfo = new FileInfo(_filePath);
-        }
-
-        public ZipArchive Archive
+        private ZipArchive Archive
         {
             get
             {
                 try
                 {
-                    this._za = ZipFile.Open(FilePath, ZipArchiveMode.Read);
+                    if (this._za == null) this._za = ZipFile.Open(FilePath, ZipArchiveMode.Read);
                     return _za;
                 }
                 catch (System.IO.FileNotFoundException e)
@@ -57,6 +34,21 @@ namespace PBIXInspectorLibrary
             }
         }
 
+        public override Stream GetEntryStream(string entryPath)
+        {
+            if (!string.IsNullOrEmpty(entryPath))
+            {
+                var zae = this.Archive.GetEntry(entryPath);
+                if (zae != null)
+                {
+                    //TODO: raise msg
+                    return zae.Open();
+                }
+            }
+
+            return null;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -64,30 +56,26 @@ namespace PBIXInspectorLibrary
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects)
+                    if (this._za != null)
+                    {
+                        this._za.Dispose();
+                        this._za = null;
+                    }
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                if (this._za != null)
-                {
-                    this._za.Dispose();
-                }
+                
                 // TODO: set large fields to null
                 disposedValue = true;
             }
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~PbixFile()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
-
-        public void Dispose()
+        public override void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
+      
     }
 }

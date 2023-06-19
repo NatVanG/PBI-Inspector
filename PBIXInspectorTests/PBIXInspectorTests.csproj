@@ -45,6 +45,31 @@
     <None Update="Files\Inventory test.pbix">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Files\pbip\Inventory test.pbip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory test.Report\datasetDiagramLayout.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory test.Report\definition.pbir">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory test.Report\item.config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory test.Report\item.metadata.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory test.Report\report.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory test.Report\StaticResources\SharedResources\BaseThemes\CY22SU11.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Files\pbip\" />
   </ItemGroup>
 
 </Project>

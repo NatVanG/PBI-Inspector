@@ -3,6 +3,7 @@ using Json.More;
 using Json.Pointer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PBIXInspectorLibrary.Utils;
 using System.IO.Compression;
 using System.Text;
 using System.Text.Json.Nodes;
@@ -18,7 +19,8 @@ namespace PBIXInspectorLibrary
         private const string JSONPOINTERSTART = "/";
         private const string CONTEXTARRAY = ".";
 
-        private PbixFile _pbixFile;
+        private string _pbiFilePath, _rulesFilePath;
+        //private PbiFile _pbiFile;
         private InspectionRules? _inspectionRules;
 
         public event EventHandler<MessageIssuedEventArgs>? MessageIssued;
@@ -26,26 +28,25 @@ namespace PBIXInspectorLibrary
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="pbixFilePath"></param>
+        /// <param name="pbiFilePath"></param>
         /// <param name="inspectionRules"></param>
-        public Inspector(string pbixFilePath, InspectionRules inspectionRules) : base(pbixFilePath, inspectionRules)
+        public Inspector(string pbiFilePath, InspectionRules inspectionRules) : base(pbiFilePath, inspectionRules)
         {
-            using var pbixFile = new PbixFile(pbixFilePath);
-            this._pbixFile = pbixFile;
+            this._pbiFilePath = pbiFilePath;
             this._inspectionRules = inspectionRules;
             AddCustomRulesToRegistry();
         }
-
+        
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="pbixFilePath">Local PBIX file path</param>
+        /// <param name="pbiFilePath">Local PBIX file path</param>
         /// <param name="rulesFilePath">Local rules json file path</param>
-        public Inspector(string pbixFilePath, string rulesFilePath) : base(pbixFilePath, rulesFilePath)
+        public Inspector(string pbiFilePath, string rulesFilePath) : base(pbiFilePath, rulesFilePath)
         {
-            using var pbixFile = new PbixFile(pbixFilePath);
-            this._pbixFile = pbixFile;
-
+            this._pbiFilePath = pbiFilePath;
+            this._rulesFilePath = rulesFilePath;
+            
             try
             {
                 this._inspectionRules = this.DeserialiseRules<InspectionRules>(rulesFilePath);
@@ -56,6 +57,21 @@ namespace PBIXInspectorLibrary
             }
 
             AddCustomRulesToRegistry();
+        }
+
+        private PbiFile InitPbiFile(string pbiFilePath)
+        {
+            switch (PbiFile.PBIFileType(pbiFilePath))
+            {
+                case PbiFile.PBIFileTypeEnum.PBIX:
+                    return new PbixFile(pbiFilePath);
+                    break;
+                case PbiFile.PBIFileTypeEnum.PBIP:
+                    return new PbipFile(pbiFilePath);
+                    break;
+                default:
+                    return null;
+            }
         }
 
         private void AddCustomRulesToRegistry()
@@ -79,90 +95,91 @@ namespace PBIXInspectorLibrary
         /// </summary>
         public IEnumerable<TestResult> Inspect()
         {
-            if (this._pbixFile == null || this._inspectionRules == null)
+            using (var pbiFile = InitPbiFile(_pbiFilePath))
             {
-                OnMessageIssued(MessageTypeEnum.Error, string.Format("Cannot start inpesction as either the PBIX file or the Inspection Rules are not instantiated."));
-            }
-            else
-            {
-                using ZipArchive za = this._pbixFile.Archive;
-
-                foreach (var entry in this._inspectionRules.PbixEntries)
+                if (pbiFile == null || this._inspectionRules == null)
                 {
-
-                    var zae = za.GetEntry(entry.Path);
-
-                    if (zae == null)
+                    OnMessageIssued(MessageTypeEnum.Error, string.Format("Cannot start inpesction as either the PBIX file or the Inspection Rules are not instantiated."));
+                }
+                else
+                {
+                    foreach (var entry in this._inspectionRules.PbiEntries)
                     {
-                        OnMessageIssued(MessageTypeEnum.Error, string.Format("PBIX entry \"{0}\" with path \"{1}\" is not valid or does not exist, resuming to next PBIX Entry iteration if any.", entry.Name, entry.Path));
-                        continue;
-                    }
-
-                    using Stream entryStream = zae.Open();
-
-                    Encoding encoding = GetEncodingFromCodePage(entry.CodePage);
-
-                    using StreamReader sr = new(entryStream, encoding);
-
-                    //TODO: use TryParse instead but better still use stringenumconverter upon deserialising
-                    EntryContentTypeEnum contentType;
-                    if (!Enum.TryParse(entry.ContentType, out contentType))
-                    {
-                        throw new PBIXInspectorException(string.Format("ContentType \"{0}\" defined for entry \"{1}\" is not valid.", entry.ContentType, entry.Name));
-                    }
-
-                    switch (contentType)
-                    {
-                        case EntryContentTypeEnum.json:
+                        var pbiEntryPath = pbiFile.FileType == PbiFile.PBIFileTypeEnum.PBIX ? entry.PbixEntryPath : entry.PbipEntryPath;
+                        using (Stream entryStream = pbiFile.GetEntryStream(pbiEntryPath))
+                        {
+                            if (entryStream == null)
                             {
-                                using JsonTextReader reader = new(sr);
-
-                                var jo = (JObject)JToken.ReadFrom(reader);
-
-                                OnMessageIssued(MessageTypeEnum.Information, string.Format("Running rules for PBIX entry \"{0}\"...", entry.Name));
-                                foreach (var rule in entry.Rules)
-                                {
-                                    Json.Logic.Rule? jrule = null;
-
-                                    try
-                                    {
-                                        jrule = System.Text.Json.JsonSerializer.Deserialize<Json.Logic.Rule>(rule.Test.Logic);
-                                    }
-                                    catch (System.Text.Json.JsonException e)
-                                    {
-                                        throw new PBIXInspectorException(string.Format("Parsing of logic for rule \"{0}\" failed.", rule.Name), e);
-                                    }
-
-                                    var tokens = ExecutePath(jo, rule);
-
-                                    //HACK: I don't like it.
-                                    var contextNodeArray = ConvertToJsonArray(tokens);
-
-                                    foreach (var node in contextNodeArray)
-                                    {
-                                        bool result = false;
-
-                                        var newdata = MapRuleDataPointersToValues(node, rule, contextNodeArray);
-
-                                        //TODO: the following commented line does not work with the variableRule implementation with context array passed in.
-                                        //var jruleresult = jrule.Apply(newdata, contextNodeArray);
-                                        var jruleresult = jrule.Apply(newdata);
-                                        result = rule.Test.Expected.IsEquivalentTo(jruleresult);
-                                        string resultString = string.Format("Rule \"{0}\" {1} with result: {2} and data: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, newdata.AsJsonString().Length > 100 ? string.Concat(newdata.AsJsonString().Substring(0, 99), "[first 100 characters]") : newdata.AsJsonString());
-                                        //TODO: return jruleresult in TestResult so that we can compose test from other tests.
-                                        yield return new TestResult { Name = rule.Name, Result = result, ResultMessage = resultString };
-                                    }
-                                }
-                                break;
+                                OnMessageIssued(MessageTypeEnum.Error, string.Format("PBI entry \"{0}\" with path \"{1}\" is not valid or does not exist, resuming to next PBIX Entry iteration if any.", entry.Name, entry.PbixEntryPath));
+                                continue;
                             }
-                        case EntryContentTypeEnum.text:
+
+                            //TODO: retrieve PBIP encoding from codepage to allow for different encoding for PBIX and PBIP
+                            Encoding encoding = pbiFile.FileType == PbiFile.PBIFileTypeEnum.PBIX ? GetEncodingFromCodePage(entry.CodePage) : Encoding.UTF8;
+
+                            using StreamReader sr = new(entryStream, encoding);
+
+                            //TODO: use TryParse instead but better still use stringenumconverter upon deserialising
+                            EntryContentTypeEnum contentType;
+                            if (!Enum.TryParse(entry.ContentType, out contentType))
                             {
-                                throw new PBIXInspectorException("PBIX entries with text content are not currently supported.");
+                                throw new PBIXInspectorException(string.Format("ContentType \"{0}\" defined for entry \"{1}\" is not valid.", entry.ContentType, entry.Name));
                             }
-                        default:
+
+                            switch (contentType)
                             {
-                                throw new PBIXInspectorException("Only Json PBIX entries are supported.");
+                                case EntryContentTypeEnum.json:
+                                    {
+                                        using JsonTextReader reader = new(sr);
+
+                                        var jo = (JObject)JToken.ReadFrom(reader);
+
+                                        OnMessageIssued(MessageTypeEnum.Information, string.Format("Running rules for PBI entry \"{0}\"...", entry.Name));
+                                        foreach (var rule in entry.Rules)
+                                        {
+                                            Json.Logic.Rule? jrule = null;
+
+                                            try
+                                            {
+                                                jrule = System.Text.Json.JsonSerializer.Deserialize<Json.Logic.Rule>(rule.Test.Logic);
+                                            }
+                                            catch (System.Text.Json.JsonException e)
+                                            {
+                                                throw new PBIXInspectorException(string.Format("Parsing of logic for rule \"{0}\" failed.", rule.Name), e);
+                                            }
+
+                                            var tokens = ExecutePath(jo, rule);
+
+                                            //HACK: I don't like it.
+                                            var contextNodeArray = ConvertToJsonArray(tokens);
+
+                                            foreach (var node in contextNodeArray)
+                                            {
+                                                bool result = false;
+
+                                                var newdata = MapRuleDataPointersToValues(node, rule, contextNodeArray);
+
+                                                //TODO: the following commented line does not work with the variableRule implementation with context array passed in.
+                                                //var jruleresult = jrule.Apply(newdata, contextNodeArray);
+                                                var jruleresult = jrule.Apply(newdata);
+                                                result = rule.Test.Expected.IsEquivalentTo(jruleresult);
+                                                string resultString = string.Format("Rule \"{0}\" {1} with result: {2} and data: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, newdata.AsJsonString().Length > 100 ? string.Concat(newdata.AsJsonString().Substring(0, 99), "[first 100 characters]") : newdata.AsJsonString());
+                                                //TODO: return jruleresult in TestResult so that we can compose test from other tests.
+                                                yield return new TestResult { Name = rule.Name, Result = result, ResultMessage = resultString };
+                                            }
+                                        }
+                                        break;
+                                    }
+                                case EntryContentTypeEnum.text:
+                                    {
+                                        throw new PBIXInspectorException("PBI entries with text content are not currently supported.");
+                                    }
+                                default:
+                                    {
+                                        throw new PBIXInspectorException("Only Json PBI entries are supported.");
+                                    }
                             }
+                        }
                     }
                 }
             }
@@ -258,7 +275,7 @@ namespace PBIXInspectorLibrary
 
                     foreach (var t in parentTokens)
                     {
-                        // childtokens = SelectTokens((JObject)t, rule.Name, childPath, rule.PathErrorWhenNoMatch); //TODO: this seems better but throws InvalidCastException
+                        //var childtokens = SelectTokens((JObject?)t, rule.Name, childPath, rule.PathErrorWhenNoMatch); //TODO: this seems better but throws InvalidCastException
                         var childtokens = SelectTokens(((JObject)JToken.Parse(t.ToString())), rule.Name, childPath, rule.PathErrorWhenNoMatch);
                         if (childtokens != null) tokens.AddRange(childtokens.ToList());
                     }

@@ -8,9 +8,9 @@
     <StartupObject>Program</StartupObject>
     <SignAssembly>False</SignAssembly>
     <IsPublishable>True</IsPublishable>
-    <FileVersion>1.1.0.0</FileVersion>
-    <AssemblyVersion>1.1.0</AssemblyVersion>
-    <VersionPrefix>1.1.0</VersionPrefix>
+    <FileVersion>1.2.0.0</FileVersion>
+    <AssemblyVersion>1.2.0</AssemblyVersion>
+    <VersionPrefix>1.2.0</VersionPrefix>
     <Version>$(VersionPrefix)</Version>
     <Product>$(AssembblyName)</Product>
   </PropertyGroup>
@@ -20,6 +20,45 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Files\pbip\Inventory sample.Dataset\definition.pbidataset">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory sample.Dataset\diagramLayout.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory sample.Dataset\item.config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory sample.Dataset\item.metadata.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory sample.Dataset\model.bim">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory sample.pbip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory sample.Report\datasetDiagramLayout.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory sample.Report\definition.pbir">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory sample.Report\item.config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory sample.Report\item.metadata.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory sample.Report\report.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory sample.Report\StaticResources\RegisteredResources\pbilogo011716949638171492.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\pbip\Inventory sample.Report\StaticResources\SharedResources\BaseThemes\CY22SU11.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="README.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

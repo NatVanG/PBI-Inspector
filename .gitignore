@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /PBIXInspectorCLI/PBIXInspector.pbitool.json
 /PBIXInspectorCLI/Properties/launchSettings.json
 /PBIXInspectorCLI/Files/pbip/.gitignore
+/PBIXInspectorTests/Files/pbip/.gitignore

@@ -7,9 +7,11 @@ internal partial class Program
     private static void Main(string[] args)
     {
         const string SamplePBIXFilePath = @"Files\Inventory sample.pbix";
+        const string SamplePBIPFilePath = @"Files\pbip\Inventory sample.pbip";
         const string SampleRulesFilePath = @"Files\Inventory rules sample.json";
         const bool Verbose = true;
-        
+
+        var samplePbiFileMode = AppContext.GetData("SamplePbiFileMode");
 
         Inspector? insp = null;
 
@@ -18,14 +20,18 @@ internal partial class Program
         try
         {
             var parsedArgs = CLIArgsUtils.ParseArgs(args);
-            insp = RunInspector(parsedArgs.PBIXFilePath, parsedArgs.RulesFilePath, parsedArgs.Verbose);
+
+            insp = RunInspector(parsedArgs.PBIFilePath, parsedArgs.RulesFilePath, parsedArgs.Verbose);
         }
         catch (ArgumentNullException)
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("\nRunning with sample files for demo purposes.\nSample .pbix file is at \"{0}\".\nSample inspection rules json file is at \"{1}\".\n", Path.Combine(AppContext.BaseDirectory, SamplePBIXFilePath), Path.Combine(AppContext.BaseDirectory, SampleRulesFilePath));
             Console.ResetColor();
-            insp = RunInspector(SamplePBIXFilePath, SampleRulesFilePath, Verbose);
+
+            //TODO: use appSettings property to switch file mode i.e. PBIX vs. PBIP. 
+            //insp = RunInspector(SamplePBIXFilePath, SampleRulesFilePath, Verbose);
+            insp = RunInspector(SamplePBIPFilePath, SampleRulesFilePath, Verbose);
         }
         catch (ArgumentException e)
         {
@@ -49,9 +55,9 @@ internal partial class Program
         Console.ResetColor();
     }
 
-    private static Inspector RunInspector(string PBIXFilePath, string RulesFilePath, bool Verbose)
+    private static Inspector RunInspector(string PBIFilePath, string RulesFilePath, bool Verbose)
     {
-        Inspector insp = new Inspector(PBIXFilePath, RulesFilePath);
+        Inspector insp = new Inspector(PBIFilePath, RulesFilePath);
         insp.MessageIssued += Insp_MessageIssued;
 
         try
@@ -83,4 +89,6 @@ internal partial class Program
     {
         Console.WriteLine("{0}: {1}", e.MessageType.ToString(), e.Message);
     }
+
+
 }
