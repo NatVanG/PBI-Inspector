@@ -1,6 +1,8 @@
 # VisOps with PBIX Inspector (i.e. automated visual layer testing)
 
-***NOTE***: This is a personal side project that is not supported by Microsoft. Parsing the contents of a Power BI Desktop file (.pbix) is not supported either.
+***NOTE***: This is a personal side project that is not supported by Microsoft. Parsing the contents of a Power BI Desktop file (.pbix) is not supported either. 
+
+*Update*: Release v1.2.0.0 of PBIX Inspector can now inspect files in the new PBIP format (see annoucement at https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/). At some point this project's name will be updated from "PBIX Inspector" to something that better reflects this change. 
 
 ## Intro
 
@@ -8,8 +10,10 @@ So we've DevOps, MLOps and DataOps... but why not VisOps? How can we ensure that
 
 ## Examples
 
-Run PBIX inspector by passing in PBIX file path and Json rules filepath as shown in the following example: 
-```C:\> PBIXInspectorCLI.exe -pbix "Adventure Works.pbix" -rules "Adv Works rules.json"```
+To inspect a PBIP file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: ```PBIXInspectorCLI.exe -pbip "Files\pbip\Inventory sample.pbip" -rules "Files\Inventory rules sample.json""```
+
+To inspect a PBIX file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: 
+```PBIXInspectorCLI.exe -pbix "Files\Inventory Sample.pbix" -rules "Files\Inventory rules sample.json"```
 
 If run without any parameters PBIX inspector will use sample PBIX and rules files under the "Files" folder. 
 
