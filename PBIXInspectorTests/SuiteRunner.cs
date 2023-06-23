@@ -60,6 +60,10 @@ public class SuiteRunner
         Assert.True(testResult.Result, testResult.ResultMessage);
     }
 
+    /// <summary>
+    /// Test PBIX using the base JsonLogicTest file to make sure we didn't break JsonLogic
+    /// </summary>
+    /// <returns></returns>
     public static IEnumerable<TestCaseData> JsonLogicSuite()
     {
         string PBIXFilePath = @"Files\Inventory test.pbix";

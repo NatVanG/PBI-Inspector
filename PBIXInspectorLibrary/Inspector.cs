@@ -16,6 +16,8 @@ namespace PBIXInspectorLibrary
     public class Inspector : InspectorBase
     {
         private const string SUBJPATHSTART = "{";
+        private const string SUBJPATHEND = "}";
+        private const string FILTEREXPRESSIONMARKER = "?";
         private const string JSONPOINTERSTART = "/";
         private const string CONTEXTARRAY = ".";
 
@@ -185,46 +187,6 @@ namespace PBIXInspectorLibrary
             }
         }
 
-        /// <summary>
-        /// Validate json object
-        /// </summary>
-        /// <param name="jo"></param>
-        /// <param name="rule"></param>
-        /*
-        public IEnumerable<TestResult> Validate(JObject? jo, Rule rule)
-        {
-            Json.Logic.Rule? jrule = null;
-
-            try
-            {
-                jrule = System.Text.Json.JsonSerializer.Deserialize<Json.Logic.Rule>(rule.Test.Logic);
-            }
-            catch (System.Text.Json.JsonException e)
-            {
-                throw new PBIXInspectorException(string.Format("Parsing of logic for rule \"{0}\" failed.", rule.Name), e);
-            }
-
-            var tokens = ExecutePath(jo, rule);
-
-            //HACK: I don't like it.
-            var contextNodeArray = ConvertToJsonArray(tokens);
-
-            foreach (var node in contextNodeArray)
-            {
-                bool result = false;
-
-                var newdata = MapRuleDataPointersToValues(node, rule);
-                
-                var jruleresult = jrule.Apply(newdata, contextNodeArray);
-                result = rule.Test.Expected.IsEquivalentTo(jruleresult);
-                string resultString = string.Format("Rule \"{0}\" {1} with data: {2}.", rule.Name, result ? "PASSED" : "FAILED", newdata.AsJsonString().Length > 100 ? string.Concat(newdata.AsJsonString().Substring(0, 99), "[first 100 characters]") : newdata.AsJsonString());
-                OnMessageIssued(MessageTypeEnum.Information,  resultString);
-                yield return new TestResult {  Name = rule.Name, Result= result, ResultMessage = resultString };
-            }
-        } */
-
-
-
         private JsonArray ConvertToJsonArray(List<JToken>? tokens)
         {
             List<JsonNode>? nodes = new();
@@ -259,25 +221,41 @@ namespace PBIXInspectorLibrary
         /// <returns></returns>
         private List<JToken>? ExecutePath(JObject? jo, Rule rule)
         {
-            string parentPath, childPath = string.Empty;
+            string parentPath, queryPath = string.Empty;
             List<JToken>? tokens = new List<JToken>();
 
             //TODO: a regex match would be better
             if (rule.Path.Contains(SUBJPATHSTART)) //check for subpath syntax
             {
-                if (rule.Path.EndsWith("}"))
+                if (rule.Path.EndsWith(SUBJPATHEND))
                 {
                     //TODO: currently subpath is assumed to be the last path (i.e. the whole string end in "})" but we should be able to resolve inner subpath and return to parent path
                     var index = rule.Path.IndexOf(SUBJPATHSTART);
                     parentPath = rule.Path.Substring(0, index);
-                    childPath = rule.Path.Substring(index + 1, rule.Path.Length - index - 2);
+                    queryPath = rule.Path.Substring(index + SUBJPATHSTART.Length, rule.Path.Length - (index + SUBJPATHSTART.Length) - 1);
                     var parentTokens = SelectTokens(jo, rule.Name, parentPath, rule.PathErrorWhenNoMatch);
 
-                    foreach (var t in parentTokens)
+                    if (parentPath.Contains(FILTEREXPRESSIONMARKER))
                     {
-                        //var childtokens = SelectTokens((JObject?)t, rule.Name, childPath, rule.PathErrorWhenNoMatch); //TODO: this seems better but throws InvalidCastException
-                        var childtokens = SelectTokens(((JObject)JToken.Parse(t.ToString())), rule.Name, childPath, rule.PathErrorWhenNoMatch);
-                        if (childtokens != null) tokens.AddRange(childtokens.ToList());
+                        JArray ja = new JArray();
+                        foreach (var t in parentTokens)
+                        {
+                            //HACK: why do I have to parse a token into a token to make the subsequent SelectTokens call work?
+                            var jt = JToken.Parse(t.ToString());
+                            ja.Add(jt);
+                        }
+
+                        tokens = ja.SelectTokens(queryPath, rule.PathErrorWhenNoMatch)?.ToList();
+                    }
+                    else
+                    {
+                        foreach (var t in parentTokens)
+                        {
+                            //var childtokens = SelectTokens((JObject?)t, rule.Name, childPath, rule.PathErrorWhenNoMatch); //TODO: this seems better but throws InvalidCastException
+                            var childtokens = SelectTokens(((JObject)JToken.Parse(t.ToString())), rule.Name, queryPath, rule.PathErrorWhenNoMatch);
+                            //only return children tokens, the reference to parent tokens is lost. 
+                            if (childtokens != null) tokens.AddRange(childtokens.ToList());
+                        }
                     }
                 }
                 else
@@ -289,7 +267,6 @@ namespace PBIXInspectorLibrary
             {
                 tokens = SelectTokens(jo, rule)?.ToList();
             }
-
 
             return tokens;
         }

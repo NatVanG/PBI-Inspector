@@ -251,6 +251,24 @@
             },
             true
           ]
+        },
+        {
+          "name": "NestedJsonFilterExpression",
+          "description": "Filters visuals config nested json. In this example the config array is filter by visual name.",
+          "path": "$.sections[?(@.displayName == 'Overview')].visualContainers[*].config{$.[?(@.name == '5094f3ff553da63e610e')]}",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "==": [
+                { "var": "name" },
+                "5094f3ff553da63e610e"
+              ]
+            },
+            {
+              "name": "/name"
+            },
+            true
+          ]
         }
       ]
     }
