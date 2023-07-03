@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\PBIXInspectorCLI\Files\Base rules.json" Link="Files\Base rules.json" />
     <Content Include="..\PBIXInspectorCLI\Files\Inventory rules sample.json" Link="Files\Inventory rules sample.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -39,7 +39,7 @@
             {
               "s": "/sections"
             },
-            2
+            4
           ]
         },
         {
@@ -254,7 +254,7 @@
         },
         {
           "name": "NestedJsonFilterExpression",
-          "description": "Filters visuals config nested json. In this example the config array is filter by visual name.",
+          "description": "Filters visuals config nested json. In this example the config array is filtered by visual name.",
           "path": "$.sections[?(@.displayName == 'Overview')].visualContainers[*].config{$.[?(@.name == '5094f3ff553da63e610e')]}",
           "pathErrorWhenNoMatch": true,
           "test": [
@@ -267,6 +267,96 @@
             {
               "name": "/name"
             },
+            true
+          ]
+        },
+        {
+          "name": "NestedJsonFilterExpression2",
+          "description": "Filters visuals config nested json. In this example the config array is filtered by visual type.",
+          "path": "$.sections[?(@.displayName == 'Overview')].visualContainers[*].config{$.[?(@.singleVisual.visualType == 'barChart')]}",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "and": [
+                {
+                  "==": [
+                    { "var": "name" },
+                    "3f7d302598c1e81e7e78"
+                  ]
+                },
+            true]
+            },
+            {
+              "name": "/name"
+            },
+            true
+          ]
+        },
+        {
+          "name": "NestedJsonFilterExpression4",
+          "description": "Filters visuals config nested json. In this example the config array is filtered by visual name.",
+          "path": "$.sections[?(@.displayName == 'Overview')].visualContainers[*].config{$.[?(@.singleVisual.visualType == 'barChart')]}",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "and": [
+                {
+                  "==": [
+                    { "var": "tabOrder" },
+                    3000
+                  ]
+                },
+                {
+                  "==": [
+                    { "var": "drillFilterOtherVisuals" },
+                    true
+                  ]
+                },
+                {
+                  "!!": [
+                    { "var": "title" }
+                  ]
+                }
+              ]
+            },
+            {
+              "tabOrder": "/layouts/0/position/tabOrder",
+              "drillFilterOtherVisuals": "/singleVisual/drillFilterOtherVisuals",
+              "title": "/singleVisual/vcObjects/title/0/properties/text/expr/Literal/Value",
+              "somepath": "/xyz"
+
+            },
+            true
+          ]
+        },
+        {
+          "name": "IsNullOrEmpty",
+          "description": "Check for null. Ensure that the rule's pathErrorWhenNoMatch property is set to false.",
+          "path": "$.sections",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "!": [
+                { "var": "somepath" }
+              ]
+            },
+            { "somepath": "/xyz"},
+            true
+          ]
+        },
+        {
+          "name": "paramResultExample",
+          "description":  "Example on how to pass expected results to rule.",
+          "path": "$.sections",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "==": [
+                { "+": [ 1, 1 ] },
+                { "var": "paramResult" }
+              ]
+            },
+            { "paramResult": 2},
             true
           ]
         }

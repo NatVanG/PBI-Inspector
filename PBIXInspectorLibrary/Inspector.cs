@@ -90,6 +90,7 @@ namespace PBIXInspectorLibrary
             */
 
             Json.Logic.RuleRegistry.AddRule<CustomRules.CountRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.IsNullOrEmptyRule>();
         }
 
         /// <summary>
@@ -150,25 +151,58 @@ namespace PBIXInspectorLibrary
                                                 throw new PBIXInspectorException(string.Format("Parsing of logic for rule \"{0}\" failed.", rule.Name), e);
                                             }
 
-                                            var tokens = ExecutePath(jo, rule);
-
-                                            //HACK: I don't like it.
-                                            var contextNodeArray = ConvertToJsonArray(tokens);
-
-                                            foreach (var node in contextNodeArray)
+                                            if (rule != null && !string.IsNullOrEmpty(rule.ForEachPath))
                                             {
-                                                bool result = false;
+                                                var forEachTokens = ExecutePath(jo, rule.Name, rule.ForEachPath, rule.PathErrorWhenNoMatch);
 
-                                                var newdata = MapRuleDataPointersToValues(node, rule, contextNodeArray);
+                                                foreach (var forEachToken in forEachTokens)
+                                                {
+                                                    var tokens = ExecutePath((JObject?)forEachToken, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
 
-                                                //TODO: the following commented line does not work with the variableRule implementation with context array passed in.
-                                                //var jruleresult = jrule.Apply(newdata, contextNodeArray);
-                                                var jruleresult = jrule.Apply(newdata);
-                                                result = rule.Test.Expected.IsEquivalentTo(jruleresult);
-                                                string resultString = string.Format("Rule \"{0}\" {1} with result: {2} and data: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, newdata.AsJsonString().Length > 100 ? string.Concat(newdata.AsJsonString().Substring(0, 99), "[first 100 characters]") : newdata.AsJsonString());
-                                                //TODO: return jruleresult in TestResult so that we can compose test from other tests.
-                                                yield return new TestResult { Name = rule.Name, Result = result, ResultMessage = resultString };
+                                                    //HACK: I don't like it.
+                                                    var contextNodeArray = ConvertToJsonArray(tokens);
+
+                                                    //foreach (var node in contextNodeArray)
+                                                    //{
+                                                        bool result = false;
+
+                                                        var newdata = MapRuleDataPointersToValues(contextNodeArray, rule, contextNodeArray);
+
+                                                        //TODO: the following commented line does not work with the variableRule implementation with context array passed in.
+                                                        //var jruleresult = jrule.Apply(newdata, contextNodeArray);
+                                                        var jruleresult = jrule.Apply(newdata);
+                                                        result = rule.Test.Expected.IsEquivalentTo(jruleresult);
+                                                        var forEachName = forEachToken.SelectToken(rule.ForEachPathDisplayName);
+                                                        string resultString = string.Format("Rule \"{0}\" {1} with result: {2} and data: {3}.", rule != null ? string.Concat(forEachName.ToString(), " - ", rule.Name) : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, newdata.AsJsonString().Length > 1000 ? string.Concat(newdata.AsJsonString().Substring(0, 999), "[first 1000 characters]") : newdata.AsJsonString());
+                                                    //TODO: return jruleresult in TestResult so that we can compose test from other tests.
+                                                       
+                                                        yield return new TestResult { Name = rule.Name, Result = result, ResultMessage = resultString };
+                                                    //}
+                                                }
                                             }
+                                            else
+                                            {
+                                                var tokens = ExecutePath(jo, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
+
+                                                //HACK: I don't like it.
+                                                var contextNodeArray = ConvertToJsonArray(tokens);
+
+                                                foreach (var node in contextNodeArray)
+                                                {
+                                                    bool result = false;
+
+                                                    var newdata = MapRuleDataPointersToValues(node, rule, contextNodeArray);
+
+                                                    //TODO: the following commented line does not work with the variableRule implementation with context array passed in.
+                                                    //var jruleresult = jrule.Apply(newdata, contextNodeArray);
+                                                    var jruleresult = jrule.Apply(newdata);
+                                                    result = rule.Test.Expected.IsEquivalentTo(jruleresult);
+                                                    string resultString = string.Format("Rule \"{0}\" {1} with result: {2} and data: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, newdata.AsJsonString().Length > 1000 ? string.Concat(newdata.AsJsonString().Substring(0, 999), "[first 1000 characters]") : newdata.AsJsonString());
+                                                    //TODO: return jruleresult in TestResult so that we can compose test from other tests.
+                                                    yield return new TestResult { Name = rule.Name, Result = result, ResultMessage = resultString };
+                                                }
+                                            }
+                                            
                                         }
                                         break;
                                     }
@@ -219,21 +253,21 @@ namespace PBIXInspectorLibrary
         /// <param name="jo"></param>
         /// <param name="rule"></param>
         /// <returns></returns>
-        private List<JToken>? ExecutePath(JObject? jo, Rule rule)
+        private List<JToken>? ExecutePath(JObject? jo, string ruleName, string rulePath, bool rulePathErrorWhenNoMatch)
         {
             string parentPath, queryPath = string.Empty;
             List<JToken>? tokens = new List<JToken>();
 
-            //TODO: a regex match would be better
-            if (rule.Path.Contains(SUBJPATHSTART)) //check for subpath syntax
+            //TODO: a regex match to extract the substring would be better
+            if (rulePath.Contains(SUBJPATHSTART)) //check for subpath syntax
             {
-                if (rule.Path.EndsWith(SUBJPATHEND))
+                if (rulePath.EndsWith(SUBJPATHEND))
                 {
                     //TODO: currently subpath is assumed to be the last path (i.e. the whole string end in "})" but we should be able to resolve inner subpath and return to parent path
-                    var index = rule.Path.IndexOf(SUBJPATHSTART);
-                    parentPath = rule.Path.Substring(0, index);
-                    queryPath = rule.Path.Substring(index + SUBJPATHSTART.Length, rule.Path.Length - (index + SUBJPATHSTART.Length) - 1);
-                    var parentTokens = SelectTokens(jo, rule.Name, parentPath, rule.PathErrorWhenNoMatch);
+                    var index = rulePath.IndexOf(SUBJPATHSTART);
+                    parentPath = rulePath.Substring(0, index);
+                    queryPath = rulePath.Substring(index + SUBJPATHSTART.Length, rulePath.Length - (index + SUBJPATHSTART.Length) - 1);
+                    var parentTokens = SelectTokens(jo, ruleName, parentPath, rulePathErrorWhenNoMatch);
 
                     if (parentPath.Contains(FILTEREXPRESSIONMARKER))
                     {
@@ -245,14 +279,14 @@ namespace PBIXInspectorLibrary
                             ja.Add(jt);
                         }
 
-                        tokens = ja.SelectTokens(queryPath, rule.PathErrorWhenNoMatch)?.ToList();
+                        tokens = ja.SelectTokens(queryPath, rulePathErrorWhenNoMatch)?.ToList();
                     }
                     else
                     {
                         foreach (var t in parentTokens)
                         {
                             //var childtokens = SelectTokens((JObject?)t, rule.Name, childPath, rule.PathErrorWhenNoMatch); //TODO: this seems better but throws InvalidCastException
-                            var childtokens = SelectTokens(((JObject)JToken.Parse(t.ToString())), rule.Name, queryPath, rule.PathErrorWhenNoMatch);
+                            var childtokens = SelectTokens(((JObject)JToken.Parse(t.ToString())), ruleName, queryPath, rulePathErrorWhenNoMatch);
                             //only return children tokens, the reference to parent tokens is lost. 
                             if (childtokens != null) tokens.AddRange(childtokens.ToList());
                         }
@@ -260,28 +294,28 @@ namespace PBIXInspectorLibrary
                 }
                 else
                 {
-                    throw new PBIXInspectorException(string.Format("Path \"{0}\" needs to end with \"{1}\" as it contains a subpath.", rule.Path, "}"));
+                    throw new PBIXInspectorException(string.Format("Path \"{0}\" needs to end with \"{1}\" as it contains a subpath.", rulePath, "}"));
                 }
             }
             else
             {
-                tokens = SelectTokens(jo, rule)?.ToList();
+                tokens = SelectTokens(jo, ruleName, rulePath, rulePathErrorWhenNoMatch)?.ToList();
             }
 
             return tokens;
         }
 
-        private IEnumerable<JToken>? SelectTokens(JObject? jo, Rule rule)
-        {
-            return SelectTokens(jo, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
-        }
+        //private IEnumerable<JToken>? SelectTokens(JObject? jo, Rule rule)
+        //{
+        //    return SelectTokens(jo, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
+        //}
 
-        private IEnumerable<JToken>? SelectTokens(JObject? jo, string ruleName, string rulePath, bool pathErrorWhenNoMatch)
+        private IEnumerable<JToken>? SelectTokens(JObject? jo, string ruleName, string rulePath, bool rulePathErrorWhenNoMatch)
         {
             IEnumerable<JToken>? tokens;
 
             //Faster without a Try catch block hence the conditional branching
-            if (!pathErrorWhenNoMatch)
+            if (!rulePathErrorWhenNoMatch)
             {
                 tokens = jo.SelectTokens(rulePath, false);
             }
@@ -335,7 +369,15 @@ namespace PBIXInspectorLibrary
                         {
                             if (item.Value is JsonValue)
                             {
+                                
                                 var value = item.Value.AsValue().Stringify();
+                                //TODO: enable navigation to parent path
+                                //while (value.StartsWith("."))
+                                //{
+                                //    target = target.Parent;
+                                //    value = value.Substring(1, value.Length - 1);
+                                //}
+
                                 if (value.StartsWith(JSONPOINTERSTART)) //check for JsonPointer syntax
                                 {
                                     try

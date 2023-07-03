@@ -30,10 +30,19 @@
     {
         public string Name { get; set; }
 
+        public string ForEachPath { get; set; }
+
+        public string ForEachPathDisplayName { get; set; }
+
         public string Path { get; set; }
 
         public Test Test { get; set; }
 
         public bool PathErrorWhenNoMatch { get; set; }
+
+        public static implicit operator Rule(Json.Logic.Rule v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

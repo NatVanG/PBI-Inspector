@@ -1,0 +1,216 @@
+{
+  "pbiEntries": [
+    {
+      "name": "reportLayout",
+      "pbixEntryPath": "Report/Layout",
+      "pbipEntryPath":  "Inventory sample.Report\\report.json",
+      "contentType": "json",
+      "codepage": 1200,
+      "rules": [
+        {
+          "name": "#1 Remove custom visuals which are not used in the report",
+          "description": "Remove custom visuals which are not used in the report.",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            false,
+            {
+            },
+            true
+          ]
+        },
+        {
+          "name": "#2a Reduce the number of visible visuals on the page",
+          "description": "Reduce the number of visible visuals on the page.",
+          "forEachPath": "$.sections[*]",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            { 
+               "<=": [
+                {
+                 "reduce": [
+                 {
+                   "map": [
+                    {"filter":[{"var":"visuals"}, {"!=":[{"var":"singleVisual.display.mode"},"hidden"]}]},
+                     {
+                       "if": [
+                         { "!!": [ { "var": "" } ] },
+                         1,
+                         0
+                       ]
+                     }
+                   ]
+                 },
+                 {
+                   "+": [
+                     { "var": "current" },
+                     { "var": "accumulator" }
+                   ]
+                 },
+                 0
+               ]
+               }
+               ,6
+             ]
+            },
+            {
+              "visuals":"."
+            },
+            true
+          ]
+        },
+        {
+          "name": "#3 Reduce the number of objects within visuals",
+          "description": "Reduce the number of objects within visuals",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            false,
+            {
+            },
+            true
+          ]
+        },
+        {
+          "name": "#4 Reduce usage of TopN filtering within visuals",
+          "description": "Reduce usage of TopN filtering within visuals",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            false,
+            {
+            },
+            true
+          ]
+        },
+        {
+          "name": "#5 Reduce usage of filters on measures",
+          "description": "Reduce usage of filters on measures",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            false,
+            {
+            },
+            true
+          ]
+        },
+        {
+          "name": "#6 Reduce number of pages per report",
+          "description": "Reduce number of pages per report",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            { 
+               "<=": [
+                      {
+                        "reduce": [
+                          {
+                            "map": [
+                              { "var": "s" },
+                              {
+                                "if": [
+                                  { "!!": [ { "var": "" } ] },
+                                  1,
+                                  0
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "+": [
+                              { "var": "current" },
+                              { "var": "accumulator" }
+                            ]
+                          },
+                          0
+                        ]
+                      }
+                      , 20
+                    ]
+            },
+            {
+              "s": "/sections"
+            },
+            true
+          ]
+        }
+        ,
+        {
+          "name": "#7 Avoid setting ‘Show items with no data’ on columns",
+          "description": "Avoid setting ‘Show items with no data’ on columns",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            false,
+            {
+            },
+            true
+          ]
+        },
+        {
+          "name": "#8 Avoid tall report pages with vertical scrolling",
+          "description": "Avoid tall report pages with vertical scrolling",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            false,
+            {
+            },
+            true
+          ]
+        },
+        {
+          "name": "#9 Reduce usage of custom visuals",
+          "description": "Reduce usage of custom visuals",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            false,
+            {
+            },
+            true
+          ]
+        },
+        {
+          "name": "#10 Set ‘Edit Interactions’ for non-data visuals to ‘none’",
+          "description": "Set ‘Edit Interactions’ for non-data visuals to ‘none’",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            false,
+            {
+            },
+            true
+          ]
+        },
+        {
+          "name": "#10 Set ‘Edit Interactions’ for non-data visuals to ‘none’",
+          "description": "Set ‘Edit Interactions’ for non-data visuals to ‘none’",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            false,
+            {
+            },
+            true
+          ]
+        },
+        {
+          "name": "#11 Tooltip pages should be hidden",
+          "description": "Tooltip pages should be hidden",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            false,
+            {
+            },
+            true
+          ]
+        }
+      ]
+    }
+  ]
+}

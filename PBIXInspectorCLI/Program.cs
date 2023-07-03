@@ -43,6 +43,7 @@ internal partial class Program
             {
                 insp.MessageIssued -= Insp_MessageIssued;
             }
+            Console.ResetColor();
             Console.WriteLine("\nPress any key to quit application.");
             Console.ReadLine();
         }
@@ -87,6 +88,7 @@ internal partial class Program
 
     private static void Insp_MessageIssued(object? sender, MessageIssuedEventArgs e)
     {
+        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine("{0}: {1}", e.MessageType.ToString(), e.Message);
     }
 
