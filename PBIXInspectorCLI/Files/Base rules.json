@@ -3,60 +3,103 @@
     {
       "name": "reportLayout",
       "pbixEntryPath": "Report/Layout",
-      "pbipEntryPath":  "Inventory sample.Report\\report.json",
+      "pbipEntryPath": "Inventory sample.Report\\report.json",
       "contentType": "json",
       "codepage": 1200,
       "rules": [
         {
-          "name": "#1 Remove custom visuals which are not used in the report",
-          "description": "Remove custom visuals which are not used in the report.",
+          "name": "#1 Remove custom visuals which are not used in the report.",
+          "description": "Remove custom visuals which are not used in the report",
           "path": "$",
           "pathErrorWhenNoMatch": true,
           "test": [
-            false,
             {
+              "filter": [
+                {
+                  "map": [
+                    {
+                      "var": "customvis"
+                    },
+                    {
+                      "if": [
+                        {
+                          "==": [
+                            {
+                              "strcontains": [
+                                {
+                                  "tostring": [
+                                    {
+                                      "var": "pages"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "var": ""
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        },
+                        {
+                          "var": ""
+                        },
+                        ""
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "!!": [
+                    {
+                      "var": ""
+                    }
+                  ]
+                }
+              ]
             },
-            true
+            {
+              "customvis": "/publicCustomVisuals",
+              "pages": "/sections"
+            },
+            []
           ]
         },
         {
-          "name": "#2a Reduce the number of visible visuals on the page",
+          "name": "#2 Reduce the number of visible visuals on the page",
           "description": "Reduce the number of visible visuals on the page.",
           "forEachPath": "$.sections[*]",
           "forEachPathDisplayName": "$.displayName",
           "path": "$.visualContainers[*].config",
           "pathErrorWhenNoMatch": true,
           "test": [
-            { 
-               "<=": [
+            {
+              "<=": [
                 {
-                 "reduce": [
-                 {
-                   "map": [
-                    {"filter":[{"var":"visuals"}, {"!=":[{"var":"singleVisual.display.mode"},"hidden"]}]},
-                     {
-                       "if": [
-                         { "!!": [ { "var": "" } ] },
-                         1,
-                         0
-                       ]
-                     }
-                   ]
-                 },
-                 {
-                   "+": [
-                     { "var": "current" },
-                     { "var": "accumulator" }
-                   ]
-                 },
-                 0
-               ]
-               }
-               ,6
-             ]
+                  "count": [
+                    {
+                      "filter": [
+                        {
+                          "var": "visuals"
+                        },
+                        {
+                          "!=": [
+                            {
+                              "var": "singleVisual.display.mode"
+                            },
+                            "hidden"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {"var": "paramMaxVisualsPerPage"}
+              ]
             },
             {
-              "visuals":"."
+              "visuals": ".",
+              "paramMaxVisualsPerPage": 6
             },
             true
           ]
@@ -64,35 +107,124 @@
         {
           "name": "#3 Reduce the number of objects within visuals",
           "description": "Reduce the number of objects within visuals",
-          "path": "$",
+          "forEachPath": "$.sections[*]",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
           "pathErrorWhenNoMatch": true,
           "test": [
-            false,
             {
+              "some": [
+                {
+                  "var": "q"
+                },
+                {
+                  ">": [
+                    {
+                      "count": [
+                        {
+                          "var": "singleVisual.prototypeQuery.Select"
+                        }
+                      ]
+                    },
+                    4
+                  ]
+                }
+              ]
+            },
+            {
+              "q": "."
+            },
+            false
+          ]
+        },
+        {
+          "name": "#4 Reduce usage of TopN filtering visuals by page",
+          "description": "Reduce usage of TopN filters visuals by page",
+          "forEachPath": "$.sections[*]",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].filters",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "<=": [
+                {
+                  "count": [
+                    {
+                      "filter": [
+                        {
+                          "var": "f"
+                        },
+                        {
+                          "some": [
+                            {
+                              "var": ""
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "type"
+                                },
+                                "TopN"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {"var": "paramMaxTopNFilteringPerPage" }
+              ]
+            },
+            {
+              "f": ".",
+              "paramMaxTopNFilteringPerPage": 2
             },
             true
           ]
         },
         {
-          "name": "#4 Reduce usage of TopN filtering within visuals",
-          "description": "Reduce usage of TopN filtering within visuals",
-          "path": "$",
+          "name": "#5 Reduce usage of Advanced filtering visuals by page",
+          "description": "Reduce usage of Advanced filtering visuals by page",
+          "forEachPath": "$.sections[*]",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].filters",
           "pathErrorWhenNoMatch": true,
           "test": [
-            false,
             {
+              "<=": [
+                {
+                  "count": [
+                    {
+                      "filter": [
+                        {
+                          "var": "f"
+                        },
+                        {
+                          "some": [
+                            {
+                              "var": ""
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "type"
+                                },
+                                "Advanced"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                { "var": "paramMaxAdvancedFilteringVisualsPerPage" }
+              ]
             },
-            true
-          ]
-        },
-        {
-          "name": "#5 Reduce usage of filters on measures",
-          "description": "Reduce usage of filters on measures",
-          "path": "$",
-          "pathErrorWhenNoMatch": true,
-          "test": [
-            false,
             {
+              "f": ".",
+              "paramMaxAdvancedFilteringVisualsPerPage": 2
             },
             true
           ]
@@ -103,110 +235,117 @@
           "path": "$",
           "pathErrorWhenNoMatch": true,
           "test": [
-            { 
-               "<=": [
-                      {
-                        "reduce": [
-                          {
-                            "map": [
-                              { "var": "s" },
-                              {
-                                "if": [
-                                  { "!!": [ { "var": "" } ] },
-                                  1,
-                                  0
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "+": [
-                              { "var": "current" },
-                              { "var": "accumulator" }
-                            ]
-                          },
-                          0
-                        ]
-                      }
-                      , 20
-                    ]
+            {
+              "<=": [
+                {
+                  "count": [
+                    {
+                      "var": "s"
+                    }
+                  ]
+                },
+                { "var": "paramMaxNumberOfPagesPerReport"}
+              ]
             },
             {
-              "s": "/sections"
+              "s": "/sections",
+              "paramMaxNumberOfPagesPerReport": 10
             },
             true
           ]
-        }
-        ,
+        },
         {
           "name": "#7 Avoid setting ‘Show items with no data’ on columns",
           "description": "Avoid setting ‘Show items with no data’ on columns",
-          "path": "$",
+          "forEachPath": "$.sections[*]",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
           "pathErrorWhenNoMatch": true,
           "test": [
-            false,
             {
+              "filter": [
+                {
+                  "map": [
+                    {
+                      "var": "c"
+                    },
+                    [
+                      {
+                        "var": "name"
+                      },
+                      {
+                        "!!": [
+                          {
+                            "var": "singleVisual.showAllRoles"
+                          }
+                        ]
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "var": 1
+                }
+              ]
+            },
+            {
+              "c": "."
+            },
+            []
+          ]
+        },
+        {
+          "name": "#8 Tooltip and Drillthrough pages should be hidden",
+          "description": "Tooltip and Drillthrough pages should be hidden",
+          "forEachPath": "$.sections[*]",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.config",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "none": [
+                {
+                  "var": "c"
+                },
+                {
+                  "and": [
+                    {
+                      "in": [
+                        {
+                          "var": "type"
+                        },
+                        [
+                          1,
+                          2
+                        ]
+                      ]
+                    },
+                    {
+                      "!=": [
+                        {
+                          "var": "visibility"
+                        },
+                        1
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "c": "."
             },
             true
           ]
         },
         {
-          "name": "#8 Avoid tall report pages with vertical scrolling",
-          "description": "Avoid tall report pages with vertical scrolling",
+          "name": "Template",
+          "description": "Template",
           "path": "$",
           "pathErrorWhenNoMatch": true,
           "test": [
-            false,
-            {
-            },
-            true
-          ]
-        },
-        {
-          "name": "#9 Reduce usage of custom visuals",
-          "description": "Reduce usage of custom visuals",
-          "path": "$",
-          "pathErrorWhenNoMatch": true,
-          "test": [
-            false,
-            {
-            },
-            true
-          ]
-        },
-        {
-          "name": "#10 Set ‘Edit Interactions’ for non-data visuals to ‘none’",
-          "description": "Set ‘Edit Interactions’ for non-data visuals to ‘none’",
-          "path": "$",
-          "pathErrorWhenNoMatch": true,
-          "test": [
-            false,
-            {
-            },
-            true
-          ]
-        },
-        {
-          "name": "#10 Set ‘Edit Interactions’ for non-data visuals to ‘none’",
-          "description": "Set ‘Edit Interactions’ for non-data visuals to ‘none’",
-          "path": "$",
-          "pathErrorWhenNoMatch": true,
-          "test": [
-            false,
-            {
-            },
-            true
-          ]
-        },
-        {
-          "name": "#11 Tooltip pages should be hidden",
-          "description": "Tooltip pages should be hidden",
-          "path": "$",
-          "pathErrorWhenNoMatch": true,
-          "test": [
-            false,
-            {
-            },
+            true,
+            {},
             true
           ]
         }

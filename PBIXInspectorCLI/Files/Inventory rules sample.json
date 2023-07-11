@@ -39,7 +39,7 @@
             {
               "s": "/sections"
             },
-            4
+            10
           ]
         },
         {
@@ -198,9 +198,9 @@
           ]
         },
         {
-          "name": "Check that visual at x=0 and y=0 position is logo.",
-          "description": "This is a way to ensure we're not looping through the outer path results array but instead letting JsonLogic do an internal loop on the /sections array.'",
-          "path": "$.sections[*].visualContainers[?(@.x == 0 && @.y == 0)].config",
+          "name": "Check that visual at x=0 and y=0 position on Overview page is logo.",
+          "description": "",
+          "path": "$.sections[?(@.displayName == 'Overview')].visualContainers[?(@.x == 0 && @.y == 0)].config",
           "pathErrorWhenNoMatch": true,
           "test": [
             {

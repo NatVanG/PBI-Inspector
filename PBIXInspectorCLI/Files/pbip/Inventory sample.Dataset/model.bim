@@ -12,7 +12,7 @@
       },
       {
         "name": "PBIDesktopVersion",
-        "value": "2.118.621.0 (23.06)"
+        "value": "2.118.1063.0 (23.06)"
       },
       {
         "name": "PBI_ProTooling",
@@ -258,9 +258,44 @@
           {
             "name": "PBI_ResultType",
             "value": "Table"
+          },
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
           }
         ],
         "columns": [
+          {
+            "name": "Colour",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "d9c47ec3-d41c-44aa-86b7-15a2ede2366e",
+            "sourceColumn": "Colour",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Cost per item",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"en-GB\"}"
+              }
+            ],
+            "dataType": "decimal",
+            "formatString": "\"£\"#,0.###############;-\"£\"#,0.###############;\"£\"#,0.###############",
+            "lineageTag": "75083ca1-f602-43d3-ad05-4198e03093bf",
+            "sourceColumn": "Cost per item",
+            "summarizeBy": "sum"
+          },
           {
             "name": "Item",
             "annotations": [
@@ -290,6 +325,14 @@
           }
         ],
         "lineageTag": "ea80bd49-4dd9-4dee-acbb-1ed20508760c",
+        "measures": [
+          {
+            "name": "Sum of Qty",
+            "expression": "SUM(Inventory[Quantity]) ",
+            "formatString": "0",
+            "lineageTag": "553980d0-4af1-49e8-b495-94cdee5438a7"
+          }
+        ],
         "partitions": [
           {
             "name": "Inventory-8e9bfd81-45ee-4073-8d41-a12afe381650",
@@ -297,8 +340,9 @@
             "source": {
               "expression": [
                 "let",
-                "    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText(\"i45WciwoyElV0lEyMlGK1YlW8i9KzEsH8Y0h/IDUxCIgz9QUzHNKzANCkGogPxYA\", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Item = _t, Quantity = _t]),",
-                "    #\"Changed Type\" = Table.TransformColumnTypes(Source,{{\"Item\", type text}, {\"Quantity\", Int64.Type}})",
+                "    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText(\"i45WciwoyElV0lEyMgESQakpQNJQz8BQKVYnWsm/KDEvHSRpDJKE8wz1DI3A8gGpiUVAvqkpkHAvSk3NA0saQySdEvOAEGQySDoyNScnvxwsb2qmFBsLAA==\", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Item = _t, Quantity = _t, Colour = _t, #\"Cost per item\" = _t]),",
+                "    #\"Changed Type1\" = Table.TransformColumnTypes(Source,{{\"Cost per item\", Currency.Type}}),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Changed Type1\",{{\"Item\", type text}, {\"Quantity\", Int64.Type}})",
                 "in",
                 "    #\"Changed Type\""
               ],

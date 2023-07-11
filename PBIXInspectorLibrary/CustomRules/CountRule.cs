@@ -12,14 +12,11 @@ namespace PBIXInspectorLibrary.CustomRules
     [JsonConverter(typeof(CountJsonConverter))]
     public class CountRule : Json.Logic.Rule
     {
-        private const string ARRAY_PARAM_NAME = "array";
+        internal Json.Logic.Rule Input { get; }
 
-        internal List<Json.Logic.Rule> Items { get; }
-
-        internal CountRule(Json.Logic.Rule a, params Json.Logic.Rule[] more)
+        internal CountRule(Json.Logic.Rule input)
         {
-            Items = new List<Json.Logic.Rule> { a };
-            Items.AddRange(more);
+            Input = input; 
         }
 
         /// <summary>
@@ -34,14 +31,13 @@ namespace PBIXInspectorLibrary.CustomRules
         public override JsonNode? Apply(JsonNode? data, JsonNode? contextData = null)
         {
             int result = 0;
+            var input = Input.Apply(data, contextData);
 
-            if (data != null)
-            {
-                if (data[ARRAY_PARAM_NAME] is JsonArray)
-                {
-                    result = data[ARRAY_PARAM_NAME] != null ? data[ARRAY_PARAM_NAME].AsArray().Count : 0;
-                }
-            }
+            if (input is null) return result;
+            if (input is not JsonArray arr)
+                throw new JsonLogicException($"Cannot count items in non-JsonArray object.");
+
+            result = arr.Count;
 
             return result;
         }
@@ -61,7 +57,7 @@ namespace PBIXInspectorLibrary.CustomRules
             if (parameters == null || parameters.Length == 0)
                 throw new JsonException("The count rule needs an array of parameters.");
 
-            return new CountRule(parameters[0], parameters.Skip(1).ToArray());
+            return new CountRule(parameters[0]);
         }
 
         public override void Write(Utf8JsonWriter writer, CountRule value, JsonSerializerOptions options)

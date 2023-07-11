@@ -8,10 +8,8 @@ internal partial class Program
     {
         const string SamplePBIXFilePath = @"Files\Inventory sample.pbix";
         const string SamplePBIPFilePath = @"Files\pbip\Inventory sample.pbip";
-        const string SampleRulesFilePath = @"Files\Inventory rules sample.json";
+        const string SampleRulesFilePath = @"Files\Base rules.json";
         const bool Verbose = true;
-
-        var samplePbiFileMode = AppContext.GetData("SamplePbiFileMode");
 
         Inspector? insp = null;
 
@@ -69,7 +67,6 @@ internal partial class Program
             foreach (var result in testResults)
             {
                 if (result.Result && !Verbose) continue; //skip if verbose is false
-                Console.WriteLine();
                 Console.ForegroundColor = result.Result ? ConsoleColor.Green : ConsoleColor.Red;
                 Console.WriteLine(result.ResultMessage);
             }
@@ -89,6 +86,7 @@ internal partial class Program
     private static void Insp_MessageIssued(object? sender, MessageIssuedEventArgs e)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine();
         Console.WriteLine("{0}: {1}", e.MessageType.ToString(), e.Message);
     }
 

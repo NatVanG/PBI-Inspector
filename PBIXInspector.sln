@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsImages", "DocsImages", 
 		DocsImages\RulesExample3.png = DocsImages\RulesExample3.png
 		DocsImages\RulesExample4.png = DocsImages\RulesExample4.png
 		DocsImages\RulesExample5.png = DocsImages\RulesExample5.png
+		DocsImages\SampleOutput.png = DocsImages\SampleOutput.png
 	EndProjectSection
 EndProject
 Global

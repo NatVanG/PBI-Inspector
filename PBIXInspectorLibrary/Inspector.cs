@@ -91,6 +91,8 @@ namespace PBIXInspectorLibrary
 
             Json.Logic.RuleRegistry.AddRule<CustomRules.CountRule>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.IsNullOrEmptyRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.StringContains>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.ToString>();
         }
 
         /// <summary>
@@ -102,7 +104,7 @@ namespace PBIXInspectorLibrary
             {
                 if (pbiFile == null || this._inspectionRules == null)
                 {
-                    OnMessageIssued(MessageTypeEnum.Error, string.Format("Cannot start inpesction as either the PBIX file or the Inspection Rules are not instantiated."));
+                    OnMessageIssued(MessageTypeEnum.Error, string.Format("Cannot start inspection as either the PBIX file or the Inspection Rules are not instantiated."));
                 }
                 else
                 {
@@ -140,6 +142,7 @@ namespace PBIXInspectorLibrary
                                         OnMessageIssued(MessageTypeEnum.Information, string.Format("Running rules for PBI entry \"{0}\"...", entry.Name));
                                         foreach (var rule in entry.Rules)
                                         {
+                                            OnMessageIssued(MessageTypeEnum.Information, string.Format("Running Rule \"{0}\".", rule.Name));
                                             Json.Logic.Rule? jrule = null;
 
                                             try
@@ -151,13 +154,19 @@ namespace PBIXInspectorLibrary
                                                 throw new PBIXInspectorException(string.Format("Parsing of logic for rule \"{0}\" failed.", rule.Name), e);
                                             }
 
+                                            //Check if there's a foreach iterator
                                             if (rule != null && !string.IsNullOrEmpty(rule.ForEachPath))
                                             {
                                                 var forEachTokens = ExecutePath(jo, rule.Name, rule.ForEachPath, rule.PathErrorWhenNoMatch);
+                                                
 
                                                 foreach (var forEachToken in forEachTokens)
                                                 {
                                                     var tokens = ExecutePath((JObject?)forEachToken, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
+
+
+                                                    var forEachName = !string.IsNullOrEmpty(rule.ForEachPathDisplayName) ? ExecutePath((JObject?)forEachToken, rule.Name, rule.ForEachPathDisplayName, rule.PathErrorWhenNoMatch) : null;
+                                                    var strForEachName = forEachName != null ? forEachName[0].ToString() : string.Empty;
 
                                                     //HACK: I don't like it.
                                                     var contextNodeArray = ConvertToJsonArray(tokens);
@@ -172,11 +181,15 @@ namespace PBIXInspectorLibrary
                                                         //var jruleresult = jrule.Apply(newdata, contextNodeArray);
                                                         var jruleresult = jrule.Apply(newdata);
                                                         result = rule.Test.Expected.IsEquivalentTo(jruleresult);
-                                                        var forEachName = forEachToken.SelectToken(rule.ForEachPathDisplayName);
-                                                        string resultString = string.Format("Rule \"{0}\" {1} with result: {2} and data: {3}.", rule != null ? string.Concat(forEachName.ToString(), " - ", rule.Name) : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, newdata.AsJsonString().Length > 1000 ? string.Concat(newdata.AsJsonString().Substring(0, 999), "[first 1000 characters]") : newdata.AsJsonString());
-                                                    //TODO: return jruleresult in TestResult so that we can compose test from other tests.
                                                        
-                                                        yield return new TestResult { Name = rule.Name, Result = result, ResultMessage = resultString };
+                                                        string resultString = string.Concat("\"",strForEachName, "\" - ", string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.",  rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty));
+#if DEBUG
+                                                        //resultString = string.Concat(strForEachName, string.Format("Rule \"{0}\" {1} with result: {2} and data: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, newdata.AsJsonString().Length > 1000 ? string.Concat(newdata.AsJsonString().Substring(0, 999), "[first 1000 characters]") : newdata.AsJsonString()));
+#endif
+
+                                                    //TODO: return jruleresult in TestResult so that we can compose test from other tests.
+
+                                                    yield return new TestResult { Name = rule.Name, Result = result, ResultMessage = resultString };
                                                     //}
                                                 }
                                             }
@@ -197,7 +210,12 @@ namespace PBIXInspectorLibrary
                                                     //var jruleresult = jrule.Apply(newdata, contextNodeArray);
                                                     var jruleresult = jrule.Apply(newdata);
                                                     result = rule.Test.Expected.IsEquivalentTo(jruleresult);
-                                                    string resultString = string.Format("Rule \"{0}\" {1} with result: {2} and data: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, newdata.AsJsonString().Length > 1000 ? string.Concat(newdata.AsJsonString().Substring(0, 999), "[first 1000 characters]") : newdata.AsJsonString());
+                                                    string resultString = string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty);
+
+#if DEBUG
+                                                    //resultString = string.Format("Rule \"{0}\" {1} with result: {2} and data: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, newdata.AsJsonString().Length > 1000 ? string.Concat(newdata.AsJsonString().Substring(0, 999), "[first 1000 characters]") : newdata.AsJsonString());
+#endif
+
                                                     //TODO: return jruleresult in TestResult so that we can compose test from other tests.
                                                     yield return new TestResult { Name = rule.Name, Result = result, ResultMessage = resultString };
                                                 }

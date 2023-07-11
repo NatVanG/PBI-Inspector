@@ -119,6 +119,21 @@ public class SuiteRunner
         Assert.True(testResult.Result, testResult.ResultMessage);
     }
 
+    public static IEnumerable<TestCaseData> BaseSuite()
+    {
+        string PBIXFilePath = @"Files\Inventory sample.pbix";
+        string RulesFilePath = @"Files\Base rules.json";
+
+        Console.WriteLine("Running base suite...");
+        return Suite(PBIXFilePath, RulesFilePath);
+    }
+
+    [TestCaseSource(nameof(BaseSuite))]
+    public void RunBase(PBIXInspectorLibrary.TestResult testResult)
+    {
+        Assert.True(testResult.Result, testResult.ResultMessage);
+    }
+
 
     public static IEnumerable<TestCaseData> Suite(string PBIXFilePath, string RulesFilePath)
     {

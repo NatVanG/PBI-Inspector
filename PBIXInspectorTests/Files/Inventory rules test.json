@@ -98,6 +98,95 @@
             },
             true
           ]
+        },
+        {
+          "name": "testCount",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "count": [
+                {
+                  "var": "s"
+                }
+              ]
+            },
+            {
+              "s": "/sections"
+            },
+            2
+          ]
+        },
+        {
+          "name": "testCount",
+          "description": "Tests count custom rule.",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "count": [
+                {
+                  "map": [
+                    {
+                      "var": "desserts"
+                    },
+                    {
+                      "var": "qty"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "desserts": [
+                {
+                  "name": "apple",
+                  "qty": 1
+                },
+                {
+                  "name": "brownie",
+                  "qty": 2
+                },
+                {
+                  "name": "cupcake",
+                  "qty": 3
+                }
+              ]
+            },
+            3
+          ]
+        },
+        {
+          "name": "testStrContains",
+          "description": "Tests strcontains custom rule.",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "strcontains": [
+                "abcde",
+                "abc"
+              ]
+            },
+            {},
+            1
+          ]
+        },
+        {
+          "name": "textToString",
+          "description": "",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "tostring": [
+                1234
+              ]
+            },
+            {
+            },
+            "1234"
+          ]
         }
       ]
     },
