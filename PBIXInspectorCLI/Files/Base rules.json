@@ -9,7 +9,7 @@
       "rules": [
         {
           "name": "#1 Remove custom visuals which are not used in the report.",
-          "description": "Remove custom visuals which are not used in the report",
+          "description": "Returns an array of custom visual names to be removed if any.",
           "path": "$",
           "pathErrorWhenNoMatch": true,
           "test": [
@@ -67,8 +67,9 @@
         },
         {
           "name": "#2 Reduce the number of visible visuals on the page",
-          "description": "Reduce the number of visible visuals on the page.",
+          "description": "Returns false if the number of visible visuals on the page is exceeded. Use paramMaxVisualsPerPage parameter to set the number of visible visuals per page.",
           "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
           "path": "$.visualContainers[*].config",
           "pathErrorWhenNoMatch": true,
@@ -94,7 +95,9 @@
                     }
                   ]
                 },
-                {"var": "paramMaxVisualsPerPage"}
+                {
+                  "var": "paramMaxVisualsPerPage"
+                }
               ]
             },
             {
@@ -108,39 +111,48 @@
           "name": "#3 Reduce the number of objects within visuals",
           "description": "Reduce the number of objects within visuals",
           "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
           "path": "$.visualContainers[*].config",
           "pathErrorWhenNoMatch": true,
           "test": [
             {
-              "some": [
+              "map": [
                 {
-                  "var": "q"
+                  "filter": [
+                    {
+                      "var": "q"
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "var": "singleVisual.prototypeQuery.Select"
+                            }
+                          ]
+                        },
+                        4
+                      ]
+                    }
+                  ]
                 },
                 {
-                  ">": [
-                    {
-                      "count": [
-                        {
-                          "var": "singleVisual.prototypeQuery.Select"
-                        }
-                      ]
-                    },
-                    4
-                  ]
+                  "var": "name"
                 }
               ]
             },
             {
               "q": "."
             },
-            false
+            []
           ]
         },
         {
           "name": "#4 Reduce usage of TopN filtering visuals by page",
           "description": "Reduce usage of TopN filters visuals by page",
           "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
           "path": "$.visualContainers[*].filters",
           "pathErrorWhenNoMatch": true,
@@ -173,7 +185,9 @@
                     }
                   ]
                 },
-                {"var": "paramMaxTopNFilteringPerPage" }
+                {
+                  "var": "paramMaxTopNFilteringPerPage"
+                }
               ]
             },
             {
@@ -187,6 +201,7 @@
           "name": "#5 Reduce usage of Advanced filtering visuals by page",
           "description": "Reduce usage of Advanced filtering visuals by page",
           "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
           "path": "$.visualContainers[*].filters",
           "pathErrorWhenNoMatch": true,
@@ -219,7 +234,9 @@
                     }
                   ]
                 },
-                { "var": "paramMaxAdvancedFilteringVisualsPerPage" }
+                {
+                  "var": "paramMaxAdvancedFilteringVisualsPerPage"
+                }
               ]
             },
             {
@@ -244,7 +261,9 @@
                     }
                   ]
                 },
-                { "var": "paramMaxNumberOfPagesPerReport"}
+                {
+                  "var": "paramMaxNumberOfPagesPerReport"
+                }
               ]
             },
             {
@@ -256,35 +275,43 @@
         },
         {
           "name": "#7 Avoid setting ‘Show items with no data’ on columns",
-          "description": "Avoid setting ‘Show items with no data’ on columns",
+          "description": "Returns an array of visual names which have the option ‘Show items with no data’ enabled on one or more columns.",
           "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
           "path": "$.visualContainers[*].config",
           "pathErrorWhenNoMatch": true,
           "test": [
             {
-              "filter": [
+              "map": [
                 {
-                  "map": [
+                  "filter": [
                     {
-                      "var": "c"
-                    },
-                    [
-                      {
-                        "var": "name"
-                      },
-                      {
-                        "!!": [
+                      "map": [
+                        {
+                          "var": "c"
+                        },
+                        [
                           {
-                            "var": "singleVisual.showAllRoles"
+                            "var": "name"
+                          },
+                          {
+                            "!!": [
+                              {
+                                "var": "singleVisual.showAllRoles"
+                              }
+                            ]
                           }
                         ]
-                      }
-                    ]
+                      ]
+                    },
+                    {
+                      "var": 1
+                    }
                   ]
                 },
                 {
-                  "var": 1
+                  "var": 0
                 }
               ]
             },
@@ -298,6 +325,7 @@
           "name": "#8 Tooltip and Drillthrough pages should be hidden",
           "description": "Tooltip and Drillthrough pages should be hidden",
           "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
           "path": "$.config",
           "pathErrorWhenNoMatch": true,

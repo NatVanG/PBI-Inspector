@@ -6,11 +6,11 @@ namespace PBIXInspectorLibrary.Utils
     {
         public static CLIArgs ParseArgs(string[] args)
         {
-            const string PBIX = "-pbix", PBIP = "-pbip", RULES = "-rules", VERBOSE = "-verbose";
+            const string PBIX = "-pbix", PBIP = "-pbip", RULES = "-rules", OUTPUT = "-output", VERBOSE = "-verbose";
             const string TRUE = "true";
-            string[] validOptions = { PBIX, PBIP, RULES, VERBOSE };
-            // Test if input arguments were supplied.
-            if (args == null || args.Length < 4) { throw new ArgumentNullException("Missing arguments, ensure both -pbix and -rules are provided."); }
+            string[] validOptions = { PBIX, PBIP, RULES, OUTPUT, VERBOSE };
+            // Test if required input arguments were supplied.
+            if (args == null || !(args.Contains(PBIX) || args.Contains(PBIP)) || !(args.Contains(RULES))) { throw new ArgumentNullException("Missing arguments, ensure required -pbix or -pbip and -rules arguments are provided."); }
 
             int index = 0;
             int maxindex = args.Length - 2;
@@ -30,9 +30,10 @@ namespace PBIXInspectorLibrary.Utils
 
             var pbiFilePath = dic.ContainsKey(PBIP) ? dic[PBIP] : (dic.ContainsKey(PBIX) ? dic[PBIX] : throw new ArgumentException(string.Format("Arguments must include either \"{0}\" or \"{1}\".", PBIP, PBIX)));
             var rulesPath = dic.ContainsKey(RULES) ? dic[RULES] : throw new ArgumentException(string.Format("Arguments must include \"{0}\"", RULES));
+            var outputPath = dic.ContainsKey(OUTPUT) ? dic[OUTPUT] : string.Empty;
             var verboseString = dic.ContainsKey(VERBOSE) ? dic[VERBOSE] : TRUE;
 
-            return new CLIArgs { PBIFilePath = pbiFilePath, RulesFilePath = rulesPath, VerboseString = verboseString};
+            return new CLIArgs { PBIFilePath = pbiFilePath, RulesFilePath = rulesPath, OutputPath = outputPath, VerboseString = verboseString};
         }
 
         

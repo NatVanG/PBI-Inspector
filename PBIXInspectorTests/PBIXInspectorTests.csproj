@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\PBIXInspectorCLI\Files\Inventory sample - fails.pbix" Link="Files\Inventory sample - fails.pbix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="..\PBIXInspectorCLI\Files\Inventory sample.pbix" Link="Files\Inventory sample.pbix">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -75,6 +78,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Files\samplepbip\" />
     <Folder Include="Files\pbip\" />
   </ItemGroup>
 

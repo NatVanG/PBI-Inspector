@@ -6,6 +6,8 @@
 
         public string RulesFilePath { get; set; }
 
+        public string OutputPath { get; set; }
+
         public string VerboseString { get; set; }
 
         public bool Verbose { get

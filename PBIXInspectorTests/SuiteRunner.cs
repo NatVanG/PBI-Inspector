@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using PBIXInspectorLibrary;
+using PBIXInspectorLibrary.Output;
 using System.Text.Json;
 
 namespace PBIXInspectorTests;
@@ -30,6 +31,7 @@ namespace PBIXInspectorTests;
 /// </summary>
 public class SuiteRunner
 {
+    #region PbixTestSuite
     public static IEnumerable<TestCaseData> PbixTestSuite()
     {
         string PBIXFilePath = @"Files\Inventory test.pbix";
@@ -40,11 +42,13 @@ public class SuiteRunner
     }
 
     [TestCaseSource(nameof(PbixTestSuite))]
-    public void RunPbixTest(PBIXInspectorLibrary.TestResult testResult)
+    public void RunPbixTest(TestResult testResult)
     {
-        Assert.True(testResult.Result, testResult.ResultMessage);
+        Assert.True(testResult.Pass, testResult.Message);
     }
+    #endregion
 
+    #region PbipTestSuite
     public static IEnumerable<TestCaseData> PbipTestSuite()
     {
         string PBIPFilePath = @"Files\pbip\Inventory test.pbip";
@@ -55,11 +59,13 @@ public class SuiteRunner
     }
 
     [TestCaseSource(nameof(PbipTestSuite))]
-    public void RunPbipTest(PBIXInspectorLibrary.TestResult testResult)
+    public void RunPbipTest(TestResult testResult)
     {
-        Assert.True(testResult.Result, testResult.ResultMessage);
+        Assert.True(testResult.Pass, testResult.Message);
     }
+    #endregion
 
+    #region JsonLogicSuite 
     /// <summary>
     /// Test PBIX using the base JsonLogicTest file to make sure we didn't break JsonLogic
     /// </summary>
@@ -99,11 +105,13 @@ public class SuiteRunner
     }
 
     [TestCaseSource(nameof(JsonLogicSuite))]
-    public void RunJsonLogicTest(PBIXInspectorLibrary.TestResult testResult)
+    public void RunJsonLogicTest(TestResult testResult)
     {
-        Assert.True(testResult.Result, testResult.ResultMessage);
+        Assert.True(testResult.Pass, testResult.Message);
     }
+    #endregion
 
+    #region SampleSuite 
     public static IEnumerable<TestCaseData> SampleSuite()
     {
         string PBIXFilePath = @"Files\Inventory sample.pbix";
@@ -112,13 +120,16 @@ public class SuiteRunner
         Console.WriteLine("Running sample suite...");
         return Suite(PBIXFilePath, RulesFilePath);
     }
+    
 
     [TestCaseSource(nameof(SampleSuite))]
-    public void RunSanple(PBIXInspectorLibrary.TestResult testResult)
+    public void RunSanple(TestResult testResult)
     {
-        Assert.True(testResult.Result, testResult.ResultMessage);
+        Assert.True(testResult.Pass, testResult.Message);
     }
+    #endregion
 
+    #region BaseSuite 
     public static IEnumerable<TestCaseData> BaseSuite()
     {
         string PBIXFilePath = @"Files\Inventory sample.pbix";
@@ -129,11 +140,30 @@ public class SuiteRunner
     }
 
     [TestCaseSource(nameof(BaseSuite))]
-    public void RunBase(PBIXInspectorLibrary.TestResult testResult)
+    public void RunBase(TestResult testResult)
     {
-        Assert.True(testResult.Result, testResult.ResultMessage);
+        Assert.True(testResult.Pass, testResult.Message);
     }
+    #endregion
 
+    #region BaseFailSuite 
+    //public static IEnumerable<TestCaseData> BaseFailSuite()
+    //{
+    //    string PBIXFilePath = @"Files\Inventory sample - fails.pbix";
+    //    string RulesFilePath = @"Files\Base rules.json";
+
+    //    Console.WriteLine("Running base fail suite...");
+    //    return Suite(PBIXFilePath, RulesFilePath);
+    //}
+
+
+    //[TestCaseSource(nameof(BaseFailSuite))]
+    //public void RunFailSample(TestResult testResult)
+    //{
+    //    Assert.False(testResult.Pass, testResult.Message);
+    //    //Assert.True(testResult.Actual)
+    //}
+    #endregion
 
     public static IEnumerable<TestCaseData> Suite(string PBIXFilePath, string RulesFilePath)
     {
@@ -143,7 +173,7 @@ public class SuiteRunner
 
             var testResults = insp.Inspect();
 
-            return testResults.Select(t => new TestCaseData(t) { TestName = t.Name });
+            return testResults.Select(t => new TestCaseData(t) { TestName = t.RuleName });
         }
         catch (ArgumentNullException e)
         {
@@ -169,7 +199,7 @@ public class SuiteRunner
 
             var testResults = insp.Inspect();
 
-            return testResults.Select(t => new TestCaseData(t) { TestName = t.Name });
+            return testResults.Select(t => new TestCaseData(t) { TestName = t.RuleName });
         }
         catch (ArgumentNullException e)
         {

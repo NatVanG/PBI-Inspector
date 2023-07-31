@@ -59,6 +59,24 @@ namespace PBIXInspectorTests
         }
 
         [Test]
+        public void TestCLIArgsUtilsSuccess_OutputOptionSuccess()
+        {
+            string[] args = "-pbip pbipPath -rules rulesPath -verbose true -output MyFile".Split(" ");
+            var parsedArgs = CLIArgsUtils.ParseArgs(args);
+
+            Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath") && parsedArgs.RulesFilePath.Equals("rulesPath") && parsedArgs.Verbose && parsedArgs.OutputPath.Equals("MyFile"));
+        }
+
+        [Test]
+        public void TestCLIArgsUtilsSuccess_OutputOptionalSuccess()
+        {
+            string[] args = "-pbip pbipPath -rules rulesPath -verbose true".Split(" ");
+            var parsedArgs = CLIArgsUtils.ParseArgs(args);
+
+            Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath") && parsedArgs.RulesFilePath.Equals("rulesPath") && parsedArgs.Verbose && parsedArgs.OutputPath.Equals(""));
+        }
+
+        [Test]
         public void TestCLIArgsUtilsSuccess_FavourPBIPOption()
         {
             string[] args = "-pbix pbixPath -pbip pbipPath -rules rulesPath -verbose true".Split(" ");

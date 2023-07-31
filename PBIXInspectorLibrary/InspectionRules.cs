@@ -32,6 +32,8 @@
 
         public string ForEachPath { get; set; }
 
+        public string ForEachPathName { get; set; }
+
         public string ForEachPathDisplayName { get; set; }
 
         public string Path { get; set; }

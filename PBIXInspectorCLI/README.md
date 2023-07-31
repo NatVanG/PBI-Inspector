@@ -1,6 +1,6 @@
 ## PBIX Inspector CLI
 
-### Argments
+### Arguments
 
 - \-pbip: the path to the PBIP file to be inspected
 - \-pbix: the path to the PBIX file to be inspected

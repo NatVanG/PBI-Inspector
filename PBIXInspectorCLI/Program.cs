@@ -1,6 +1,8 @@
 ﻿using PBIXInspectorLibrary;
+using PBIXInspectorLibrary.Output;
 using PBIXInspectorLibrary.Utils;
 using System.Reflection;
+using System.Text.Json;
 
 internal partial class Program
 {
@@ -15,11 +17,16 @@ internal partial class Program
 
         Welcome();
 
+#if DEBUG
+        Console.WriteLine("Attach debugger to process? Press any key to continue.");
+        Console.ReadLine();
+#endif
+
         try
         {
             var parsedArgs = CLIArgsUtils.ParseArgs(args);
 
-            insp = RunInspector(parsedArgs.PBIFilePath, parsedArgs.RulesFilePath, parsedArgs.Verbose);
+            insp = RunInspector(parsedArgs.PBIFilePath, parsedArgs.RulesFilePath, parsedArgs.Verbose, parsedArgs.OutputPath);
         }
         catch (ArgumentNullException)
         {
@@ -54,7 +61,7 @@ internal partial class Program
         Console.ResetColor();
     }
 
-    private static Inspector RunInspector(string PBIFilePath, string RulesFilePath, bool Verbose)
+    private static Inspector RunInspector(string PBIFilePath, string RulesFilePath, bool Verbose, string OutputPath = "")
     {
         Inspector insp = new Inspector(PBIFilePath, RulesFilePath);
         insp.MessageIssued += Insp_MessageIssued;
@@ -63,13 +70,45 @@ internal partial class Program
         {
             var testResults = insp.Inspect();
 
-            if (!Verbose) { Console.WriteLine("Verbose param is set to false so only list test failures."); }
+            if (!Verbose) {
+                Console.WriteLine("Verbose param is set to false so only listing test failures.");
+                testResults = from result in testResults where !result.Pass select result;
+            }
+           
             foreach (var result in testResults)
             {
-                if (result.Result && !Verbose) continue; //skip if verbose is false
-                Console.ForegroundColor = result.Result ? ConsoleColor.Green : ConsoleColor.Red;
-                Console.WriteLine(result.ResultMessage);
+                Console.ForegroundColor = result.Pass ? ConsoleColor.Green : ConsoleColor.Red;
+                Console.WriteLine(result.Message);
             }
+
+            Console.ResetColor ();
+
+            //Write results to file?
+            if (!string.IsNullOrEmpty(OutputPath))
+            {
+                FileAttributes attr = File.GetAttributes(OutputPath);
+
+                //TODO: referencing testResults var currently causes another test run through yield statements. 
+                insp.MessageIssued -= Insp_MessageIssued;
+                var testRun = new TestRun() {  CompletionTime = DateTime.Now, TestedFilePath = PBIFilePath, RulesFilePath = RulesFilePath, Verbose = Verbose, Results = testResults};
+
+                string outputFilePath = OutputPath;
+                //detect whether path is a directory
+                if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+                {
+                    outputFilePath = Path.Combine(OutputPath, string.Concat("TestRun-", testRun.Id.ToString(), ".json"));
+                }
+                else
+                {
+                    if (!File.Exists(outputFilePath)) { throw new FileNotFoundException(outputFilePath); }
+                }
+
+                string jsonTestRun = JsonSerializer.Serialize(testRun);
+                
+                File.WriteAllText(outputFilePath, jsonTestRun, System.Text.Encoding.UTF8);
+            }
+
+            //TODO: Explore https://json2html.com for html output.
         }
         catch (PBIXInspectorException e)
         {
@@ -77,6 +116,7 @@ internal partial class Program
         }
         finally
         {
+            insp.MessageIssued -= Insp_MessageIssued;
             Console.ResetColor();
         }
 
@@ -89,6 +129,4 @@ internal partial class Program
         Console.WriteLine();
         Console.WriteLine("{0}: {1}", e.MessageType.ToString(), e.Message);
     }
-
-
 }
