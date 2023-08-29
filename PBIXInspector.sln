@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsImages", "DocsImages", 
 		DocsImages\SampleOutput.png = DocsImages\SampleOutput.png
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBIXInspectorWinLibrary", "PBIXInspectorWinLibrary\PBIXInspectorWinLibrary.csproj", "{C6CBC9A2-22D7-4CA6-BC1B-5F7DD629D17F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{0ABE09AE-A1A2-4156-A341-C6A38127884C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0ABE09AE-A1A2-4156-A341-C6A38127884C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ABE09AE-A1A2-4156-A341-C6A38127884C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6CBC9A2-22D7-4CA6-BC1B-5F7DD629D17F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6CBC9A2-22D7-4CA6-BC1B-5F7DD629D17F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6CBC9A2-22D7-4CA6-BC1B-5F7DD629D17F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6CBC9A2-22D7-4CA6-BC1B-5F7DD629D17F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

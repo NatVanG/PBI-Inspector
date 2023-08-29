@@ -1,0 +1,310 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PBI Inspector - Test Run</title>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha384-Ft/vb48LwsAEtgltj7o+6vtS2esTU9PCpDqcXs4OCVQFZu5BqprHtUCZ4kjK+bpE" crossorigin="anonymous"></script>
+
+    <!-- json2html -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/json2html/2.2.3/json2html.min.js" integrity="sha384-BNP6wA28/vQ24ZrRplF30+uBUS9HEHDlZw8YbqzYeJNc9qZ+t1qS+SY2XftU37+N" crossorigin="anonymous"></script>
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <link rel="icon" href="../icon/pbiinspector.png">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+    </style>
+
+
+
+</head>
+<body class="bg-body-tertiary">
+
+    <main class="container">
+        <div class="d-flex align-items-center p-3 my-3 rounded shadow-sm">
+            <img class="me-3" src="../../icon/pbiinspector.png" alt="" width="64" height="64">
+            <div class="lh-1">
+                <h1 class="h6 mb-0 text-gray-dark lh-1">PBI Inspector | Test Run Sample</h1>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div id="header" class="my-3 p-3 bg-body rounded shadow-sm">
+            <h6 class="border-bottom pb-2 mb-0">Header</h6>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="my-3 p-3 bg-body rounded shadow-sm">
+            <h6 class="border-bottom pb-2 mb-0">Results</h6>
+        </div>
+    </main>
+
+    <script>
+
+        //Data that we want to render
+        let testRunData = {
+            "Id": "3a3c0d04-2b00-4786-b8ad-fe9d186f554f",
+            "TestedFilePath": "C:\\Users\\navangul.EUROPE\\source\\repos\\GitHub\\PBIXInspector\\PBIXInspectorCLI\\Files\\Inventory sample - fails.pbix",
+            "RulesFilePath": "C:\\Users\\navangul.EUROPE\\source\\repos\\GitHub\\PBIXInspector\\PBIXInspectorCLI\\Files\\Base rules.json",
+            "CompletionTime": "2023-08-19T22:03:58.4504555+01:00",
+            "Verbose": false,
+            "Results": [
+                {
+                    "Id": "2fb5d29b-2d1e-4579-82eb-d96ea9f2edc8",
+                    "RuleName": "#1 Remove custom visuals which are not used in the report.",
+                    "ParentName": null,
+                    "ParentDisplayName": null,
+                    "Pass": false,
+                    "Expected": [],
+                    "Actual": [
+                        "Aquarium1442671919391"
+                    ],
+                    "Message": "Rule \u0022#1 Remove custom visuals which are not used in the report.\u0022 FAILED with result: [\r\n  \u0022Aquarium1442671919391\u0022\r\n], expected: []."
+                },
+                {
+                    "Id": "d188a772-0383-4c1c-aa46-6bf2d8d41e3e",
+                    "RuleName": "#2 Reduce the number of visible visuals on the page",
+                    "ParentName": "ReportSectionfb0835fa991786b43a3f",
+                    "ParentDisplayName": "Visible and Hidden Visuals",
+                    "Pass": false,
+                    "Expected": true,
+                    "Actual": false,
+                    "Message": "\u0022Visible and Hidden Visuals\u0022 - Rule \u0022#2 Reduce the number of visible visuals on the page\u0022 FAILED with result: false, expected: true."
+                },
+                {
+                    "Id": "5a6f4e88-0553-4000-8e37-8196be647143",
+                    "RuleName": "#3 Reduce the number of objects within visuals",
+                    "ParentName": "ReportSection4602098ba1ff5a3805a9",
+                    "ParentDisplayName": "Number of objects on visual",
+                    "Pass": false,
+                    "Expected": [],
+                    "Actual": [
+                        "e78a74b8026f736154be"
+                    ],
+                    "Message": "\u0022Number of objects on visual\u0022 - Rule \u0022#3 Reduce the number of objects within visuals\u0022 FAILED with result: [\r\n  \u0022e78a74b8026f736154be\u0022\r\n], expected: []."
+                }
+            ]
+        };
+
+        //Templates that we want to use
+        /*
+           <div class="d-flex text-body-secondary pt-3">
+              <p class="pb-3 mb-0 small lh-sm">
+                  <strong class="d-block text-gray-dark">Test Run ID</strong>
+                  3a3c0d04-2b00-4786-b8ad-fe9d186f554f
+              </p>
+          </div>
+        */
+        const testRunHeaderTemplate = {
+            "<>": "div",
+            "html": [
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "p",
+                            "class": "pb-3 mb-0 small lh-sm",
+                            "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Test Run ID" }, {"text": "${Id}"} ]
+                        }
+                    ]
+                },
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "p",
+                            "class": "pb-3 mb-0 small lh-sm",
+                            "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Time" }, { "text": "${CompletionTime}" }]
+                        }
+                    ]
+                },
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "p",
+                            "class": "pb-3 mb-0 small lh-sm",
+                            "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Tested File Path" }, { "text": "${TestedFilePath}" }]
+                        }
+                    ]
+                },
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "p",
+                            "class": "pb-3 mb-0 small lh-sm",
+                            "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Rules File Path" }, { "text": "${RulesFilePath}" }]
+                        }
+                    ]
+                },
+
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "p",
+                            "class": "pb-3 mb-0 small lh-sm",
+                            "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Verbose" }, { "text": "${Verbose}" }]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        const testRunResultTemplate = {
+            "<>": "div",
+            "html": [
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "svg",
+                            "class": "bd-placeholder-img flex-shrink-0 me-2 rounded",
+                            "width": 32,
+                            "height": 32,
+                            "xmlns": "http://www.w3.org/2000/svg",
+                            "role": "img",
+                            "aria-label": "Placeholder: 32x32",
+                            "preserveAspectRatio": "xMidYMid slice",
+                            "focusable": false,
+                            "html": [
+                                {
+                                    "<>": "rect",
+                                    "width": "100%",
+                                    "height": "100%",
+                                    "fill": "#ed135d"
+                                }
+                            ]
+
+                        },
+                        {
+                            "<>": "div",
+                            "class": "pb-3 mb-0 small lh-sm border-bottom w-100",
+                            "html": [
+                                {
+                                    "<>": "div",
+                                    "class": "d-flex justify-content-between",
+                                    "html": [
+                                        {
+                                            "<>": "span",
+                                            "html": [
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Rule"
+                                                        },
+                                                        {
+                                                            "text": "${RuleName}"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Page"
+                                                        },
+                                                        {
+                                                            "text": "${ParentDisplayName}"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Pass"
+                                                        },
+                                                        {
+                                                            "text": "${Pass}"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Expected"
+                                                        },
+                                                        {
+                                                            "text": "${Expected}"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Actual"
+                                                        },
+                                                        {
+                                                            "text": "${Actual}"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Message"
+                                                        },
+                                                        {
+                                                            "text": "${Message}"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }, { "<>": "img", "src": function () { if (this.ParentName != null) { return "C:\\TEMP\\VisOps\\PNG\\" + this.ParentDisplayName + "_" + this.ParentName + ".png" } else { return "C:\\TEMP\\VisOps\\PNG\\_.png" } }, "alt": "Page wireframe", "width": function () { if (this.ParentName != null) { return "65%" } else { return "1%" } }, "height":"auto" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+            }], "obj": function () { return (this.Results) }
+        };
+        //render
+        $("#header").json2html(testRunData, testRunHeaderTemplate);
+
+        $("#results").json2html(testRunData, testRunResultTemplate);
+    </script>
+</body>
+
+
+</html>

@@ -4,8 +4,6 @@ using Json.Pointer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PBIXInspectorLibrary.Output;
-using PBIXInspectorLibrary.Utils;
-using System.IO.Compression;
 using System.Text;
 using System.Text.Json.Nodes;
 
@@ -94,6 +92,7 @@ namespace PBIXInspectorLibrary
             Json.Logic.RuleRegistry.AddRule<CustomRules.IsNullOrEmptyRule>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.StringContains>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.ToString>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.ToRecordRule>();
         }
 
         /// <summary>
@@ -101,6 +100,8 @@ namespace PBIXInspectorLibrary
         /// </summary>
         public IEnumerable<TestResult> Inspect()
         {
+            var testResults = new List<TestResult>();
+
             using (var pbiFile = InitPbiFile(_pbiFilePath))
             {
                 if (pbiFile == null || this._inspectionRules == null)
@@ -140,10 +141,10 @@ namespace PBIXInspectorLibrary
 
                                         var jo = (JObject)JToken.ReadFrom(reader);
 
-                                        OnMessageIssued(MessageTypeEnum.Information, string.Format("Running rules for PBI entry \"{0}\"...", entry.Name));
+                                        //OnMessageIssued(MessageTypeEnum.Information, string.Format("Running rules for PBI entry \"{0}\"...", entry.Name));
                                         foreach (var rule in entry.Rules)
                                         {
-                                            OnMessageIssued(MessageTypeEnum.Information, string.Format("Running Rule \"{0}\".", rule.Name));
+                                            //OnMessageIssued(MessageTypeEnum.Information, string.Format("Running Rule \"{0}\".", rule.Name));
                                             Json.Logic.Rule? jrule = null;
 
                                             try
@@ -187,12 +188,14 @@ namespace PBIXInspectorLibrary
                                                        
                                                         string resultString = string.Concat("\"",strForEachDisplayName, "\" - ", string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.",  rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty));
 #if DEBUG
-                                                        //resultString = string.Concat(strForEachName, string.Format("Rule \"{0}\" {1} with result: {2} and data: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, newdata.AsJsonString().Length > 1000 ? string.Concat(newdata.AsJsonString().Substring(0, 999), "[first 1000 characters]") : newdata.AsJsonString()));
+                                                    //resultString = string.Concat(strForEachName, string.Format("Rule \"{0}\" {1} with result: {2} and data: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, newdata.AsJsonString().Length > 1000 ? string.Concat(newdata.AsJsonString().Substring(0, 999), "[first 1000 characters]") : newdata.AsJsonString()));
 #endif
 
                                                     //TODO: return jruleresult in TestResult so that we can compose test from other tests.
 
-                                                    yield return new TestResult { RuleName = rule.Name, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult};
+                                                    //yield return new TestResult { RuleName = rule.Name, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult};
+                                                    testResults.Add(new TestResult { RuleName = rule.Name, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
+                                                    
                                                     //}
                                                 }
                                             }
@@ -220,7 +223,8 @@ namespace PBIXInspectorLibrary
 #endif
 
                                                     //TODO: return jruleresult in TestResult so that we can compose test from other tests.
-                                                    yield return new TestResult { RuleName = rule.Name, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult };
+                                                    //yield return new TestResult { RuleName = rule.Name, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult };
+                                                    testResults.Add(new TestResult { RuleName = rule.Name, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
                                                 }
                                             }
                                             
@@ -240,6 +244,8 @@ namespace PBIXInspectorLibrary
                     }
                 }
             }
+
+            return testResults; 
         }
 
         private JsonArray ConvertToJsonArray(List<JToken>? tokens)

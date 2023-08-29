@@ -28,11 +28,19 @@ To inspect a PBIP file using the samples included in the [release files](https:/
 To inspect a PBIX file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: 
 ```PBIXInspectorCLI.exe -pbix "Files\Inventory Sample.pbix" -rules "Files\Base rules.json"```
 
-Other command line parameters are as follows:
+All command line parameters are as follows:
 
-```-verbose true|false```: true by default. If false then only rule violations will be shown otherwise all results will be listed.
+```-pbip filepath```: Optional. The filepath of the Power BI Desktop file to be inspected. If not specified then the sample PBIP file at "Files\pbip\Inventory Sample.pbip" will be inspected.
 
-```-output directory|filepath```: Writes results to file. If a directory path is provided then a filename will be generated, otherwise if a file path is provided then the results will be written to that file. Any existing file with the same path will be overwritten. 
+```-pbix filepath```: Optional. The filepath of the Power BI Desktop file to be inspected. If not specified then the sample PBIP file at "Files\Inventory Sample.pbix" will be inspected.
+
+```-rules filepath```: Optional. The filepath to the rules file. If not specified, then base rules at "Files\Base rules.json" will be used.
+
+```-verbose true|false```: Optional, true by default. If false then only rule violations will be shown otherwise all results will be listed.
+
+```-output directorypath```: Optional. Writes results to the specified directory, any existing files will be overwritten. If not supplied then a temporary directory will be created in the user's temporary files folder. 
+
+```-formats CONSOLE,JSON,HTML,PNG```: Optional. Comma-separated list of output formats. **CONSOLE** writes results to the console output, **JSON** writes results to a Json file, **HTML** writes results to a formatted Html page and **PNG** draws report pages wireframes clearly showing any failing visuals. If not specified "CONSOLE" will be used and results written to the console output only. If no output directory is specified and the HTML format is specified, then a browser page will be opened to display the HTML results.
 
 If run without any parameters PBIX inspector will use the sample PBIP and and base rules file under the build's "Files" directory:
 

@@ -30,6 +30,8 @@
     {
         public string Name { get; set; }
 
+        public bool Enabled { get; set; }
+
         public string ForEachPath { get; set; }
 
         public string ForEachPathName { get; set; }

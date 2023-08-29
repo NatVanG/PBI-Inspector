@@ -1,0 +1,259 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>VisOps with PBI Inspector - Test Run</title>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha384-Ft/vb48LwsAEtgltj7o+6vtS2esTU9PCpDqcXs4OCVQFZu5BqprHtUCZ4kjK+bpE" crossorigin="anonymous"></script>
+
+    <!-- json2html -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/json2html/2.2.3/json2html.min.js" integrity="sha384-BNP6wA28/vQ24ZrRplF30+uBUS9HEHDlZw8YbqzYeJNc9qZ+t1qS+SY2XftU37+N" crossorigin="anonymous"></script>
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <!--
+    <link rel="icon" href="../icon/pbiinspector.png">
+        -->
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+    </style>
+
+</head>
+<body class="bg-body-tertiary">
+
+    <main class="container">
+        <div class="d-flex align-items-center p-3 my-3 rounded shadow-sm">
+            <img class="me-3" src="%LOGO%" alt="PBI Inspector logo" width="64" height="64">
+            <div class="lh-1">
+                <h1 class="h6 mb-0 text-gray-dark lh-1">VisOps with PBI Inspector | Test Run</h1>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div id="header" class="my-3 p-3 bg-body rounded shadow-sm">
+            <h6 class="border-bottom pb-2 mb-0">Header</h6>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="my-3 p-3 bg-body rounded shadow-sm">
+            <h6 class="border-bottom pb-2 mb-0">Results</h6>
+        </div>
+    </main>
+
+    <script>
+
+        //Data that we want to render
+        let testRunData = %JSON%
+
+        const testRunHeaderTemplate = {
+            "<>": "div",
+            "html": [
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "p",
+                            "class": "pb-3 mb-0 small lh-sm",
+                            "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Test Run ID" }, { "text": "${Id}" }]
+                        }
+                    ]
+                },
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "p",
+                            "class": "pb-3 mb-0 small lh-sm",
+                            "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Time" }, { "text": "${CompletionTime}" }]
+                        }
+                    ]
+                },
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "p",
+                            "class": "pb-3 mb-0 small lh-sm",
+                            "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Tested File Path" }, { "text": "${TestedFilePath}" }]
+                        }
+                    ]
+                },
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "p",
+                            "class": "pb-3 mb-0 small lh-sm",
+                            "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Rules File Path" }, { "text": "${RulesFilePath}" }]
+                        }
+                    ]
+                },
+
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "p",
+                            "class": "pb-3 mb-0 small lh-sm",
+                            "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Verbose" }, { "text": "${Verbose}" }]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        const testRunResultTemplate = {
+            "<>": "div",
+            "html": [
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "svg",
+                            "class": "bd-placeholder-img flex-shrink-0 me-2 rounded",
+                            "width": 32,
+                            "height": 32,
+                            "xmlns": "http://www.w3.org/2000/svg",
+                            "role": "img",
+                            "aria-label": "Placeholder: 32x32",
+                            "preserveAspectRatio": "xMidYMid slice",
+                            "focusable": false,
+                            "html": [
+                                {
+                                    "<>": "rect",
+                                    "width": "100%",
+                                    "height": "100%",
+                                    "fill": function () {
+                                        if (!this.Pass) { return "#ed135d" } else { return "#0cbaf4" }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "<>": "div",
+                            "class": "pb-3 mb-0 small lh-sm border-bottom w-100",
+                            "html": [
+                                {
+                                    "<>": "div",
+                                    "class": "d-flex justify-content-between",
+                                    "html": [
+                                        {
+                                            "<>": "span",
+                                            "html": [
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Rule"
+                                                        },
+                                                        {
+                                                            "text": "${RuleName}"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Page"
+                                                        },
+                                                        {
+                                                            "text": "${ParentDisplayName}"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Pass"
+                                                        },
+                                                        {
+                                                            "text": "${Pass}"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Expected"
+                                                        },
+                                                        {
+                                                            "text": "${Expected}"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Actual"
+                                                        },
+                                                        {
+                                                            "text": "${Actual}"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Message"
+                                                        },
+                                                        {
+                                                            "text": "${Message}"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }, { "<>": "img", "src": function () { if (this.ParentName != null) { return "PNG\\" + this.Id + ".png" } else { return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAAAxJREFUGFdj+P//PwAF/gL+pzWBhAAAAABJRU5ErkJggg==" } }, "alt": "Page wireframe", "width": function () { if (this.ParentName != null) { return "65%" } else { return "1%" } }, "height": "auto" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }], "obj": function () { return (this.Results) }
+        };
+
+        //render
+        $("#header").json2html(testRunData, testRunHeaderTemplate);
+
+        $("#results").json2html(testRunData, testRunResultTemplate);
+    </script>
+</body>
+</html>

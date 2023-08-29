@@ -8,19 +8,33 @@
     <StartupObject>Program</StartupObject>
     <SignAssembly>False</SignAssembly>
     <IsPublishable>True</IsPublishable>
-    <FileVersion>1.4.0.0</FileVersion>
-    <AssemblyVersion>1.4.0</AssemblyVersion>
-    <VersionPrefix>1.4.0</VersionPrefix>
+    <FileVersion>1.5.0.0</FileVersion>
+    <AssemblyVersion>1.5.0</AssemblyVersion>
+    <VersionPrefix>1.5.0</VersionPrefix>
     <Version>$(VersionPrefix)</Version>
     <Product>$(AssembblyName)</Product>
+    <ApplicationIcon>Files\icon\pbiinspector.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Files\icon\pbiinspector.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PBIXInspectorLibrary\PBIXInspectorLibrary.csproj" />
+    <ProjectReference Include="..\PBIXInspectorWinLibrary\PBIXInspectorWinLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="Files\Base rules.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\png\nowireframe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\html\TestRunTemplate.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Files\Inventory sample - fails.pbix">
@@ -65,7 +79,10 @@
     <None Update="Files\pbip\Inventory sample.Report\StaticResources\SharedResources\BaseThemes\CY22SU11.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="README.md">
+    <None Update="Files\ReportPageFieldMap.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\icon\pbiinspector.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Files\Inventory rules sample.json">

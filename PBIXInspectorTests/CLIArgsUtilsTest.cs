@@ -1,5 +1,6 @@
-﻿using PBIXInspectorLibrary.Utils;
+﻿using PBIXInspectorWinLibrary.Utils;
 
+#pragma warning disable CS8602 
 namespace PBIXInspectorTests
 {
     public class CLIArgsUtilsTest
@@ -59,24 +60,6 @@ namespace PBIXInspectorTests
         }
 
         [Test]
-        public void TestCLIArgsUtilsSuccess_OutputOptionSuccess()
-        {
-            string[] args = "-pbip pbipPath -rules rulesPath -verbose true -output MyFile".Split(" ");
-            var parsedArgs = CLIArgsUtils.ParseArgs(args);
-
-            Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath") && parsedArgs.RulesFilePath.Equals("rulesPath") && parsedArgs.Verbose && parsedArgs.OutputPath.Equals("MyFile"));
-        }
-
-        [Test]
-        public void TestCLIArgsUtilsSuccess_OutputOptionalSuccess()
-        {
-            string[] args = "-pbip pbipPath -rules rulesPath -verbose true".Split(" ");
-            var parsedArgs = CLIArgsUtils.ParseArgs(args);
-
-            Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath") && parsedArgs.RulesFilePath.Equals("rulesPath") && parsedArgs.Verbose && parsedArgs.OutputPath.Equals(""));
-        }
-
-        [Test]
         public void TestCLIArgsUtilsSuccess_FavourPBIPOption()
         {
             string[] args = "-pbix pbixPath -pbip pbipPath -rules rulesPath -verbose true".Split(" ");
@@ -86,23 +69,55 @@ namespace PBIXInspectorTests
         }
 
         [Test]
-        public void TestCLIArgsUtilsThrows()
+        public void TestCLIArgsUtilsPBIX()
         {
             string[] args = "-pbix pbixPath".Split(" ");
             CLIArgs? parsedArgs = null;
 
-            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
-            () => parsedArgs = CLIArgsUtils.ParseArgs(args));
+            parsedArgs = CLIArgsUtils.ParseArgs(args);
+
+            Assert.IsTrue(parsedArgs.PBIFilePath.Equals("pbixPath", StringComparison.OrdinalIgnoreCase));
         }
 
         [Test]
-        public void TestCLIArgsUtilsThrows2()
+        public void TestCLIArgsUtilsRules()
         {
             string[] args = "-rules rulesPath".Split(" ");
             CLIArgs? parsedArgs = null;
 
-            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
-            () => parsedArgs = CLIArgsUtils.ParseArgs(args));
+            parsedArgs = CLIArgsUtils.ParseArgs(args);
+
+            Assert.IsTrue(parsedArgs.RulesFilePath.Equals("rulesPath", StringComparison.OrdinalIgnoreCase));
+        }
+
+        [Test]
+        public void TestCLIArgsUtilsFormats()
+        {
+            string[] args = "-formats CONSOLE,HTML,PNG,JSON".Split(" ");
+            CLIArgs? parsedArgs = null;
+
+            parsedArgs = CLIArgsUtils.ParseArgs(args);
+
+            Assert.IsTrue(parsedArgs.CONSOLEOutput && parsedArgs.HTMLOutput && parsedArgs.PNGOutput && parsedArgs.JSONOutput);
+        }
+
+        [Test]
+        public void TestCLIArgsUtilsDefaults()
+        {
+            string[] args = "".Split(" ");
+            CLIArgs? parsedArgs = null;
+
+            parsedArgs = CLIArgsUtils.ParseArgs(args);
+
+            Assert.IsTrue(parsedArgs.CONSOLEOutput 
+                && parsedArgs.Verbose 
+                && parsedArgs.DeleteOutputDirOnExit 
+                && !string.IsNullOrEmpty(parsedArgs.OutputDirPath)
+                && !string.IsNullOrEmpty(parsedArgs.PBIFilePath)
+                && !string.IsNullOrEmpty(parsedArgs.RulesFilePath)
+                && !parsedArgs.HTMLOutput 
+                && !parsedArgs.JSONOutput 
+                && !parsedArgs.PNGOutput);
         }
 
         [Test]
@@ -111,7 +126,7 @@ namespace PBIXInspectorTests
             string[] args = "-other other".Split(" ");
             CLIArgs? parsedArgs = null;
 
-            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+            ArgumentException ex = Assert.Throws<ArgumentException>(
             () => parsedArgs = CLIArgsUtils.ParseArgs(args));
         }
 
@@ -138,3 +153,4 @@ namespace PBIXInspectorTests
 
     }
 }
+#pragma warning restore CS8602 
