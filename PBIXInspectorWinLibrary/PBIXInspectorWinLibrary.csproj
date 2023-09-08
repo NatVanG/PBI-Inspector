@@ -7,11 +7,51 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\PBIXInspectorCLI\Files\Base rules.json" Link="Files\Base rules.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\PBIXInspectorCLI\Files\html\TestRunTemplate.html" Link="Files\html\TestRunTemplate.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\PBIXInspectorCLI\Files\icon\pbiinspector.ico" Link="Files\icon\pbiinspector.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\PBIXInspectorCLI\Files\icon\pbiinspector.png" Link="Files\icon\pbiinspector.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\PBIXInspectorCLI\Files\Inventory rules sample.json" Link="Files\Inventory rules sample.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\PBIXInspectorCLI\Files\png\nowireframe.png" Link="Files\png\nowireframe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\PBIXInspectorCLI\Files\ReportPageFieldMap.json" Link="Files\ReportPageFieldMap.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PBIXInspectorLibrary\PBIXInspectorLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Files\html\" />
+    <Folder Include="Files\icon\" />
+    <Folder Include="Files\png\" />
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\PBIXInspectorCLI\Files\Inventory sample - fails.pbix" Link="Files\Inventory sample - fails.pbix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\PBIXInspectorCLI\Files\Inventory sample.pbix" Link="Files\Inventory sample.pbix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

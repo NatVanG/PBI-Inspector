@@ -24,13 +24,21 @@
         public int CodePage { get; set; }
 
         public IEnumerable<Rule> Rules { get; set; }
+
+        public IEnumerable<Rule> EnabledRules
+        {
+            get
+            {
+                return Rules.Where(_ => !_.Disabled);
+            }
+        }
     }
 
     public class Rule
     {
         public string Name { get; set; }
 
-        public bool Enabled { get; set; }
+        public bool Disabled { get; set; }
 
         public string ForEachPath { get; set; }
 

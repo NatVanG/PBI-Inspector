@@ -8,8 +8,8 @@
       "codepage": 1200,
       "rules": [
         {
-          "name": "#1 Remove custom visuals which are not used in the report.",
-          "description": "Returns an array of custom visual names to be removed if any.",
+          "name": "Remove custom visuals which are not used in the report.",
+          "description": "#1 Returns an array of custom visual names to be removed if any.",
           "path": "$",
           "pathErrorWhenNoMatch": true,
           "test": [
@@ -66,8 +66,9 @@
           ]
         },
         {
-          "name": "#2 Reduce the number of visible visuals on the page",
-          "description": "Returns false if the number of visible visuals on the page is exceeded. Use paramMaxVisualsPerPage parameter to set the number of visible visuals per page.",
+          "name": "Reduce the number of visible visuals on the page",
+          "description": "#2 Reduce the number of visible visuals on the page. Returns false if the number of visible visuals on the page is exceeded. Use paramMaxVisualsPerPage parameter to set the number of visible visuals per page.",
+          "disabled": true,
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
@@ -108,8 +109,9 @@
           ]
         },
         {
-          "name": "#3 Reduce the number of objects within visuals",
-          "description": "Reduce the number of objects within visuals",
+          "name": "Reduce the number of objects within visuals",
+          "description": "#3 Reduce the number of objects within visuals",
+          "disabled":  true,
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
@@ -149,8 +151,9 @@
           ]
         },
         {
-          "name": "#4 Reduce usage of TopN filtering visuals by page",
-          "description": "Reduce usage of TopN filters visuals by page",
+          "name": "Reduce usage of TopN filtering visuals by page",
+          "description": "#4 Reduce usage of TopN filters visuals by page",
+          "disabled":  true,
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
@@ -198,8 +201,9 @@
           ]
         },
         {
-          "name": "#5 Reduce usage of Advanced filtering visuals by page",
-          "description": "Reduce usage of Advanced filtering visuals by page",
+          "name": "Reduce usage of Advanced filtering visuals by page",
+          "description": "#5 Reduce usage of Advanced filtering visuals by page",
+          "disabled":  true,
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
@@ -247,8 +251,9 @@
           ]
         },
         {
-          "name": "#6 Reduce number of pages per report",
-          "description": "Reduce number of pages per report",
+          "name": "Reduce number of pages per report",
+          "description": "#6 Reduce number of pages per report",
+          "disabled":  true,
           "path": "$",
           "pathErrorWhenNoMatch": true,
           "test": [
@@ -274,8 +279,8 @@
           ]
         },
         {
-          "name": "#7 Avoid setting ‘Show items with no data’ on columns",
-          "description": "Returns an array of visual names which have the option ‘Show items with no data’ enabled on one or more columns.",
+          "name": "Avoid setting ‘Show items with no data’ on columns",
+          "description": "#7 Avoid setting ‘Show items with no data’ on columns. Returns an array of visual names which have the option ‘Show items with no data’ enabled on one or more columns.",
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
@@ -322,8 +327,8 @@
           ]
         },
         {
-          "name": "#8 Tooltip and Drillthrough pages should be hidden",
-          "description": "Tooltip and Drillthrough pages should be hidden",
+          "name": "Tooltip and Drillthrough pages should be hidden",
+          "description": "#8 Tooltip and Drillthrough pages should be hidden",
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
@@ -367,8 +372,9 @@
           ]
         },
         {
-          "name": "Template",
-          "description": "Template",
+          "name": "Rule Template",
+          "description": "Rule template",
+          "disabled":  true,
           "path": "$",
           "pathErrorWhenNoMatch": true,
           "test": [

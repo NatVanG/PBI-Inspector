@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <FileVersion>1.6.0.0</FileVersion>
+    <AssemblyVersion>1.6.0</AssemblyVersion>
+    <VersionPrefix>1.6.0</VersionPrefix>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>pbiinspector.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/NatVanG/PBIXInspector</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/NatVanG/PBIXInspector</RepositoryUrl>
+    <ApplicationIcon>pbiinspector.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\PBIXInspectorCLI\Files\icon\pbiinspector.ico" Link="icon\pbiinspector.ico" />
+    <Content Include="..\PBIXInspectorCLI\Files\icon\pbiinspector.png" Link="icon\pbiinspector.png" />
+    <Content Include="pbiinspector.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="icon\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE" Link="LICENSE">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\PBIXInspectorCLI\Files\icon\pbiinspector.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PBIXInspectorWinLibrary\PBIXInspectorWinLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="PBIXInspectorWinForm.pbitool.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

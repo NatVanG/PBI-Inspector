@@ -4,9 +4,7 @@ using PBIXInspectorWinLibrary;
 using PBIXInspectorWinLibrary.Drawing;
 using PBIXInspectorWinLibrary.Utils;
 using System.Reflection;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 
 internal partial class Program
 {
@@ -107,7 +105,7 @@ internal partial class Program
                 //Results have been written to a temporary directory so show output to user automatically.
                 if (_parsedArgs.DeleteOutputDirOnExit)
                 {
-                    BrowserUtils.BrowseToPage(outputHTMLFilePath);
+                    AppUtils.WinOpen(outputHTMLFilePath);
                 }
             }
 

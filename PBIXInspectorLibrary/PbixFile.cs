@@ -28,7 +28,7 @@ namespace PBIXInspectorLibrary
                 }
                 catch (System.IO.InvalidDataException e)
                 {
-                    throw new PBIXInspectorException(string.Format("Couldn't open file with path \"{0}\". PBIX files with Microsoft Information Protection are not currently supported by \"PBIX Inspector\".", this.FilePath), e);
+                    throw new PBIXInspectorException(string.Format("Could not open file with path \"{0}\". The file was not in a valid format. Please note that PBIX files with Microsoft Information Protection are not currently supported by \"PBIX Inspector\".", this.FilePath), e);
                 }
 
             }
