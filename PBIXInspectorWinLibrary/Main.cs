@@ -78,7 +78,7 @@ namespace PBIXInspectorWinLibrary
                     _fieldMapInsp = new Inspector(_args.PBIFilePath, Constants.ReportPageFieldMapFilePath);
                      _fieldMapResults = _fieldMapInsp.Inspect();
  
-                    var outputPNGDirPath = Path.Combine(_args.OutputDirPath, "PNG");
+                    var outputPNGDirPath = Path.Combine(_args.OutputDirPath, Constants.PNGOutputDir);
 
                     if (Directory.Exists(outputPNGDirPath))
                     {

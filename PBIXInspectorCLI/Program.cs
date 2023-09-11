@@ -10,6 +10,7 @@ internal partial class Program
 {
     private static void Main(string[] args)
     {
+        const string PNGOutputDir = "PBIInspectorPNG";
         Inspector? _insp = null;
         IEnumerable<TestResult> _testResults = null;
         string _jsonTestRun = string.Empty;
@@ -81,7 +82,7 @@ internal partial class Program
             {
                 _fieldMapInsp = new Inspector(_parsedArgs.PBIFilePath, Constants.ReportPageFieldMapFilePath);
                 _fieldMapResults = _fieldMapInsp.Inspect();
-                var outputPNGDirPath = Path.Combine(_parsedArgs.OutputDirPath, "PNG");
+                var outputPNGDirPath = Path.Combine(_parsedArgs.OutputDirPath, PNGOutputDir);
 
                 Console.WriteLine("Writing report page wireframe images to files.");
                 if (Directory.Exists(outputPNGDirPath)) Directory.Delete(outputPNGDirPath, true);

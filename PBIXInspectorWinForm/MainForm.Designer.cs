@@ -187,8 +187,10 @@
             // 
             // txtOutputDirPath
             // 
+            txtOutputDirPath.BorderStyle = BorderStyle.FixedSingle;
             txtOutputDirPath.Location = new Point(204, 37);
             txtOutputDirPath.Name = "txtOutputDirPath";
+            txtOutputDirPath.ReadOnly = true;
             txtOutputDirPath.Size = new Size(430, 31);
             txtOutputDirPath.TabIndex = 2;
             txtOutputDirPath.TextChanged += txtOutputDirPath_TextChanged;

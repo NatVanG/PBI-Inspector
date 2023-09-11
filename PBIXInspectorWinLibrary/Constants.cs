@@ -15,6 +15,7 @@ namespace PBIXInspectorWinLibrary
         public const string LogoPlaceholder = "%LOGO%";
         public const string Base64ImgPrefix = @"data:image/png;base64,";
         public const string DefaultVisOpsFolder = "VisOps";
+        public const string PNGOutputDir = "PBIInspectorPNG";
 
         public const string ReadmePageUrl = "https://github.com/NatVanG/PBIXInspector/blob/main/README.md";
         public const string LicensePageUrl = "https://github.com/NatVanG/PBIXInspector/blob/main/LICENSE";

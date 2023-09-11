@@ -8,15 +8,16 @@
     <StartupObject>Program</StartupObject>
     <SignAssembly>False</SignAssembly>
     <IsPublishable>True</IsPublishable>
-    <FileVersion>1.6.1.0</FileVersion>
-    <AssemblyVersion>1.6.1</AssemblyVersion>
-    <VersionPrefix>1.6.1</VersionPrefix>
+    <FileVersion>1.6.2.0</FileVersion>
+    <AssemblyVersion>1.6.2</AssemblyVersion>
+    <VersionPrefix>1.6.2</VersionPrefix>
     <Version>$(VersionPrefix)</Version>
     <Product>$(AssembblyName)</Product>
     <ApplicationIcon>Files\icon\pbiinspector.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Files\html\TestRunSample.html" />
     <None Remove="Files\html\TestRunSampleJson2Html.html" />
   </ItemGroup>
 
