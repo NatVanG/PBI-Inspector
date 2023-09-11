@@ -95,6 +95,7 @@ internal partial class Program
                 //string nowireframebase64 = string.Concat(Base64ImgPrefix, ImageUtils.ConvertBitmapToBase64(@"Files\png\nowireframe.png"));
                 string template = File.ReadAllText(Constants.TestRunHTMLTemplate);
                 string html = template.Replace(Constants.LogoPlaceholder, pbiinspectorlogobase64);
+                html = html.Replace(Constants.VersionPlaceholder, About());
                 html = html.Replace(Constants.JsonPlaceholder, _jsonTestRun);
 
                 var outputHTMLFilePath = Path.Combine(_parsedArgs.OutputDirPath, Constants.TestRunHTMLFileName);
@@ -145,5 +146,12 @@ internal partial class Program
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine();
         Console.WriteLine("{0}: {1}", e.MessageType.ToString(), e.Message);
+    }
+
+    public static string About()
+    {
+        var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+        var about = string.Format("VisOps with PBI Inspector v{0}", version);
+        return about;
     }
 }

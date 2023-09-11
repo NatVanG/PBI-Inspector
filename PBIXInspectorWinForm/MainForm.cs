@@ -10,7 +10,7 @@ namespace PBIXInspectorWinForm
         public MainForm()
         {
             InitializeComponent();
-            this.Text = About();
+            this.Text = AppUtils.About();
             this.FormClosing += MainForm_FormClosing;
         }
 
@@ -33,7 +33,7 @@ namespace PBIXInspectorWinForm
         {
             if (e.MessageType == PBIXInspectorLibrary.MessageTypeEnum.Dialog)
             {
-                var dr = MessageBox.Show(e.Message, "Delete directory?",  MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var dr = MessageBox.Show(e.Message, "Delete directory?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dr == DialogResult.Yes)
                 {
                     e.DialogOKResponse = true;
@@ -122,7 +122,7 @@ namespace PBIXInspectorWinForm
 
             Main.Run(_args);
             btnRun.Enabled = true;
-           
+
         }
 
         internal void Clear()
@@ -189,14 +189,7 @@ namespace PBIXInspectorWinForm
 
         private void lnkAbout_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            MessageBox.Show(About());
-        }
-
-        public string About()
-        {
-            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            var about = string.Format("VisOps with PBI Inspector v{0}", version);
-            return about;
+            MessageBox.Show(AppUtils.About());
         }
     }
 }

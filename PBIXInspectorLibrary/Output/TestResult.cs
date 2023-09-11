@@ -8,6 +8,8 @@ namespace PBIXInspectorLibrary.Output
 
         public string RuleName { get; set; }
 
+        public string? RuleDescription { get; set; }
+
         public string? ParentName { get; set; }
 
         public string? ParentDisplayName { get; set; }

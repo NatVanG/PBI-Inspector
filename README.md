@@ -1,27 +1,55 @@
-# VisOps with PBI Inspector (i.e. automated visual layer testing)
+# VisOps with PBI Inspector (i.e. automated visual layer testing for Microsoft Power BI.)
 
 ***NOTE***: This is a personal side project that is not supported by Microsoft. Parsing the contents of a Power BI Desktop file (.pbix) is not supported either. 
 
-*Update*: Release v1.2.0.0 of PBIX Inspector can now inspect files in the new PBIP format (see announcement at https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/). At some point this project's name will be updated from "PBIX Inspector" to something that better reflects this change. 
+*Update*: Release v1.2.0.0 of PBI Inspector can now inspect files in the new PBIP format (see announcement at https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/). At some point this project's name will be updated from "PBIX Inspector" to something that better reflects this change. 
 
-## Intro
+## <a name="contents"></a>Contents
 
-So we've DevOps, MLOps and DataOps... but why not VisOps? How can we ensure that business intelligence reports' charts and visuals are published in a consistent state e.g. are chart titles displayed? Is the logo placed in a consistent location on each report page? With Microsoft Power BI, visuals are placed on a canvas and formatted as desired, images may be included and theme files referenced. Testing the consistency of the visuals output is typically a manual process. However because a Power BI .pbix file is packaged as an archive (.zip) file it is possible to unzip it and read the entries within. In particular the visuals layout definition and any associated theme are in json format. However upon new releases of Power BI Desktop and Service, the visual layout's json schema definition may introduce changes without warning to include new features for example. Therefore an automated visual layout inspection or testing tool should be resilient to change. PBIX Inspector provides the ability to define fully configurable testing rules (themselves written in json format) powered by Greg Dennis's Json Logic .NET implementation, see https://json-everything.net/json-logic. Currently the PBIX Inspector's test results are written to a console app (see screenshot below) with future plans to integrate it in DevOps operations also including formatted test result outputs.
+- [Intro](#intro)
+- [Base rules](#baserulesoverview)
+- [Graphical user interface](#gui)
+- [Command line](#cli)
+- [Custom rules examples](#customrulesexamples)
 
-## Base rules
+## <a id="intro"></a>Intro
 
-Currently PBI Inspector includes the following base rules defined at ```"Files\Base rules.json"```, some rules allow user parameters:
+So we've DevOps, MLOps and DataOps... but why not VisOps? How can we ensure that business intelligence charts and other visuals within report pages are published in a consistent, performance optimised and accessible state? For example, is the logo placed in a consistent location on each report page? Are chart titles displayed? Is alternative text defined on visuals for use by screen readers? Are charts kept lean so they render quickly? etc.
+
+With Microsoft Power BI, visuals are placed on a canvas and formatted as desired, images may be included and theme files referenced. Testing the consistency of the visuals output has thus far typically been a manual process. However because a Power BI .pbix file is packaged as an archive (.zip) file it is possible to unzip it and read the entries within. More recently, a [new Power BI Project file (.pbip) was introduced](https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/) for improved source control and, as it happens, better testability as far as PBI Inspector is concerned. In both cases, the visuals layout definition  and any associated theme are in json format and therefore readable by both machines and humans. However upon new releases of Power BI, the visual layout's json schema definition may introduce changes without warning to include new features for example. Therefore an automated visual layout inspection or testing tool should be resilient to such changes. PBI Inspector provides the ability to define fully configurable testing rules (themselves written in json format) powered by Greg Dennis's Json Logic .NET implementation, see https://json-everything.net/json-logic. 
+
+## <a id="baserulesoverview"></a>Base rules
+
+While PBI Inspector supports custom rules, it also includes the following base rules defined at ```"Files\Base rules.json"```, some rules allow for user parameters:
 
 1. Remove custom visuals which are not used in the report (no user parameters)
-2. Reduce the number of visible visuals on the page (set ```paramMaxVisualsPerPage```)
-3. Reduce the number of objects within visuals (override hardcoded ```4``` value for max allowed objects per visuals)
+2. Reduce the number of visible visuals on the page (set parameter ```paramMaxVisualsPerPage``` to the maximum number of allowed visible visuals on the page)
+3. Reduce the number of objects within visuals (override hardcoded ```4``` parameter value the the maximum number of allowed objects per visuals)
 4. Reduce usage of TopN filtering visuals by page (set ```paramMaxTopNFilteringPerPage```)
 5. Reduce usage of Advanced filtering visuals by page (set ```paramMaxAdvancedFilteringVisualsPerPage```)
 6. Reduce number of pages per report (set ```paramMaxNumberOfPagesPerReport```)
 7. Avoid setting ‘Show items with no data’ on columns (no user parameters)
 8. Tooltip and Drillthrough pages should be hidden (no user parameters)
 
-## Run
+Before modifying parameters, you may wish to either take a copy of the file at ```"Files\Base rules.json"``` within your local PBI Inspector deployment folder. If you need a fresh copy, see the PBI Inspector releases in Github at https://github.com/NatVanG/PBIXInspector/releases.
+
+To disable a rule, edit the rule json to specify ```"disabled": true```. At runtime PBI Inspector will ignore any disabled rule.
+
+Currently these changes need to be made directly in the rules file json, however the plan is to provide a more intuitive user interface in upcoming releases of PBI Inspector.
+
+## <a id="gui"></a>Run from the graphical user interface (GUI)
+
+Running ```PBIXInspectorWinForm.exe``` presents the user with the following interface: 
+
+![WinForm 1](DocsImages/WinForm1.png)
+
+1. Browse to your local PBI Desktop File in either the PBIP or PBIX file format. Alternately to try out the tool, select "Use sample".
+2. Either use the base rules file included in the application or select your own.
+3. Select an output directory to which the results will be written. Alternatively, select the "Use temp files" check box to write the resuls to a temporary folder.
+4. Select "Verbose" to output both test passes and fails, if left unselected then only failed test results will be reported.  
+5. Select "Run". The test run log messages are displayed at the bottom of the window. If "Use temp files" is selected along with the HTML output check box, then the browser will open to display the HTML results. 
+
+## <a id="cli"></a>Run from the command line 
 
 To inspect a PBIP file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: ```PBIXInspectorCLI.exe -pbip "Files\pbip\Inventory sample.pbip" -rules "Files\Base rules.json"```
 
@@ -46,7 +74,7 @@ If run without any parameters PBIX inspector will use the sample PBIP and and ba
 
 ```PBIXInspectorCLI.exe```
 
-## Examples
+## <a id="customrulesexamples"></a>Custom Rules Examples
 
 Besides the base rules defined at ```"Files\Base rules.json"```, see other rules examples below (included in the sample rules file at ```"Files\Inventory rules samples.json"```).
 

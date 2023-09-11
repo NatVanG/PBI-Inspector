@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             groupBox1 = new GroupBox();
             btnBrowseRulesFile = new Button();
@@ -57,7 +56,6 @@
             lnkHelp = new LinkLabel();
             lnkLicense = new LinkLabel();
             lnkAbout = new LinkLabel();
-            toolTip1 = new ToolTip(components);
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             SuspendLayout();
@@ -263,7 +261,6 @@
             txtConsoleOutput.ScrollBars = ScrollBars.Vertical;
             txtConsoleOutput.Size = new Size(933, 152);
             txtConsoleOutput.TabIndex = 2;
-            toolTip1.SetToolTip(txtConsoleOutput, "Power BI Project file (*.pbip) or Power BI Desktop file (*.pbix)");
             // 
             // btnRun
             // 
@@ -333,10 +330,6 @@
             lnkAbout.Text = "About";
             lnkAbout.LinkClicked += lnkAbout_LinkClicked;
             // 
-            // toolTip1
-            // 
-            toolTip1.ToolTipIcon = ToolTipIcon.Info;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -391,6 +384,5 @@
         private LinkLabel lnkHelp;
         private LinkLabel lnkLicense;
         private LinkLabel lnkAbout;
-        private ToolTip toolTip1;
     }
 }

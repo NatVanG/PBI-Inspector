@@ -10,6 +10,7 @@ namespace PBIXInspectorWinLibrary
         public const string TestRunHTMLTemplate = @"Files\html\TestRunTemplate.html";
         public const string PBIInspectorPNG = @"Files\icon\pbiinspector.png";
         public const string TestRunHTMLFileName = "TestRun.html";
+        public const string VersionPlaceholder = "%VERSION%";
         public const string JsonPlaceholder = "%JSON%";
         public const string LogoPlaceholder = "%LOGO%";
         public const string Base64ImgPrefix = @"data:image/png;base64,";

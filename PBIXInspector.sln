@@ -23,11 +23,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsImages", "DocsImages", 
 		DocsImages\RulesExample4.png = DocsImages\RulesExample4.png
 		DocsImages\RulesExample5.png = DocsImages\RulesExample5.png
 		DocsImages\SampleOutput.png = DocsImages\SampleOutput.png
+		DocsImages\WinForm1.png = DocsImages\WinForm1.png
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PBIXInspectorWinLibrary", "PBIXInspectorWinLibrary\PBIXInspectorWinLibrary.csproj", "{C6CBC9A2-22D7-4CA6-BC1B-5F7DD629D17F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBIXInspectorWinForm", "PBIXInspectorWinForm\PBIXInspectorWinForm.csproj", "{2EFEF6B8-E017-4D14-9F30-DCD093CB85CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PBIXInspectorWinForm", "PBIXInspectorWinForm\PBIXInspectorWinForm.csproj", "{2EFEF6B8-E017-4D14-9F30-DCD093CB85CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

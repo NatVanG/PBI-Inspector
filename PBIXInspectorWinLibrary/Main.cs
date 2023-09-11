@@ -82,7 +82,7 @@ namespace PBIXInspectorWinLibrary
 
                     if (Directory.Exists(outputPNGDirPath))
                     {
-                        var eventArgs = RaiseWinMessage(MessageTypeEnum.Dialog, string.Format("Delete and recreate existing report pages wireframe images directory at \"{0}\"?", outputPNGDirPath));
+                        var eventArgs = RaiseWinMessage(MessageTypeEnum.Dialog, string.Format("Overwrite existing directory at \"{0}\"?", outputPNGDirPath));
                         if (eventArgs.DialogOKResponse)
                         {
                             Directory.Delete(outputPNGDirPath, true);
@@ -98,8 +98,9 @@ namespace PBIXInspectorWinLibrary
                     string pbiinspectorlogobase64 = string.Concat(Constants.Base64ImgPrefix, ImageUtils.ConvertBitmapToBase64(Constants.PBIInspectorPNG));
                     //string nowireframebase64 = string.Concat(Base64ImgPrefix, ImageUtils.ConvertBitmapToBase64(@"Files\png\nowireframe.png"));
                     string template = File.ReadAllText(Constants.TestRunHTMLTemplate);
-                    string html = template.Replace(Constants.LogoPlaceholder, pbiinspectorlogobase64);
-                    html = html.Replace(Constants.JsonPlaceholder, _jsonTestRun);
+                    string html = template.Replace(Constants.LogoPlaceholder, pbiinspectorlogobase64, StringComparison.OrdinalIgnoreCase);
+                    html = html.Replace(Constants.VersionPlaceholder, AppUtils.About(), StringComparison.OrdinalIgnoreCase);
+                    html = html.Replace(Constants.JsonPlaceholder, _jsonTestRun, StringComparison.OrdinalIgnoreCase);
 
                     var outputHTMLFilePath = Path.Combine(_args.OutputDirPath, Constants.TestRunHTMLFileName);
 

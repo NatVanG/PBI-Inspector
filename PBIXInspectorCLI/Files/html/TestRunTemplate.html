@@ -35,7 +35,7 @@
         <div class="d-flex align-items-center p-3 my-3 rounded shadow-sm">
             <img class="me-3" src="%LOGO%" alt="PBI Inspector logo" width="64" height="64">
             <div class="lh-1">
-                <h1 class="h6 mb-0 text-gray-dark lh-1">VisOps with PBI Inspector | Test Run</h1>
+                <h1 class="h6 mb-0 text-gray-dark lh-1">%VERSION% | Test Run</h1>
             </div>
         </div>
 
@@ -167,6 +167,20 @@
                                                         },
                                                         {
                                                             "text": "${RuleName}"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "<>": "p",
+                                                    "class": "pb-3 mb-0 small lh-sm",
+                                                    "html": [
+                                                        {
+                                                            "<>": "strong",
+                                                            "class": "d-block text-gray-dark",
+                                                            "text": "Rule Description"
+                                                        },
+                                                        {
+                                                            "text": "${RuleDescription}"
                                                         }
                                                     ]
                                                 },

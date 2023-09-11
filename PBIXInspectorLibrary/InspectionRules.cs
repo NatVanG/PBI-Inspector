@@ -12,8 +12,6 @@
     {
         public string Name { get; set; }
 
-        public string Description { get; set; }
-
         public string PbixEntryPath { get; set; }
 
         public string PbipEntryPath { get; set; }
@@ -37,6 +35,8 @@
     public class Rule
     {
         public string Name { get; set; }
+
+        public string Description { get; set; }
 
         public bool Disabled { get; set; }
 
