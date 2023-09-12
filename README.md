@@ -10,6 +10,7 @@
 - [Base rules](#baserulesoverview)
 - [Graphical user interface](#gui)
 - [Command line](#cli)
+- [Interpreting results](#results)
 - [Custom rules examples](#customrulesexamples)
 
 ## <a id="intro"></a>Intro
@@ -45,9 +46,11 @@ Running ```PBIXInspectorWinForm.exe``` presents the user with the following inte
 
 1. Browse to your local PBI Desktop File in either the PBIP or PBIX file format. Alternately to try out the tool, select "Use sample".
 2. Either use the base rules file included in the application or select your own.
-3. Select an output directory to which the results will be written. Alternatively, select the "Use temp files" check box to write the resuls to a temporary folder.
-4. Select "Verbose" to output both test passes and fails, if left unselected then only failed test results will be reported.  
-5. Select "Run". The test run log messages are displayed at the bottom of the window. If "Use temp files" is selected along with the HTML output check box, then the browser will open to display the HTML results. 
+3. Use the "Browse" button to select an output directory to which the results will be written. Alternatively, select the "Use temp files" check box to write the resuls to a temporary folder that will be deleted upon exiting the application.
+4. Select output formats, either JSON or HTML or both. To simply view the test results in a formatted page select the HTML output.
+5. Select "Verbose" to output both test passes and fails, if left unselected then only failed test results will be reported.  
+6. Select "Run". The test run log messages are displayed at the bottom of the window. If "Use temp files" is selected (or the Output directory field is left blank) along with the HTML output check box, then the browser will open to display the HTML results.
+7. Any test run information, warnings or errors are displayed in the console output textbox.
 
 ## <a id="cli"></a>Run from the command line 
 
@@ -70,9 +73,23 @@ All command line parameters are as follows:
 
 ```-formats CONSOLE,JSON,HTML,PNG```: Optional. Comma-separated list of output formats. **CONSOLE** writes results to the console output, **JSON** writes results to a Json file, **HTML** writes results to a formatted Html page and **PNG** draws report pages wireframes clearly showing any failing visuals. If not specified "CONSOLE" will be used and results written to the console output only. If no output directory is specified and the HTML format is specified, then a browser page will be opened to display the HTML results.
 
-If run without any parameters PBIX inspector will use the sample PBIP and and base rules file under the build's "Files" directory:
+If run without any parameters PBIX inspector will use the sample PBIP and and base rules file under the application's "Files" directory:
 
 ```PBIXInspectorCLI.exe```
+
+## <a id="results"></a>Interpreting results
+
+Depending on user selections or CLI arguments, the output will consist of either a JSON file or an HTML document or both. If a verbose output was requested, then results for both test passes and failures will be reported. The JSON output is intended to be consumed by a subsequent process, for example a Power BI report may be created that uses the JSON file as a data source and visualises the PBI Inspector test results. The HTML page is a more readable format for humans which also includes report page wireframe images when tests are at the page level. These images are intended to help the user identify visuals that have failed the test such as the example image below. In this example both the coloured barChart and columnChart visuals have failed a given test. The PBI Inspector logo is also displayed at the centre of each failing visuals as an additional identification aid when the wireframe is busy. 
+
+![Wireframe with failures](DocsImages/WireframeWithFailures.png)
+
+Visuals with a dotted border are visuals hidden by default as the following example:
+
+![Wireframe with hidden visual](DocsImages/WireframeWithHiddenVisual.png)
+
+Finally please note that currently page wireframes are only created in a 16:9 aspect ratio so custom report page sizes including tooltip pages may not render as expeected as shown in the following tooltip page example. This will be addressed in a subsequent release.
+
+![Tooltip page with incorrect aspect ratio](DocsImages/TooltipPageWithIncorrectAspectRatio.png)
 
 ## <a id="customrulesexamples"></a>Custom Rules Examples
 
@@ -94,10 +111,6 @@ Besides the base rules defined at ```"Files\Base rules.json"```, see other rules
 
 ![Rules Example 4](DocsImages/RulesExample4.png)
 
-- Check the number of report pages (could also wrap this in a less than "<" test to ensure the number of pages in report are below a certain number for performance reasons for example) - showcasing the ability to express complex logic:
+- Check the number of report pages (this could also be wrapped in a less than "<" test to ensure the number of pages in report are below a certain number for performance reasons for example) - showcasing the ability to express complex logic:
 
 ![Rules Example 5](DocsImages/RulesExample5.png)
-
-Here's a sample console output:
-
-![Sample Output](DocsImages/SampleOutput.png)
