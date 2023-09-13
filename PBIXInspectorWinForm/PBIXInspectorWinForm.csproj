@@ -6,9 +6,9 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <FileVersion>1.6.2.0</FileVersion>
-    <AssemblyVersion>1.6.2</AssemblyVersion>
-    <VersionPrefix>1.6.2</VersionPrefix>
+    <FileVersion>1.6.3.0</FileVersion>
+    <AssemblyVersion>1.6.3</AssemblyVersion>
+    <VersionPrefix>1.6.3</VersionPrefix>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>pbiinspector.png</PackageIcon>
     <PackageProjectUrl>https://github.com/NatVanG/PBIXInspector</PackageProjectUrl>

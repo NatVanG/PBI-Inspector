@@ -5,9 +5,9 @@ namespace PBIXInspectorWinLibrary.Utils
     {
         public static CLIArgs ParseArgs(string[] args)
         {
-            const string PBIX = "-pbix", PBIP = "-pbip", RULES = "-rules", OUTPUT = "-output", FORMATS = "-formats", VERBOSE = "-verbose";
+            const string PBIX = "-pbix", PBIP = "-pbip", PBIPREPORT = "-pbipreport", RULES = "-rules", OUTPUT = "-output", FORMATS = "-formats", VERBOSE = "-verbose";
             const string TRUE = "true";
-            string[] validOptions = { PBIX, PBIP, RULES, OUTPUT, FORMATS, VERBOSE };
+            string[] validOptions = { PBIX, PBIP, PBIPREPORT, RULES, OUTPUT, FORMATS, VERBOSE };
             
             int index = 0;
             int maxindex = args.Length - 2;
@@ -25,7 +25,9 @@ namespace PBIXInspectorWinLibrary.Utils
                 }
             }
 
-            var pbiFilePath = dic.ContainsKey(PBIP) ? dic[PBIP] : (dic.ContainsKey(PBIX) ? dic[PBIX] : Constants.SamplePBIPFilePath); 
+            if (dic.ContainsKey(PBIP)) { throw new ArgumentException(string.Format("-pbip argument is deprecated, please use -pbipreport instead.")); }
+
+            var pbiFilePath = dic.ContainsKey(PBIPREPORT) ? dic[PBIPREPORT] : (dic.ContainsKey(PBIX) ? dic[PBIX] : Constants.SamplePBIPReportFilePath); 
             var rulesPath = dic.ContainsKey(RULES) ? dic[RULES] : Constants.SampleRulesFilePath;
             var outputPath = dic.ContainsKey(OUTPUT) ? dic[OUTPUT] : string.Empty;
             var verboseString = dic.ContainsKey(VERBOSE) ? dic[VERBOSE] : TRUE;

@@ -113,7 +113,7 @@ namespace PBIXInspectorWinForm
         {
             Clear();
             btnRun.Enabled = false;
-            var pbiFilePath = this.txtPBIDesktopFile.Text;
+            var pbiFilePath = !string.IsNullOrEmpty(this.txtPBIDesktopFile.Text) &&  this.txtPBIDesktopFile.Text.ToLower().EndsWith("report.json") ? Path.GetDirectoryName(this.txtPBIDesktopFile.Text) : this.txtPBIDesktopFile.Text;
             var rulesFilePath = this.txtRulesFilePath.Text;
             var outputPath = this.txtOutputDirPath.Text;
             var verboseString = this.chckVerbose.Checked.ToString();

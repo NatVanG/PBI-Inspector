@@ -1,0 +1,266 @@
+{
+  "pbiEntries": [
+    {
+        "name": "reportLayout",
+        "pbixEntryPath": "Report/Layout",
+        "pbipEntryPath": "Inventory sample.Report\\report.json",
+        "contentType": "json",
+        "codepage": 1200,
+      "rules": [
+        {
+            "name": "Sample - show visual axes titles",
+            "description":"Check that certain charts have both axes title showing.",
+            "disabled": false,
+            "forEachPath": "$.sections[*]",
+            "forEachPathName": "$.name",
+            "forEachPathDisplayName": "$.displayName",
+            "path": "$.visualContainers[*].config",
+            "pathErrorWhenNoMatch": true,
+            "test": [
+                {
+                  "map": [
+                    {
+                      "filter": [
+                        {
+                          "var": "q"
+                        },
+                        {
+                           "if": [
+                              { "in": [ { "var": "singleVisual.visualType" }, ["lineChart", "barChart", "columnChart", "clusteredBarChart"]] },
+                              { "==": [ {"==": [ { "var": "singleVisual.objects.categoryAxis.0.properties.showAxisTitle.expr.Literal.Value" }, { "var": "singleVisual.objects.valueAxis.0.properties.showAxisTitle.expr.Literal.Value" }]}, "true" ] },
+                              false
+                            ]
+                        }
+                      ]
+                    },
+                    {
+                      "var": "name"
+                    }
+                  ]
+                },
+                {
+                  "q": "."
+                },
+                []
+              ]
+          },
+          {
+            "name": "Sample - charts wider than tall",
+            "description": "Want to check that your charts are wider than tall?",
+            "disabled": false,
+            "forEachPath": "$.sections[*]",
+            "forEachPathName": "$.name",
+            "forEachPathDisplayName": "$.displayName",
+            "path": "$.visualContainers[*].config",
+            "pathErrorWhenNoMatch": false,
+            "test": [
+                {
+                  "map": [
+                    {
+                      "filter": [
+                        {
+                          "var": "q"
+                        },
+                        {
+                           "<":[{"var":"width"}, {"var":"height"}]
+                        }
+                      ]
+                    },
+                    {
+                      "var": "name"
+                    }
+                  ]
+                },
+                {
+                  "q": "."
+                },
+                []
+              ]
+          },
+        {
+          "name": "Sample - Number Of Report Pages",
+          "disabled": true,
+          "description": "Counts the number of pages in the report.",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "reduce": [
+                {
+                  "map": [
+                    { "var": "s" },
+                    {
+                      "if": [
+                        { "!!": [ { "var": "" } ] },
+                        1,
+                        0
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "+": [
+                    { "var": "current" },
+                    { "var": "accumulator" }
+                  ]
+                },
+                0
+              ]
+            },
+            {
+              "s": "/sections"
+            },
+            12
+          ]
+        },
+        
+        {
+          "name": "Sample - charts wider than tall OLD",
+          "disabled": true,
+          "path": "$.sections[*]",
+          "description": "Want to check that your charts are wider than tall?",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "all":[ {"var":"visuals"}, {">=":[{"var":"width"}, {"var":"height"}]}]
+            },
+            {
+              "page": "/displayName",
+              "visuals": "/visualContainers"
+            },
+            true
+          ]
+        },
+        {
+          "name": "Sample - drillFilterOtherVisuals",
+          "disabled": true,
+          "path": "$.sections[*].visualContainers[*].config",
+          "description": "check an interactivity setting",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "==": [
+                { "var": "drill" },
+                true
+              ]
+            },
+            {
+              "drill": "/singleVisual/drillFilterOtherVisuals"
+            },
+            true
+          ]
+        },
+        
+        {
+          "name": "Sample - ReportSlowDatasourceSettings",
+          "disabled": false,
+          "description": "Check that report slow data source settings are all disabled.",
+          "path": "$.config",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "!!": [
+                {
+                  "or": [
+                    {
+                      "var": "isCrossHighlightingDisabled"
+                    },
+                    {
+                      "var": "isSlicerSelectionsButtonEnabled"
+                    },
+                    {
+                      "var": "isFilterSelectionsButtonEnabled"
+                    },
+                    {
+                      "var": "isFieldWellButtonEnabled"
+                    },
+                    {
+                      "var": "isApplyAllButtonEnabled"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "isCrossHighlightingDisabled": "/slowDataSourceSettings/isCrossHighlightingDisabled",
+              "isSlicerSelectionsButtonEnabled": "/slowDataSourceSettings/isSlicerSelectionsButtonEnabled",
+              "isFilterSelectionsButtonEnabled": "/slowDataSourceSettings/isFilterSelectionsButtonEnabled",
+              "isFieldWellButtonEnabled": "/slowDataSourceSettings/isFieldWellButtonEnabled",
+              "isApplyAllButtonEnabled": "/slowDataSourceSettings/isApplyAllButtonEnabled"
+            },
+            true
+          ]
+        }
+      ]
+    },
+    {
+
+        "name": "reportLayout",
+        "pbixEntryPath": "Report/StaticResources/SharedResources/BaseThemes/CY20SU07.json",
+        "pbipEntryPath": "Inventory sample.Report\\report.json",
+        "contentType": "json",
+        "codepage": 65001,
+      "rules": [
+        {
+          "name": "Report theme name",
+          "disabled": true,
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "==": [
+                { "var": "n" },
+                "CY20SU07"
+              ]
+            },
+            {
+              "n": "/name"
+            },
+            true
+          ]
+        },
+        {
+          "name": "Report theme title font",
+          "disabled": true,
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {"and":
+            [{
+              "==": [
+                { "var": "foreground" },
+                "#252423"
+              ]
+            },
+            {
+              "==": [
+                { "var": "fontface" },
+                "DIN"
+              ]
+            },
+            {
+              ">=": [
+                { "var": "fontsize" },
+                10
+              ]
+            },
+            {
+              "<=": [
+                { "var": "fontsize" },
+                12
+              ]
+            }
+            ]
+          },
+            {
+              "foreground": "/foreground",
+              "fontface": "/textClasses/title/fontFace",
+              "fontsize": "/textClasses/title/fontSize"
+            },
+            true
+          ]
+        }
+      ]
+    }
+  ]
+}

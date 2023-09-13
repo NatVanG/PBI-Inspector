@@ -128,7 +128,7 @@ internal partial class Program
                 _insp.MessageIssued -= Insp_MessageIssued;
             }
 
-            if (_parsedArgs.DeleteOutputDirOnExit)
+            if (_parsedArgs != null && _parsedArgs.DeleteOutputDirOnExit)
             {
                 if (Directory.Exists(_parsedArgs.OutputDirPath)) Directory.Delete(_parsedArgs.OutputDirPath, true);
             }

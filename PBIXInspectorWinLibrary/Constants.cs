@@ -4,7 +4,7 @@ namespace PBIXInspectorWinLibrary
     public static class Constants
     {
         public const string SamplePBIXFilePath = @"Files\Inventory sample.pbix";
-        public const string SamplePBIPFilePath = @"Files\pbip\Inventory sample.pbip";
+        public const string SamplePBIPReportFilePath = @"Files\pbip\Inventory sample\Inventory sample.Report";
         public const string SampleRulesFilePath = @"Files\Base rules.json";
         public const string ReportPageFieldMapFilePath = @"Files\ReportPageFieldMap.json";
         public const string TestRunHTMLTemplate = @"Files\html\TestRunTemplate.html";

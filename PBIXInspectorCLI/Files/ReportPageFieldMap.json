@@ -3,7 +3,7 @@
     {
       "name": "reportLayout",
       "pbixEntryPath": "Report/Layout",
-      "pbipEntryPath": "Inventory sample.Report\\report.json",
+      "pbipEntryPath": "report.json",
       "contentType": "json",
       "codepage": 1200,
       "rules": [

@@ -51,6 +51,7 @@ namespace PBIXInspectorLibrary
             None,
             PBIX,
             PBIP,
+            PBIPReport,
             Other
         }
 
@@ -66,6 +67,11 @@ namespace PBIXInspectorLibrary
             if (PBIFilePath.ToLower().EndsWith(".pbip"))
             {
                 return PBIFileTypeEnum.PBIP;
+            }
+
+            if (PBIFilePath.ToLower().EndsWith(".report"))
+            {
+                return PBIFileTypeEnum.PBIPReport;
             }
 
             return PBIFileTypeEnum.Other;

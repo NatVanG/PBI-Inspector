@@ -44,7 +44,7 @@ Running ```PBIXInspectorWinForm.exe``` presents the user with the following inte
 
 ![WinForm 1](DocsImages/WinForm1.png)
 
-1. Browse to your local PBI Desktop File in either the PBIP or PBIX file format. Alternately to try out the tool, select "Use sample".
+1. Browse to your local PBI Desktop File in either the PBIP "report.json" or PBIX file "*.pbix" format. Alternately to try out the tool, select "Use sample".
 2. Either use the base rules file included in the application or select your own.
 3. Use the "Browse" button to select an output directory to which the results will be written. Alternatively, select the "Use temp files" check box to write the resuls to a temporary folder that will be deleted upon exiting the application.
 4. Select output formats, either JSON or HTML or both. To simply view the test results in a formatted page select the HTML output.
@@ -93,24 +93,136 @@ Finally please note that currently page wireframes are only created in a 16:9 as
 
 ## <a id="customrulesexamples"></a>Custom Rules Examples
 
-Besides the base rules defined at ```"Files\Base rules.json"```, see other rules examples below (included in the sample rules file at ```"Files\Inventory rules samples.json"```).
+*Please note that this section is not a guide to creating custom rules, just a very high-level overview and some examples for now. I intend to write such a guide in the near future.*
 
-- Check that certain types of charts have both axes titles displayed:
+A PBI Inspector test is written in json and is in in three parts:
+1. The [JSON Logic](https://json-everything.net/json-logic) rule
+2. Some data mapping logic
+3. The expected result
 
-![Rules Example 1](DocsImages/RulesExample1.png)
+Besides the base rules defined at ```"Files\Base rules.json"```, see other rules examples below (included in the sample rules file at ```"Files\Inventory rules samples.json"```). 
 
-- Check visuals interactivity setting:
+- Check that certain types of charts have both axes titles displayed (this is quite an old example, it would be better to have a page outer loop otherwise a test result is generated for each visual of the report):
 
-![Rules Example 2](DocsImages/RulesExample2.png)
+```
+ {
+            "name": "Sample - show visual axes titles",
+            "description":"Check that certain charts have both axes title showing.",
+            "disabled": false,
+            "forEachPath": "$.sections[*]",
+            "forEachPathName": "$.name",
+            "forEachPathDisplayName": "$.displayName",
+            "path": "$.visualContainers[*].config",
+            "pathErrorWhenNoMatch": true,
+            "test": [
+                {
+                  "map": [
+                    {
+                      "filter": [
+                        {
+                          "var": "q"
+                        },
+                        {
+                           "if": [
+                              { "in": [ { "var": "singleVisual.visualType" }, ["lineChart", "barChart", "columnChart", "clusteredBarChart"]] },
+                              { "==": [ {"==": [ { "var": "singleVisual.objects.categoryAxis.0.properties.showAxisTitle.expr.Literal.Value" }, { "var": "singleVisual.objects.valueAxis.0.properties.showAxisTitle.expr.Literal.Value" }]}, "true" ] },
+                              false
+                            ]
+                        }
+                      ]
+                    },
+                    {
+                      "var": "name"
+                    }
+                  ]
+                },
+                {
+                  "q": "."
+                },
+                []
+              ]
+          }
+```
+
+- Check that charts are wider than they are tall (for fun or seriously):
+
+```
+{
+            "name": "Sample - charts wider than tall",
+            "description": "Want to check that your charts are wider than tall?",
+            "disabled": false,
+            "forEachPath": "$.sections[*]",
+            "forEachPathName": "$.name",
+            "forEachPathDisplayName": "$.displayName",
+            "path": "$.visualContainers[*].config",
+            "pathErrorWhenNoMatch": false,
+            "test": [
+                {
+                  "map": [
+                    {
+                      "filter": [
+                        {
+                          "var": "q"
+                        },
+                        {
+                           "<":[{"var":"width"}, {"var":"height"}]
+                        }
+                      ]
+                    },
+                    {
+                      "var": "name"
+                    }
+                  ]
+                },
+                {
+                  "q": "."
+                },
+                []
+              ]
+          }
+```
 
 - Check that slow data source settings are all disabled:
 
-![Rules Example 3](DocsImages/RulesExample3.png)
-
-- Check report theme title font attributes:
-
-![Rules Example 4](DocsImages/RulesExample4.png)
-
-- Check the number of report pages (this could also be wrapped in a less than "<" test to ensure the number of pages in report are below a certain number for performance reasons for example) - showcasing the ability to express complex logic:
-
-![Rules Example 5](DocsImages/RulesExample5.png)
+```
+{
+          "name": "Sample - ReportSlowDatasourceSettings",
+          "disabled": true,
+          "description": "Check that report slow data source settings are all disabled.",
+          "path": "$.config",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "!!": [
+                {
+                  "or": [
+                    {
+                      "var": "isCrossHighlightingDisabled"
+                    },
+                    {
+                      "var": "isSlicerSelectionsButtonEnabled"
+                    },
+                    {
+                      "var": "isFilterSelectionsButtonEnabled"
+                    },
+                    {
+                      "var": "isFieldWellButtonEnabled"
+                    },
+                    {
+                      "var": "isApplyAllButtonEnabled"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "isCrossHighlightingDisabled": "/slowDataSourceSettings/isCrossHighlightingDisabled",
+              "isSlicerSelectionsButtonEnabled": "/slowDataSourceSettings/isSlicerSelectionsButtonEnabled",
+              "isFilterSelectionsButtonEnabled": "/slowDataSourceSettings/isFilterSelectionsButtonEnabled",
+              "isFieldWellButtonEnabled": "/slowDataSourceSettings/isFieldWellButtonEnabled",
+              "isApplyAllButtonEnabled": "/slowDataSourceSettings/isApplyAllButtonEnabled"
+            },
+            true
+          ]
+        }
+```

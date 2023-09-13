@@ -26,7 +26,7 @@ namespace PBIXInspectorTests
         [Test]
         public void TestCLIArgsUtilsSuccess_PBIPOption()
         {
-            string[] args = "-pbip pbipPath -rules rulesPath -verbose true".Split(" ");
+            string[] args = "-pbipreport pbipPath -rules rulesPath -verbose true".Split(" ");
             var parsedArgs = CLIArgsUtils.ParseArgs(args);
 
             Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath") && parsedArgs.RulesFilePath.Equals("rulesPath") && parsedArgs.Verbose);
@@ -35,7 +35,7 @@ namespace PBIXInspectorTests
         [Test]
         public void TestCLIArgsUtilsSuccess_VerboseOptionMissing()
         {
-            string[] args = "-pbip pbipPath -rules rulesPath".Split(" ");
+            string[] args = "-pbipreport pbipPath -rules rulesPath".Split(" ");
             var parsedArgs = CLIArgsUtils.ParseArgs(args);
 
             Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath") && parsedArgs.RulesFilePath.Equals("rulesPath") && parsedArgs.Verbose);
@@ -44,7 +44,7 @@ namespace PBIXInspectorTests
         [Test]
         public void TestCLIArgsUtilsSuccess_VerboseOptionFalse()
         {
-            string[] args = "-pbip pbipPath -rules rulesPath -verbose false".Split(" ");
+            string[] args = "-pbipreport pbipPath -rules rulesPath -verbose false".Split(" ");
             var parsedArgs = CLIArgsUtils.ParseArgs(args);
 
             Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath") && parsedArgs.RulesFilePath.Equals("rulesPath") && !parsedArgs.Verbose);
@@ -53,16 +53,16 @@ namespace PBIXInspectorTests
         [Test]
         public void TestCLIArgsUtilsSuccess_VerboseOptionUnparseable()
         {
-            string[] args = "-pbip pbipPath -rules rulesPath -verbose XYZ".Split(" ");
+            string[] args = "-pbipreport pbipPath -rules rulesPath -verbose XYZ".Split(" ");
             var parsedArgs = CLIArgsUtils.ParseArgs(args);
 
             Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath") && parsedArgs.RulesFilePath.Equals("rulesPath") && !parsedArgs.Verbose);
         }
 
         [Test]
-        public void TestCLIArgsUtilsSuccess_FavourPBIPOption()
+        public void TestCLIArgsUtilsSuccess_FavourPBIPReportOption()
         {
-            string[] args = "-pbix pbixPath -pbip pbipPath -rules rulesPath -verbose true".Split(" ");
+            string[] args = "-pbix pbixPath -pbipreport pbipPath -rules rulesPath -verbose true".Split(" ");
             var parsedArgs = CLIArgsUtils.ParseArgs(args);
 
             Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath") && parsedArgs.RulesFilePath.Equals("rulesPath"));
@@ -144,6 +144,16 @@ namespace PBIXInspectorTests
         public void TestCLIArgsUtilsThrows5()
         {
             string[] args = "-rules rulesPath -pbix pbixPath -other stuff".Split(" ");
+            CLIArgs? parsedArgs = null;
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+            () => parsedArgs = CLIArgsUtils.ParseArgs(args));
+        }
+
+        [Test]
+        public void TestCLIArgsUtilsThrows6()
+        {
+            string[] args = "-rules rulesPath -pbip pbipPath".Split(" ");
             CLIArgs? parsedArgs = null;
 
             ArgumentException ex = Assert.Throws<ArgumentException>(

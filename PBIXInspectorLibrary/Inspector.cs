@@ -77,12 +77,12 @@ namespace PBIXInspectorLibrary
 
         private PbiFile InitPbiFile(string pbiFilePath)
         {
-            if (!File.Exists(pbiFilePath))
-            {
-                throw new PBIXInspectorException(string.Format("The PBI file with path \"{0}\" does not exist.", pbiFilePath));
-            }
-            else
-            {
+            //if (!File.Exists(pbiFilePath))
+            //{
+            //    throw new PBIXInspectorException(string.Format("The PBI file with path \"{0}\" does not exist.", pbiFilePath));
+            //}
+            //else
+            //{
                 switch (PbiFile.PBIFileType(pbiFilePath))
                 {
                     case PbiFile.PBIFileTypeEnum.PBIX:
@@ -91,10 +91,12 @@ namespace PBIXInspectorLibrary
                     case PbiFile.PBIFileTypeEnum.PBIP:
                         return new PbipFile(pbiFilePath);
                         break;
+                    case PbiFile.PBIFileTypeEnum.PBIPReport:
+                        return new PbipReportFile(pbiFilePath);
                     default:
                         throw new PBIXInspectorException(string.Format("Could not determine the extension of PBI file with path \"{0}\".", pbiFilePath));
                 }
-            }
+            //}
         }
 
         private void AddCustomRulesToRegistry()
@@ -128,7 +130,26 @@ namespace PBIXInspectorLibrary
             {
                 foreach (var entry in this._inspectionRules.PbiEntries)
                 {
-                    var pbiEntryPath = pbiFile.FileType == PbiFile.PBIFileTypeEnum.PBIX ? entry.PbixEntryPath : entry.PbipEntryPath;
+                    string pbiEntryPath;
+
+                    switch  (pbiFile.FileType)
+                    {
+                        case PbiFile.PBIFileTypeEnum.PBIX:
+                            pbiEntryPath = entry.PbixEntryPath;
+                            break;
+                        case PbiFile.PBIFileTypeEnum.PBIPReport:
+                            pbiEntryPath = entry.PbipEntryPath;
+                            break;
+                        default:
+                            pbiEntryPath = null;
+                            break;
+                    }
+
+                    if (string.IsNullOrEmpty(pbiEntryPath))
+                    {
+                        OnMessageIssued(MessageTypeEnum.Error, string.Format("Could not determine file type for entry \"{0}\", resuming to next entry.", entry.Name));
+                        continue;
+                    }
                     using (Stream entryStream = pbiFile.GetEntryStream(pbiEntryPath))
                     {
                         if (entryStream == null)
