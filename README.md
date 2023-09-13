@@ -61,7 +61,9 @@ To inspect a PBIX file using the samples included in the [release files](https:/
 
 All command line parameters are as follows:
 
-```-pbip filepath```: Optional. The filepath of the Power BI Desktop file to be inspected. If not specified then the sample PBIP file at "Files\pbip\Inventory Sample.pbip" will be inspected.
+```-pbip filepath```: Deprecated. Please Use -pbipreport argument instead.
+
+```-pbipreport filepath```: the path to the PBIP ".Report" folder.
 
 ```-pbix filepath```: Optional. The filepath of the Power BI Desktop file to be inspected. If not specified then the sample PBIP file at "Files\Inventory Sample.pbix" will be inspected.
 
