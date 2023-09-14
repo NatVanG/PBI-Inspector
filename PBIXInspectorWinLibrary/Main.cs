@@ -22,7 +22,7 @@ namespace PBIXInspectorWinLibrary
             Inspector? _fieldMapInsp = null;
             IEnumerable<TestResult> _fieldMapResults = null;
 
-            OnMessageIssued(MessageTypeEnum.Information, string.Concat("Test run started at: ", DateTime.Now.ToLongTimeString()));
+            OnMessageIssued(MessageTypeEnum.Information, string.Concat("Test run started at (UTC): ", DateTime.Now.ToUniversalTime()));
 
             try
             {
@@ -31,18 +31,18 @@ namespace PBIXInspectorWinLibrary
 
                 _testResults = _insp.Inspect().Where(_ => (!_args.Verbose && !_.Pass) || (_args.Verbose));
 
-                if (_args.CONSOLEOutput)
+                if (_args.CONSOLEOutput || _args.ADOOutput)
                 {
                     foreach (var result in _testResults)
                     {
-                        OnMessageIssued(MessageTypeEnum.Information, result.Message);
+                        //TODO: use Test log type json property instead
+                        var msgType = result.Pass ? MessageTypeEnum.Information : MessageTypeEnum.Warning;
+                        OnMessageIssued(msgType, result.Message);
                     }
-
-                    Console.ResetColor();
                 }
 
                 //Ensure output dir exists
-                if (_args.JSONOutput || _args.HTMLOutput || _args.PNGOutput)
+                if (!_args.ADOOutput && (_args.JSONOutput || _args.HTMLOutput || _args.PNGOutput))
                 {
                     if (!Directory.Exists(_args.OutputDirPath))
                     {
@@ -50,7 +50,7 @@ namespace PBIXInspectorWinLibrary
                     }
                 }
 
-                if (_args.JSONOutput || _args.HTMLOutput)
+                if (!_args.ADOOutput && (_args.JSONOutput || _args.HTMLOutput))
                 {
                     var outputFilePath = string.Empty;
                     var pbiFileNameWOextension = Path.GetFileNameWithoutExtension(_args.PBIFilePath);
@@ -73,7 +73,7 @@ namespace PBIXInspectorWinLibrary
                     }
                 }
 
-                if (_args.PNGOutput || _args.HTMLOutput)
+                if (!_args.ADOOutput && (_args.PNGOutput || _args.HTMLOutput))
                 {
                     _fieldMapInsp = new Inspector(_args.PBIFilePath, Constants.ReportPageFieldMapFilePath);
                      _fieldMapResults = _fieldMapInsp.Inspect();
@@ -82,7 +82,7 @@ namespace PBIXInspectorWinLibrary
 
                     if (Directory.Exists(outputPNGDirPath))
                     {
-                        var eventArgs = RaiseWinMessage(MessageTypeEnum.Dialog, string.Format("Overwrite existing directory at \"{0}\"?", outputPNGDirPath));
+                        var eventArgs = RaiseWinMessage(MessageTypeEnum.Dialog, string.Format("Delete all existing directory content at \"{0}\"?", outputPNGDirPath));
                         if (eventArgs.DialogOKResponse)
                         {
                             Directory.Delete(outputPNGDirPath, true);
@@ -93,7 +93,7 @@ namespace PBIXInspectorWinLibrary
                     ImageUtils.DrawReportPages(_fieldMapResults, _testResults, outputPNGDirPath);
                 }
 
-                if (_args.HTMLOutput)
+                if (!_args.ADOOutput && _args.HTMLOutput)
                 {
                     string pbiinspectorlogobase64 = string.Concat(Constants.Base64ImgPrefix, ImageUtils.ConvertBitmapToBase64(Constants.PBIInspectorPNG));
                     //string nowireframebase64 = string.Concat(Base64ImgPrefix, ImageUtils.ConvertBitmapToBase64(@"Files\png\nowireframe.png"));
@@ -113,10 +113,6 @@ namespace PBIXInspectorWinLibrary
                         AppUtils.WinOpen(outputHTMLFilePath);
                     }
                 }
-
-                OnMessageIssued(MessageTypeEnum.Information, string.Concat("Test run completed at: ", DateTime.Now.ToLongTimeString()));
-
-                //TODO: add VSTS option like Tabular Editor BPA to communicate errors or warnings to the Azure DevOps step, see https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&tabs=bash#formatting-commands
             }
             catch (PBIXInspectorException e)
             {
@@ -130,21 +126,24 @@ namespace PBIXInspectorWinLibrary
             {
                 OnMessageIssued(MessageTypeEnum.Error, e.Message);
             }
+            finally
+            {
+                OnMessageIssued(MessageTypeEnum.Information, string.Concat("Test run completed at (UTC): ", DateTime.Now.ToUniversalTime()));
+            }
         }
 
-        public static void Dispose()
+        public static void CleanUp()
         {
             if (_insp != null)
             {
                 _insp.MessageIssued -= Insp_MessageIssued;
             }
 
-            if (_args.DeleteOutputDirOnExit)
+            if (_args != null && _args.DeleteOutputDirOnExit && Directory.Exists(_args.OutputDirPath))
             {
-                if (Directory.Exists(_args.OutputDirPath)) Directory.Delete(_args.OutputDirPath, true);
+                Directory.Delete(_args.OutputDirPath, true);
             }
         }
-
 
         private static void Insp_MessageIssued(object? sender, MessageIssuedEventArgs e)
         {

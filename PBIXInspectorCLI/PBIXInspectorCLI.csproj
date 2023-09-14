@@ -8,9 +8,9 @@
     <StartupObject>Program</StartupObject>
     <SignAssembly>False</SignAssembly>
     <IsPublishable>True</IsPublishable>
-    <FileVersion>1.6.3.0</FileVersion>
-    <AssemblyVersion>1.6.3</AssemblyVersion>
-    <VersionPrefix>1.6.3</VersionPrefix>
+    <FileVersion>1.7.0.0</FileVersion>
+    <AssemblyVersion>1.7.0</AssemblyVersion>
+    <VersionPrefix>1.7.0</VersionPrefix>
     <Version>$(VersionPrefix)</Version>
     <Product>$(AssembblyName)</Product>
     <ApplicationIcon>Files\icon\pbiinspector.ico</ApplicationIcon>

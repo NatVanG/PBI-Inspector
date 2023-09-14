@@ -276,7 +276,7 @@
             // 
             // openPBIDesktopFileDialog
             // 
-            openPBIDesktopFileDialog.Filter = "Power BI Project Report file (report.json)| report.json|Power BI Desktop file (*.pbix)|*.pbix|All Files (*.*)|*.*";
+            openPBIDesktopFileDialog.Filter = "Power BI Project Report file (report.json)|report.json|Power BI Desktop file (*.pbix)|*.pbix|All Files (*.*)|*.*";
             openPBIDesktopFileDialog.FileOk += openPBIDesktopFileDialog_FileOk;
             // 
             // openRulesFileDialog

@@ -113,7 +113,7 @@ namespace PBIXInspectorWinForm
         {
             Clear();
             btnRun.Enabled = false;
-            var pbiFilePath = !string.IsNullOrEmpty(this.txtPBIDesktopFile.Text) &&  this.txtPBIDesktopFile.Text.ToLower().EndsWith("report.json") ? Path.GetDirectoryName(this.txtPBIDesktopFile.Text) : this.txtPBIDesktopFile.Text;
+            var pbiFilePath = !string.IsNullOrEmpty(this.txtPBIDesktopFile.Text) && this.txtPBIDesktopFile.Text.ToLower().EndsWith("report.json") ? Path.GetDirectoryName(this.txtPBIDesktopFile.Text) : this.txtPBIDesktopFile.Text;
             var rulesFilePath = this.txtRulesFilePath.Text;
             var outputPath = this.txtOutputDirPath.Text;
             var verboseString = this.chckVerbose.Checked.ToString();
@@ -128,10 +128,7 @@ namespace PBIXInspectorWinForm
         internal void Clear()
         {
             txtConsoleOutput.Clear();
-            if (_args != null && _args.DeleteOutputDirOnExit && Directory.Exists(_args.OutputDirPath))
-            {
-                Directory.Delete(_args.OutputDirPath, true);
-            }
+            Main.CleanUp();
         }
 
         private void openPBIDesktopFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)

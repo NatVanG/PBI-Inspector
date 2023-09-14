@@ -449,7 +449,7 @@ namespace PBIXInspectorLibrary
                                             }
                                             else
                                             {
-                                                OnMessageIssued(MessageTypeEnum.Error, string.Format("Rule \"{0}\" - Could not evaluate json pointer \"{1}\".", rule.Name, value));
+                                                OnMessageIssued(MessageTypeEnum.Information, string.Format("Rule \"{0}\" - Could not evaluate json pointer \"{1}\".", rule.Name, value));
                                                 continue;
                                             }
                                         }

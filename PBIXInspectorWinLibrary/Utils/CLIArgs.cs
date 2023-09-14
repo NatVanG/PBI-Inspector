@@ -37,14 +37,17 @@ namespace PBIXInspectorWinLibrary.Utils
                 const string HTML = "HTML";
                 const string JSON = "JSON";
                 const string CONSOLE = "Console";
+                const string ADO = "ADO";
+
                 if (formats.Length > 0)
                 {
                     PNGOutput = formats.Contains(PNG, StringComparer.OrdinalIgnoreCase);
                     HTMLOutput = formats.Contains(HTML, StringComparer.OrdinalIgnoreCase);
                     JSONOutput = formats.Contains(JSON, StringComparer.OrdinalIgnoreCase);
+                    ADOOutput = formats.Contains(ADO, StringComparer.OrdinalIgnoreCase);
                 }
 
-                CONSOLEOutput = formats.Contains(CONSOLE, StringComparer.OrdinalIgnoreCase) || !(PNGOutput || HTMLOutput || JSONOutput);
+                CONSOLEOutput = formats.Contains(CONSOLE, StringComparer.OrdinalIgnoreCase) || !(PNGOutput || HTMLOutput || JSONOutput || ADOOutput);
             }
         }
 
@@ -53,6 +56,8 @@ namespace PBIXInspectorWinLibrary.Utils
         public bool HTMLOutput { get; private set;  }
 
         public bool JSONOutput { get; private set; }
+
+        public bool ADOOutput { get; private set; }
 
         public bool CONSOLEOutput { get; private set; }
 
