@@ -11,6 +11,34 @@ namespace PBIXInspectorWinLibrary
         public static event EventHandler<MessageIssuedEventArgs>? WinMessageIssued;
         private static Inspector? _insp = null;
         private static CLIArgs? _args = null;
+        private static int _errorCount = 0;
+        private static int _warningCount = 0;
+
+
+        public static int ErrorCount
+        {
+            get
+            {
+                return _errorCount;
+            }
+            private set
+            {
+                _errorCount = value;
+            }
+        }
+
+        public static int WarningCount
+        {
+            get
+            {
+                return _warningCount;
+            }
+            private set
+            {
+                _warningCount = value;
+            }
+        }
+
 
         public static void Run(CLIArgs args)
         {
@@ -36,7 +64,7 @@ namespace PBIXInspectorWinLibrary
                     foreach (var result in _testResults)
                     {
                         //TODO: use Test log type json property instead
-                        var msgType = result.Pass ? MessageTypeEnum.Information : MessageTypeEnum.Warning;
+                        var msgType = result.Pass ? MessageTypeEnum.Information : result.LogType;
                         OnMessageIssued(msgType, result.Message);
                     }
                 }
@@ -128,7 +156,7 @@ namespace PBIXInspectorWinLibrary
             }
             finally
             {
-                OnMessageIssued(MessageTypeEnum.Information, string.Concat("Test run completed at (UTC): ", DateTime.Now.ToUniversalTime()));
+                OnMessageIssued(MessageTypeEnum.Complete, string.Concat("Test run completed at (UTC): ", DateTime.Now.ToUniversalTime()));
             }
         }
 
@@ -147,14 +175,7 @@ namespace PBIXInspectorWinLibrary
 
         private static void Insp_MessageIssued(object? sender, MessageIssuedEventArgs e)
         {
-            OnInspMessageIssued(e);
-        }
-
-        private static MessageIssuedEventArgs RaiseMessage(MessageIssuedEventArgs e)
-        {
-            var args = e;
-            WinMessageIssued?.Invoke(null, args);
-            return args;
+            MessageIssued(e);
         }
 
         private static MessageIssuedEventArgs RaiseWinMessage(MessageTypeEnum messageType, string message)
@@ -167,11 +188,14 @@ namespace PBIXInspectorWinLibrary
         private static void OnMessageIssued(MessageTypeEnum messageType, string message)
         {
             var e = new MessageIssuedEventArgs(message, messageType);
-            OnInspMessageIssued(e);
+            MessageIssued(e);
         }
 
-        private static void OnInspMessageIssued(MessageIssuedEventArgs e)
+        private static void MessageIssued(MessageIssuedEventArgs e)
         {
+            if (e.MessageType == MessageTypeEnum.Error) ErrorCount++;
+            if (e.MessageType == MessageTypeEnum.Warning) WarningCount++;
+
             EventHandler<MessageIssuedEventArgs>? handler = WinMessageIssued;
             if (handler != null)
             {

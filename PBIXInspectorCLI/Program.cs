@@ -57,16 +57,25 @@ internal partial class Program
         }
         else
         {
+            //Console and ADO outputs
             if (!_parsedArgs.ADOOutput || (_parsedArgs.ADOOutput && (e.MessageType == MessageTypeEnum.Error || e.MessageType == MessageTypeEnum.Warning)))
             {
                 Console.WriteLine(FormatConsoleMessage(e.MessageType, e.Message));
+            }
+
+            //ADO output only
+            if (_parsedArgs.ADOOutput && e.MessageType == MessageTypeEnum.Complete)
+            {
+                string completionStatus = PBIXInspectorWinLibrary.Main.ErrorCount > 0 ? "Failed" : ((PBIXInspectorWinLibrary.Main.WarningCount > 0) ? "SucceededWithIssues" : "Succeeded");
+
+                Console.WriteLine(Constants.ADOCompleteTemplate, completionStatus);
             }
         }
     }
 
     private static String FormatConsoleMessage(MessageTypeEnum messageType, string message)
     {
-        string template = _parsedArgs.ADOOutput ? Constants.ADOMsgTemplate : "{0}";
+        string template = _parsedArgs.ADOOutput ? Constants.ADOLogIssueTemplate : "{0}";
         string msgType = _parsedArgs.ADOOutput ? messageType.ToString().ToLower() : messageType.ToString();
         string msgSeparator = _parsedArgs.ADOOutput ? "" : ": ";
         string messageTypeFormat = string.Format(template,msgType);

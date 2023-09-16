@@ -10,6 +10,8 @@ namespace PBIXInspectorLibrary.Output
 
         public string? RuleDescription { get; set; }
 
+        public MessageTypeEnum LogType { get; set; }
+
         public string? ParentName { get; set; }
 
         public string? ParentDisplayName { get; set; }

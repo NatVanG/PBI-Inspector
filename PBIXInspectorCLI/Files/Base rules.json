@@ -10,6 +10,7 @@
         {
           "name": "Remove custom visuals which are not used in the report.",
           "description": "Returns an array of custom visual names to be removed if any.",
+          "logType": "warning",
           "disabled": false,
           "path": "$",
           "pathErrorWhenNoMatch": false,
@@ -69,6 +70,7 @@
         {
           "name": "Reduce the number of visible visuals on the page",
           "description": "Reports a test fail if the rule's maximum number of visible visuals on the page is exceeded. By default the base rules file specifies 10 as the maximum, set the paramMaxVisualsPerPage parameter to change this.",
+          "logType": "warning",
           "disabled": false,
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
@@ -112,6 +114,7 @@
         {
           "name": "Reduce the number of objects within visuals",
           "description": "Reports a test fail if the rule's maximum number of objects within visuals on a page is exceeded. An object is a data field that is assigned to a visual. By default, the base rules file specifies 4 as the maximum objects within a visual.",
+          "logType":  "warning",
           "disabled": false,
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
@@ -154,6 +157,7 @@
         {
           "name": "Reduce usage of TopN filtering visuals by page",
           "description": "Reports a test fail if the rule's maximum number of visuals using TopN filtering on a the page is exceeded. By default the base rules file specifies 2 as the maximum objects within a visual, set the paramMaxTopNFilteringPerPage to change this.",
+          "logType": "warning",
           "disabled": false,
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
@@ -204,6 +208,7 @@
         {
           "name": "Reduce usage of Advanced filtering visuals by page",
           "description": "Reports a test fail if the rule's maximum number of visuals using Advanced filtering on a the page is exceeded. By default, the base rules file specifies 2 as the maximum objects within a visual, set the paramMaxAdvancedFilteringVisualsPerPage parameter value to change this.",
+          "logType": "warning",
           "disabled": false,
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
@@ -254,6 +259,7 @@
         {
           "name": "Reduce number of pages per report",
           "description": "Reports a test fail if the rule's maximum number of pages per report is exceeded. By default, the base rules file specifies 10 as the maximum number of pages. Set the paramMaxNumberOfPagesPerReport parameter to change this.",
+          "logType": "warning",
           "disabled": false,
           "path": "$",
           "pathErrorWhenNoMatch": true,
@@ -282,6 +288,7 @@
         {
           "name": "Avoid setting ‘Show items with no data’ on columns",
           "description": "Returns an array of visual names which have the option ‘Show items with no data’ enabled on one or more columns. To disable this rule, mark it as disabled in the base rules file.",
+          "logType": "warning",
           "disabled": false,
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
@@ -331,6 +338,7 @@
         {
           "name": "Tooltip and Drillthrough pages should be hidden",
           "description": "Reports a test fail if a page of type Tooltip or Drillthrough is visible. To disable this rule, mark it as disabled in the base rules file.",
+          "logType": "warning",
           "disabled": false,
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
@@ -377,7 +385,8 @@
         {
           "name": "Rule Template",
           "description": "Rule template",
-          "disabled":  true,
+          "disabled": true,
+          "logType": "warning",
           "path": "$",
           "pathErrorWhenNoMatch": false,
           "test": [

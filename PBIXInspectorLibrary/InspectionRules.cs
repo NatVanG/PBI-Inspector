@@ -40,6 +40,8 @@
 
         public bool Disabled { get; set; }
 
+        public string LogType { get; set; }
+
         public string ForEachPath { get; set; }
 
         public string ForEachPathName { get; set; }

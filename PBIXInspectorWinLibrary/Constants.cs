@@ -16,9 +16,9 @@ namespace PBIXInspectorWinLibrary
         public const string Base64ImgPrefix = @"data:image/png;base64,";
         public const string DefaultVisOpsFolder = "VisOps";
         public const string PNGOutputDir = "PBIInspectorPNG";
-        public const string ADOMsgTemplate = "##vso[task.logissue type={0};]";
+        public const string ADOLogIssueTemplate = "##vso[task.logissue type={0};]"; //warning|error
+        public const string ADOCompleteTemplate = "##vso[task.complete result={0};]DONE";//Failed|SucceededWithIssues|Succeeded
         public const string GitHubMsgTemplate = "::{0}::";
-
         public const string ReadmePageUrl = "https://github.com/NatVanG/PBIXInspector/blob/main/README.md";
         public const string LicensePageUrl = "https://github.com/NatVanG/PBIXInspector/blob/main/LICENSE";
     }

@@ -224,15 +224,15 @@ namespace PBIXInspectorLibrary
                                                     //var jruleresult = jrule.Apply(newdata, contextNodeArray);
                                                     var jruleresult = jrule.Apply(newdata);
                                                     result = rule.Test.Expected.IsEquivalentTo(jruleresult);
-
+                                                    var ruleLogType = ConvertRuleLogType(rule.LogType);
                                                     string resultString = string.Concat("\"", strForEachDisplayName, "\" - ", string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty));
 
                                                     //yield return new TestResult { RuleName = rule.Name, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult};
-                                                    testResults.Add(new TestResult { RuleName = rule.Name, RuleDescription = rule.Description, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
+                                                    testResults.Add(new TestResult { RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
                                                 }
                                                 catch (PBIXInspectorException e)
                                                 {
-                                                    testResults.Add(new TestResult { RuleName = rule.Name, RuleDescription = rule.Description, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
+                                                    testResults.Add(new TestResult { RuleName = rule.Name, LogType = MessageTypeEnum.Error, RuleDescription = rule.Description, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
                                                     continue;
                                                 }
                                             }
@@ -256,14 +256,15 @@ namespace PBIXInspectorLibrary
                                                     //var jruleresult = jrule.Apply(newdata, contextNodeArray);
                                                     var jruleresult = jrule.Apply(newdata);
                                                     result = rule.Test.Expected.IsEquivalentTo(jruleresult);
+                                                    var ruleLogType = ConvertRuleLogType(rule.LogType);
                                                     string resultString = string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty);
 
                                                     //yield return new TestResult { RuleName = rule.Name, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult };
-                                                    testResults.Add(new TestResult { RuleName = rule.Name, RuleDescription = rule.Description, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
+                                                    testResults.Add(new TestResult { RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
                                                 }
                                                 catch (PBIXInspectorException e)
                                                 {
-                                                    testResults.Add(new TestResult { RuleName = rule.Name, RuleDescription = rule.Description, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
+                                                    testResults.Add(new TestResult { RuleName = rule.Name, LogType = MessageTypeEnum.Error, RuleDescription = rule.Description, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
                                                     continue;
                                                 }
                                             }
@@ -287,6 +288,28 @@ namespace PBIXInspectorLibrary
             }
 
             return testResults; 
+        }
+
+        private MessageTypeEnum ConvertRuleLogType(string ruleLogType)
+        {
+            if (string.IsNullOrEmpty(ruleLogType)) return MessageTypeEnum.Warning;
+
+            MessageTypeEnum logType;
+
+            switch (ruleLogType.ToLower().Trim())
+            {
+                case "error":
+                    logType = MessageTypeEnum.Error;
+                    break;
+                case "warning":
+                    logType = MessageTypeEnum.Warning;
+                    break;
+                default:
+                    logType = MessageTypeEnum.Warning;
+                    break;
+            }
+
+            return logType;
         }
 
         private JsonArray ConvertToJsonArray(List<JToken>? tokens)
@@ -384,7 +407,7 @@ namespace PBIXInspectorLibrary
 
             if (tokens == null || tokens.Count() == 0)
             {
-                var msgType = rulePathErrorWhenNoMatch ? MessageTypeEnum.Error : MessageTypeEnum.Warning;
+                var msgType = rulePathErrorWhenNoMatch ? MessageTypeEnum.Error : MessageTypeEnum.Information;
                 OnMessageIssued(msgType, string.Format("Rule \"{0}\" with JPath \"{1}\" did not return any tokens.", ruleName, rulePath));
             }
 
