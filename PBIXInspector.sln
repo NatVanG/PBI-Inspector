@@ -26,6 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsImages", "DocsImages", 
 		DocsImages\TooltipPageWithIncorrectAspectRatio.png = DocsImages\TooltipPageWithIncorrectAspectRatio.png
 		DocsImages\WinForm1.png = DocsImages\WinForm1.png
 		DocsImages\WireframeWithFailures.png = DocsImages\WireframeWithFailures.png
+		DocsImages\WireframeChartsWiderThanTall.png = DocsImages\WireframeChartsWiderThanTall.png
 		DocsImages\WireframeWithHiddenVisual.png = DocsImages\WireframeWithHiddenVisual.png
 	EndProjectSection
 EndProject

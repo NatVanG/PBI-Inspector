@@ -11,7 +11,9 @@
 - [Graphical user interface](#gui)
 - [Command line](#cli)
 - [Interpreting results](#results)
+- [Known issues](#knownissues)
 - [Custom rules examples](#customrulesexamples)
+
 
 ## <a id="intro"></a>Intro
 
@@ -44,7 +46,7 @@ Running ```PBIXInspectorWinForm.exe``` presents the user with the following inte
 
 ![WinForm 1](DocsImages/WinForm1.png)
 
-1. Browse to your local PBI Desktop File in either the PBIP "report.json" or PBIX file "*.pbix" format. Alternately to try out the tool, select "Use sample".
+1. Browse to your local PBI Desktop File, either the PBIP "report.json" file or the PBIX file i.e. "*.pbix". Alternatively to try out the tool, select "Use sample".
 2. Either use the base rules file included in the application or select your own.
 3. Use the "Browse" button to select an output directory to which the results will be written. Alternatively, select the "Use temp files" check box to write the resuls to a temporary folder that will be deleted upon exiting the application.
 4. Select output formats, either JSON or HTML or both. To simply view the test results in a formatted page select the HTML output.
@@ -54,16 +56,16 @@ Running ```PBIXInspectorWinForm.exe``` presents the user with the following inte
 
 ## <a id="cli"></a>Run from the command line 
 
-To inspect a PBIP file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: ```PBIXInspectorCLI.exe -pbip "Files\pbip\Inventory sample.pbip" -rules "Files\Base rules.json"```
+To inspect a PBIP file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: ```PBIXInspectorCLI.exe -pbipreport "Files\pbip\Inventory sample.pbip" -rules "Files\Base rules.json"```
 
 To inspect a PBIX file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: 
 ```PBIXInspectorCLI.exe -pbix "Files\Inventory Sample.pbix" -rules "Files\Base rules.json"```
 
 All command line parameters are as follows:
 
-```-pbip filepath```: Deprecated. Please Use -pbipreport argument instead.
+```-pbip filepath```: Deprecated. Please use -pbipreport argument instead.
 
-```-pbipreport filepath```: the path to the PBIP ".Report" folder.
+```-pbipreport filepath```: The path to the PBIP's "*.Report" folder.
 
 ```-pbix filepath```: Optional. The filepath of the Power BI Desktop file to be inspected. If not specified then the sample PBIP file at "Files\Inventory Sample.pbix" will be inspected.
 
@@ -73,15 +75,20 @@ All command line parameters are as follows:
 
 ```-output directorypath```: Optional. Writes results to the specified directory, any existing files will be overwritten. If not supplied then a temporary directory will be created in the user's temporary files folder. 
 
-```-formats CONSOLE,JSON,HTML,PNG```: Optional. Comma-separated list of output formats. **CONSOLE** writes results to the console output, **JSON** writes results to a Json file, **HTML** writes results to a formatted Html page and **PNG** draws report pages wireframes clearly showing any failing visuals. If not specified "CONSOLE" will be used and results written to the console output only. If no output directory is specified and the HTML format is specified, then a browser page will be opened to display the HTML results.
+```-formats CONSOLE,JSON,HTML,PNG,ADO```: Optional. Comma-separated list of output formats. 
+- **CONSOLE** (default) writes results to the console output. If "-formats" is not specified then "CONSOLE" will be used by default.
+- **JSON** writes results to a Json file.
+- **HTML** writes results to a formatted Html page. If no output directory is specified and the HTML format is specified, then a browser page will be opened to display the HTML results. When specifying "HTML" format, report page wireframe images will be created so there is no need to also include the "PNG" format. 
+- **PNG** draws report pages wireframes clearly showing any failing visuals. 
+- **ADO** outputs Azure DevOps compatible task commands for use in a deployment pipeline. Task commands issued are "task.logissue" and "task.complete", see https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&tabs=bash#task-commands. PBI Inspector rules definition can be given a "logType" attribute of either "warning" or "error" which will be passed to the Azure DevOps task command as follows: ```##vso[task.logissue type=warning|error]```. When specifying "ADO" all other output format types will be ignored.
 
-If run without any parameters PBIX inspector will use the sample PBIP and and base rules file under the application's "Files" directory:
+If run without arguments, PBIX inspector will use the sample PBIP file and the base rules file under the application's "Files" directory:
 
 ```PBIXInspectorCLI.exe```
 
 ## <a id="results"></a>Interpreting results
 
-Depending on user selections or CLI arguments, the output will consist of either a JSON file or an HTML document or both. If a verbose output was requested, then results for both test passes and failures will be reported. The JSON output is intended to be consumed by a subsequent process, for example a Power BI report may be created that uses the JSON file as a data source and visualises the PBI Inspector test results. The HTML page is a more readable format for humans which also includes report page wireframe images when tests are at the page level. These images are intended to help the user identify visuals that have failed the test such as the example image below. In this example both the coloured barChart and columnChart visuals have failed a given test. The PBI Inspector logo is also displayed at the centre of each failing visuals as an additional identification aid when the wireframe is busy. 
+Depending on user selections or CLI arguments, the output will consist of either a JSON file or an HTML document or both. If a verbose output was requested, then results for both test passes and failures will be reported. The JSON output is intended to be consumed by a subsequent process, for example a Power BI report may be created that uses the JSON file as a data source and visualises the PBI Inspector test results. The HTML page is a more readable format for humans which also includes report page wireframe images when tests are at the page level. These images are intended to help the user identify visuals that have failed the test such as the example image below. The PBI Inspector logo is also displayed at the centre of each failing visuals as an additional identification aid when the wireframe is busy. 
 
 ![Wireframe with failures](DocsImages/WireframeWithFailures.png)
 
@@ -89,9 +96,11 @@ Visuals with a dotted border are visuals hidden by default as the following exam
 
 ![Wireframe with hidden visual](DocsImages/WireframeWithHiddenVisual.png)
 
-Finally please note that currently page wireframes are only created in a 16:9 aspect ratio so custom report page sizes including tooltip pages may not render as expeected as shown in the following tooltip page example. This will be addressed in a subsequent release.
+## <a id="knownissues"></a>Known issues
 
-![Tooltip page with incorrect aspect ratio](DocsImages/TooltipPageWithIncorrectAspectRatio.png)
+-  Currently page wireframes are only created in a 16:9 aspect ratio so custom report page sizes including tooltip pages may not render as expected as shown in the following tooltip page example. See tooltip page example below:
+ 
+ ![Tooltip page with incorrect aspect ratio](DocsImages/TooltipPageWithIncorrectAspectRatio.png)
 
 ## <a id="customrulesexamples"></a>Custom Rules Examples
 
@@ -108,123 +117,167 @@ Besides the base rules defined at ```"Files\Base rules.json"```, see other rules
 
 ```
  {
-            "name": "Sample - show visual axes titles",
-            "description":"Check that certain charts have both axes title showing.",
-            "disabled": false,
-            "forEachPath": "$.sections[*]",
-            "forEachPathName": "$.name",
-            "forEachPathDisplayName": "$.displayName",
-            "path": "$.visualContainers[*].config",
-            "pathErrorWhenNoMatch": true,
-            "test": [
-                {
-                  "map": [
-                    {
-                      "filter": [
+                    "name": "Show visual axes title",
+                    "description": "Check that certain charts have both axes title showing.",
+                    "disabled": false,
+                    "logType": "warning",
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*].config",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
                         {
-                          "var": "q"
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                            "var": "visualsConfigArray"
+                                        },
+                                        {
+                                            "and": [
+                                                {
+                                                    "in": [
+                                                        {
+                                                            "var": "singleVisual.visualType"
+                                                        },
+                                                        [
+                                                            "lineChart",
+                                                            "barChart",
+                                                            "columnChart",
+                                                            "clusteredBarChart",
+                                                            "stackedBarChart"
+                                                        ]
+                                                    ]
+                                                },
+                                                {
+                                                    "or": [
+                                                        {
+                                                            "==": [
+                                                                {
+                                                                    "var": "singleVisual.objects.categoryAxis.0.properties.showAxisTitle.expr.Literal.Value"
+                                                                },
+                                                                "false"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "==": [
+                                                                {
+                                                                    "var": "singleVisual.objects.valueAxis.0.properties.showAxisTitle.expr.Literal.Value"
+                                                                },
+                                                                "false"
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "var": "name"
+                                }
+                            ]
                         },
                         {
-                           "if": [
-                              { "in": [ { "var": "singleVisual.visualType" }, ["lineChart", "barChart", "columnChart", "clusteredBarChart"]] },
-                              { "==": [ {"==": [ { "var": "singleVisual.objects.categoryAxis.0.properties.showAxisTitle.expr.Literal.Value" }, { "var": "singleVisual.objects.valueAxis.0.properties.showAxisTitle.expr.Literal.Value" }]}, "true" ] },
-                              false
-                            ]
-                        }
-                      ]
-                    },
-                    {
-                      "var": "name"
-                    }
-                  ]
-                },
-                {
-                  "q": "."
-                },
-                []
-              ]
-          }
+                            "visualsConfigArray": "."
+                        },
+                        []
+                    ]
+                }
 ```
 
 - Check that charts are wider than they are tall (for fun or seriously):
 
 ```
 {
-            "name": "Sample - charts wider than tall",
-            "description": "Want to check that your charts are wider than tall?",
-            "disabled": false,
-            "forEachPath": "$.sections[*]",
-            "forEachPathName": "$.name",
-            "forEachPathDisplayName": "$.displayName",
-            "path": "$.visualContainers[*].config",
-            "pathErrorWhenNoMatch": false,
-            "test": [
-                {
-                  "map": [
-                    {
-                      "filter": [
+                    "name": "Charts wider than tall",
+                    "description": "Want to check that your charts are wider than tall?",
+                    "disabled": false,
+                    "logType": "warning",
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*].config",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
                         {
-                          "var": "q"
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                            "var": "visualsConfigArray"
+                                        },
+                                        {
+                                            "<": [
+                                                {
+                                                    "var": "layouts.0.position.width"
+                                                },
+                                                {
+                                                    "var": "layouts.0.position.height"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "var": "name"
+                                }
+                            ]
                         },
                         {
-                           "<":[{"var":"width"}, {"var":"height"}]
-                        }
-                      ]
-                    },
-                    {
-                      "var": "name"
-                    }
-                  ]
-                },
-                {
-                  "q": "."
-                },
-                []
-              ]
-          }
+                            "visualsConfigArray": "."
+                        },
+                        []
+                    ]
+}
 ```
+
+Example output:
+![Charts wider than tall test output](DocsImages/WireframeChartsWiderThanTall.png)
 
 - Check that slow data source settings are all disabled:
 
 ```
 {
-          "name": "Sample - ReportSlowDatasourceSettings",
-          "disabled": true,
-          "description": "Check that report slow data source settings are all disabled.",
-          "path": "$.config",
-          "pathErrorWhenNoMatch": true,
-          "test": [
-            {
-              "!!": [
-                {
-                  "or": [
-                    {
-                      "var": "isCrossHighlightingDisabled"
-                    },
-                    {
-                      "var": "isSlicerSelectionsButtonEnabled"
-                    },
-                    {
-                      "var": "isFilterSelectionsButtonEnabled"
-                    },
-                    {
-                      "var": "isFieldWellButtonEnabled"
-                    },
-                    {
-                      "var": "isApplyAllButtonEnabled"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "isCrossHighlightingDisabled": "/slowDataSourceSettings/isCrossHighlightingDisabled",
-              "isSlicerSelectionsButtonEnabled": "/slowDataSourceSettings/isSlicerSelectionsButtonEnabled",
-              "isFilterSelectionsButtonEnabled": "/slowDataSourceSettings/isFilterSelectionsButtonEnabled",
-              "isFieldWellButtonEnabled": "/slowDataSourceSettings/isFieldWellButtonEnabled",
-              "isApplyAllButtonEnabled": "/slowDataSourceSettings/isApplyAllButtonEnabled"
-            },
-            true
-          ]
-        }
+                    "name": "Sample - ReportSlowDatasourceSettings",
+                    "disabled": false,
+                    "logType": "warning",
+                    "description": "Check that report slow data source settings are all disabled.",
+                    "path": "$.config",
+                    "pathErrorWhenNoMatch": true,
+                    "test": [
+                        {
+                            "!": [
+                                {
+                                    "or": [
+                                        {
+                                            "var": "isCrossHighlightingDisabled"
+                                        },
+                                        {
+                                            "var": "isSlicerSelectionsButtonEnabled"
+                                        },
+                                        {
+                                            "var": "isFilterSelectionsButtonEnabled"
+                                        },
+                                        {
+                                            "var": "isFieldWellButtonEnabled"
+                                        },
+                                        {
+                                            "var": "isApplyAllButtonEnabled"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "isCrossHighlightingDisabled": "/slowDataSourceSettings/isCrossHighlightingDisabled",
+                            "isSlicerSelectionsButtonEnabled": "/slowDataSourceSettings/isSlicerSelectionsButtonEnabled",
+                            "isFilterSelectionsButtonEnabled": "/slowDataSourceSettings/isFilterSelectionsButtonEnabled",
+                            "isFieldWellButtonEnabled": "/slowDataSourceSettings/isFieldWellButtonEnabled",
+                            "isApplyAllButtonEnabled": "/slowDataSourceSettings/isApplyAllButtonEnabled"
+                        },
+                        true
+                    ]
+}
 ```
