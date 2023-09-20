@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /PBIXInspectorCLI/Properties/launchSettings.json
 /PBIXInspectorCLI/Files/pbip/.gitignore
 /PBIXInspectorTests/Files/pbip/.gitignore
+/PBIXInspectorCLI/Properties/PublishProfiles/FolderProfile.pubxml
