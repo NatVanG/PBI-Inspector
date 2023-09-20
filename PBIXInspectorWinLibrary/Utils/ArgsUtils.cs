@@ -1,9 +1,9 @@
 ﻿
 namespace PBIXInspectorWinLibrary.Utils
 {
-    public class CLIArgsUtils
+    public class ArgsUtils
     {
-        public static CLIArgs ParseArgs(string[] args)
+        public static Args ParseArgs(string[] args)
         {
             const string PBIX = "-pbix", PBIP = "-pbip", PBIPREPORT = "-pbipreport", RULES = "-rules", OUTPUT = "-output", FORMATS = "-formats", VERBOSE = "-verbose";
             const string TRUE = "true";
@@ -14,9 +14,11 @@ namespace PBIXInspectorWinLibrary.Utils
             var dic = new Dictionary<string, string>();
             while (index <= maxindex)
             {
-                if (args[index].StartsWith("-") && validOptions.Contains(args[index]))
+                if (args[index].StartsWith("-") && validOptions.Contains(args[index], StringComparer.OrdinalIgnoreCase))
                 {
-                    dic.Add(args[index], args[index + 1]);
+                    var argName = args[index].ToLower();
+                    var argValue = args[index + 1];
+                    dic.Add(argName.ToLower(), argValue.ToLower());
                     index += 2;
                 }
                 else
@@ -27,15 +29,23 @@ namespace PBIXInspectorWinLibrary.Utils
 
             if (dic.ContainsKey(PBIP)) { throw new ArgumentException(string.Format("-pbip argument is deprecated, please use -pbipreport instead.")); }
 
-            var pbiFilePath = dic.ContainsKey(PBIPREPORT) ? dic[PBIPREPORT] : (dic.ContainsKey(PBIX) ? dic[PBIX] : Constants.SamplePBIPReportFilePath); 
+            var pbiFilePath = dic.ContainsKey(PBIPREPORT) ? dic[PBIPREPORT] : (dic.ContainsKey(PBIX) ? dic[PBIX] : Constants.SamplePBIPReportFolderPath); 
+            pbiFilePath = ResolvePbiFilePathInput(pbiFilePath);
             var rulesPath = dic.ContainsKey(RULES) ? dic[RULES] : Constants.SampleRulesFilePath;
             var outputPath = dic.ContainsKey(OUTPUT) ? dic[OUTPUT] : string.Empty;
             var verboseString = dic.ContainsKey(VERBOSE) ? dic[VERBOSE] : TRUE;
             var formatsString = dic.ContainsKey(FORMATS) ? dic[FORMATS] : string.Empty;
 
-            return new CLIArgs { PBIFilePath = pbiFilePath, RulesFilePath = rulesPath, OutputPath = outputPath, FormatsString = formatsString,  VerboseString = verboseString};
+            return new Args { PBIFilePath = pbiFilePath, RulesFilePath = rulesPath, OutputPath = outputPath, FormatsString = formatsString,  VerboseString = verboseString};
         }
 
-        
+        public static string? ResolvePbiFilePathInput(string pbiFilePath)
+        {
+            var resolvedPath = !string.IsNullOrEmpty(pbiFilePath) && pbiFilePath.ToLower().EndsWith(Constants.PBIPReportJsonFileName) 
+                               ? Path.GetDirectoryName(pbiFilePath) 
+                               : pbiFilePath;
+
+            return resolvedPath;
+        }
     }
 }

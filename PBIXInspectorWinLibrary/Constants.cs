@@ -3,10 +3,11 @@ namespace PBIXInspectorWinLibrary
 {
     public static class Constants
     {
-        public const string SamplePBIXFilePath = @"Files\Inventory sample.pbix";
-        public const string SamplePBIPReportFilePath = @"Files\pbip\Inventory sample\Inventory sample.Report";
+        public const string SamplePBIPReportFolderPath = @"Files\pbip\Inventory sample.Report";
+        public const string SamplePBIPReportFilePath = @"Files\pbip\Inventory sample.Report\report.json";
         public const string SampleRulesFilePath = @"Files\Base rules.json";
         public const string ReportPageFieldMapFilePath = @"Files\ReportPageFieldMap.json";
+        public const string PBIPReportJsonFileName = "report.json";
         public const string TestRunHTMLTemplate = @"Files\html\TestRunTemplate.html";
         public const string PBIInspectorPNG = @"Files\icon\pbiinspector.png";
         public const string TestRunHTMLFileName = "TestRun.html";

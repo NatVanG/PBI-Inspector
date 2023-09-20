@@ -123,7 +123,7 @@ public class SuiteRunner
     
 
     [TestCaseSource(nameof(SampleSuite))]
-    public void RunSanple(TestResult testResult)
+    public void RunSample(TestResult testResult)
     {
         Assert.True(testResult.Pass, testResult.Message);
     }

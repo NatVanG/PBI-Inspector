@@ -1,7 +1,7 @@
 ﻿
 namespace PBIXInspectorWinLibrary.Utils
 {
-    public class CLIArgs
+    public class Args
     {
         public string? PBIFilePath { get; set; }
 

@@ -261,7 +261,7 @@
           "description": "Reports a test fail if the rule's maximum number of pages per report is exceeded. By default, the base rules file specifies 10 as the maximum number of pages. Set the paramMaxNumberOfPagesPerReport parameter to change this.",
           "logType": "warning",
           "disabled": false,
-          "path": "$",
+          "path": "$.sections",
           "pathErrorWhenNoMatch": true,
           "test": [
             {
@@ -279,7 +279,7 @@
               ]
             },
             {
-              "s": "/sections",
+              "s": ".",
               "paramMaxNumberOfPagesPerReport": 10
             },
             true

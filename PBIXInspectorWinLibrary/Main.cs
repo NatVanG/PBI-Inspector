@@ -10,7 +10,7 @@ namespace PBIXInspectorWinLibrary
     {
         public static event EventHandler<MessageIssuedEventArgs>? WinMessageIssued;
         private static Inspector? _insp = null;
-        private static CLIArgs? _args = null;
+        private static Args? _args = null;
         private static int _errorCount = 0;
         private static int _warningCount = 0;
 
@@ -40,7 +40,7 @@ namespace PBIXInspectorWinLibrary
         }
 
 
-        public static void Run(CLIArgs args)
+        public static void Run(Args args)
         {
             _args = args;
 
@@ -96,7 +96,7 @@ namespace PBIXInspectorWinLibrary
                     _jsonTestRun = JsonSerializer.Serialize(testRun);
                     if (_args.JSONOutput)
                     {
-                        OnMessageIssued(MessageTypeEnum.Information, "Writing JSON to file.");
+                        OnMessageIssued(MessageTypeEnum.Information, string.Format("Writing JSON output to file at \"{0}\".", outputFilePath));
                         File.WriteAllText(outputFilePath, _jsonTestRun, System.Text.Encoding.UTF8);
                     }
                 }
@@ -193,8 +193,11 @@ namespace PBIXInspectorWinLibrary
 
         private static void MessageIssued(MessageIssuedEventArgs e)
         {
-            if (e.MessageType == MessageTypeEnum.Error) ErrorCount++;
-            if (e.MessageType == MessageTypeEnum.Warning) WarningCount++;
+            if (_args != null && _args.ADOOutput)
+            {
+                if (e.MessageType == MessageTypeEnum.Error) ErrorCount++;
+                if (e.MessageType == MessageTypeEnum.Warning) WarningCount++;
+            }
 
             EventHandler<MessageIssuedEventArgs>? handler = WinMessageIssued;
             if (handler != null)

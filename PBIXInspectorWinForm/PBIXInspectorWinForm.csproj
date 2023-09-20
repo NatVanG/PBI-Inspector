@@ -6,9 +6,9 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <FileVersion>1.7.1.0</FileVersion>
-    <AssemblyVersion>1.7.1</AssemblyVersion>
-    <VersionPrefix>1.7.1</VersionPrefix>
+    <FileVersion>1.8.0.0</FileVersion>
+    <AssemblyVersion>1.8.0</AssemblyVersion>
+    <VersionPrefix>1.8.0</VersionPrefix>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>pbiinspector.png</PackageIcon>
     <PackageProjectUrl>https://github.com/NatVanG/PBIXInspector</PackageProjectUrl>
@@ -18,22 +18,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\PBIXInspectorCLI\Files\icon\pbiinspector.ico" Link="icon\pbiinspector.ico" />
-    <Content Include="..\PBIXInspectorCLI\Files\icon\pbiinspector.png" Link="icon\pbiinspector.png" />
-    <Content Include="pbiinspector.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="icon\" />
+    <None Remove="pbiinspector.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\LICENSE" Link="LICENSE">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="..\PBIXInspectorCLI\Files\icon\pbiinspector.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

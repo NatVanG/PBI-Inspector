@@ -6,7 +6,7 @@ using PBIXInspectorWinLibrary.Utils;
 
 internal partial class Program
 {
-    private static CLIArgs _parsedArgs = null;
+    private static Args _parsedArgs = null;
 
     private static void Main(string[] args)
     { 
@@ -17,16 +17,14 @@ internal partial class Program
 
         try
         {
-            _parsedArgs = CLIArgsUtils.ParseArgs(args);
+            _parsedArgs = ArgsUtils.ParseArgs(args);
 
             Welcome();
             
             PBIXInspectorWinLibrary.Main.WinMessageIssued += Main_MessageIssued;
             PBIXInspectorWinLibrary.Main.Run(_parsedArgs);
 
-            Console.ResetColor();
-            Console.WriteLine("\nPress any key to quit application.");
-            Console.ReadLine();
+            Exit();
         }
         catch (ArgumentException e)
         {
@@ -85,9 +83,22 @@ internal partial class Program
 
     private static void Welcome()
     {
-        if (!_parsedArgs.CONSOLEOutput) return;
+#if !DEBUG
+     if (!_parsedArgs.CONSOLEOutput || _parsedArgs.ADOOutput) return;
+#endif
+
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.WriteLine(AppUtils.About());
         Console.ResetColor();
+    }
+
+    private static void Exit()
+    {
+#if !DEBUG
+        if (!_parsedArgs.CONSOLEOutput || _parsedArgs.ADOOutput) return;
+#endif
+        Console.ResetColor();
+        Console.WriteLine("\nPress any key to quit application.");
+        Console.ReadLine();
     }
 }

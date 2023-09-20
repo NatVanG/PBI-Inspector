@@ -157,6 +157,157 @@
             },
             []
           ]
+        },
+        {
+          "name": "Ensure charts use theme colours except textboxes",
+          "description": "Check that charts avoid custom colours and use theme colours instead.",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "textbox"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "strcontains": [
+                            {
+                              "tostring": [
+                                {
+                                  "var": ""
+                                }
+                              ]
+                            },
+                            "#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "var": "name"
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "name": "Percentage of charts across the report using custom colours is not greater than 10%",
+          "description": "Check that charts avoid custom colours and use theme colours instead.",
+          "disabled": false,
+          "logType": "warning",
+          "path": "$.sections[*].visualContainers[*].config",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "<=": [
+                {
+                  "/": [
+                    {
+                      "count": [
+                        {
+                          "filter": [
+                            {
+                              "var": "visualConfigArray"
+                            },
+                            {
+                              "and": [
+                                {
+                                  "!": [
+                                    {
+                                      "in": [
+                                        {
+                                          "var": "singleVisual.visualType"
+                                        },
+                                        [
+                                          "textbox"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "strcontains": [
+                                    {
+                                      "tostring": [
+                                        {
+                                          "var": ""
+                                        }
+                                      ]
+                                    },
+                                    "#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})"
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "count": [
+                        {
+                          "filter": [
+                            {
+                              "var": "visualConfigArray"
+                            },
+                            {
+                              "!": [
+                                {
+                                  "in": [
+                                    {
+                                      "var": "singleVisual.visualType"
+                                    },
+                                    [
+                                      "textbox"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                { "var": "paramMaxAllowedRatio" }
+              ]
+            },
+            {
+              "visualConfigArray": ".",
+              "paramMaxAllowedRatio": 0.05
+            },
+            true
+          ]
         }
       ]
     }

@@ -17,22 +17,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PBIXInspectorTests", "PBIXI
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsImages", "DocsImages", "{AD4E6E10-AD07-4A1E-B6D4-258C5BCF261F}"
 	ProjectSection(SolutionItems) = preProject
-		DocsImages\RulesExample1.png = DocsImages\RulesExample1.png
-		DocsImages\RulesExample2.png = DocsImages\RulesExample2.png
-		DocsImages\RulesExample3.png = DocsImages\RulesExample3.png
-		DocsImages\RulesExample4.png = DocsImages\RulesExample4.png
-		DocsImages\RulesExample5.png = DocsImages\RulesExample5.png
-		DocsImages\SampleOutput.png = DocsImages\SampleOutput.png
 		DocsImages\TooltipPageWithIncorrectAspectRatio.png = DocsImages\TooltipPageWithIncorrectAspectRatio.png
 		DocsImages\WinForm1.png = DocsImages\WinForm1.png
-		DocsImages\WireframeWithFailures.png = DocsImages\WireframeWithFailures.png
 		DocsImages\WireframeChartsWiderThanTall.png = DocsImages\WireframeChartsWiderThanTall.png
+		DocsImages\WireframeWithFailures.png = DocsImages\WireframeWithFailures.png
 		DocsImages\WireframeWithHiddenVisual.png = DocsImages\WireframeWithHiddenVisual.png
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PBIXInspectorWinLibrary", "PBIXInspectorWinLibrary\PBIXInspectorWinLibrary.csproj", "{C6CBC9A2-22D7-4CA6-BC1B-5F7DD629D17F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PBIXInspectorWinForm", "PBIXInspectorWinForm\PBIXInspectorWinForm.csproj", "{2EFEF6B8-E017-4D14-9F30-DCD093CB85CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsExamples", "DocsExamples", "{0DABAA35-C96D-4D84-96ED-C088A39D5CA0}"
+	ProjectSection(SolutionItems) = preProject
+		DocsExamples\Example rules.json = DocsExamples\Example rules.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +64,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AD4E6E10-AD07-4A1E-B6D4-258C5BCF261F} = {D842426E-4F0A-42E7-8574-3D8C739651F1}
+		{0DABAA35-C96D-4D84-96ED-C088A39D5CA0} = {D842426E-4F0A-42E7-8574-3D8C739651F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {937CBF58-BBEF-4642-AAD3-5156B6BF45CE}

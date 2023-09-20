@@ -154,7 +154,7 @@ namespace PBIXInspectorLibrary
                     {
                         if (entryStream == null)
                         {
-                            OnMessageIssued(MessageTypeEnum.Error, string.Format("PBI entry \"{0}\" with path \"{1}\" is not valid or does not exist, resuming to next PBIX Entry iteration if any.", entry.Name, entry.PbixEntryPath));
+                            OnMessageIssued(MessageTypeEnum.Error, string.Format("PBI entry \"{0}\" with path \"{1}\" is not valid or does not exist, resuming to next PBI Entry iteration if any.", entry.Name, entry.PbixEntryPath));
                             continue;
                         }
 
@@ -177,7 +177,7 @@ namespace PBIXInspectorLibrary
                                 {
                                     using JsonTextReader reader = new(sr);
 
-                                    var jo = (JObject)JToken.ReadFrom(reader);
+                                    var jo = JToken.ReadFrom(reader);
 
                                     OnMessageIssued(MessageTypeEnum.Information, string.Format("Running rules for PBI entry \"{0}\"...", entry.Name));
                                     foreach (var rule in entry.EnabledRules)
@@ -198,22 +198,22 @@ namespace PBIXInspectorLibrary
                                         //Check if there's a foreach iterator
                                         if (rule != null && !string.IsNullOrEmpty(rule.ForEachPath))
                                         {
-                                            var forEachTokens = ExecutePath(jo, rule.Name, rule.ForEachPath, rule.PathErrorWhenNoMatch);
+                                            var forEachTokens = ExecuteTokensPath(jo, rule.Name, rule.ForEachPath, rule.PathErrorWhenNoMatch);
 
                                             foreach (var forEachToken in forEachTokens)
                                             {
 
-                                                var forEachName = !string.IsNullOrEmpty(rule.ForEachPathName) ? ExecutePath((JObject?)forEachToken, rule.Name, rule.ForEachPathName, rule.PathErrorWhenNoMatch) : null;
+                                                var forEachName = !string.IsNullOrEmpty(rule.ForEachPathName) ? ExecuteTokensPath((JObject?)forEachToken, rule.Name, rule.ForEachPathName, rule.PathErrorWhenNoMatch) : null;
                                                 var strForEachName = forEachName != null ? forEachName[0].ToString() : string.Empty;
 
-                                                var forEachDisplayName = !string.IsNullOrEmpty(rule.ForEachPathDisplayName) ? ExecutePath((JObject?)forEachToken, rule.Name, rule.ForEachPathDisplayName, rule.PathErrorWhenNoMatch) : null;
+                                                var forEachDisplayName = !string.IsNullOrEmpty(rule.ForEachPathDisplayName) ? ExecuteTokensPath((JObject?)forEachToken, rule.Name, rule.ForEachPathDisplayName, rule.PathErrorWhenNoMatch) : null;
                                                 var strForEachDisplayName = forEachDisplayName != null ? forEachDisplayName[0].ToString() : string.Empty;
                                                 
                                                 try
                                                 {
-                                                    var tokens = ExecutePath((JObject?)forEachToken, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
+                                                    var tokens = ExecuteTokensPath(forEachToken, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
 
-                                                    //HACK: I don't like it.
+                                                    //HACK
                                                     var contextNodeArray = ConvertToJsonArray(tokens);
 
                                                     bool result = false;
@@ -239,34 +239,33 @@ namespace PBIXInspectorLibrary
                                         }
                                         else
                                         {   //TODO: refactor else branch to reuse code from true branch
-                                            var tokens = ExecutePath(jo, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
+                                            var tokens = ExecuteTokensPath(jo, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
 
-                                            //HACK: I don't like it.
+                                            //HACK
                                             var contextNodeArray = ConvertToJsonArray(tokens);
 
-                                            foreach (var node in contextNodeArray)
+                                            bool result = false;
+
+                                            try
                                             {
-                                                bool result = false;
+                                                //HACK: checking if the rule's intention is to return an array or a single object 
+                                                var node = rule.Path.Contains("*") || rule.Path.Contains("?") ? contextNodeArray : (contextNodeArray != null ? contextNodeArray.FirstOrDefault() : null);
+                                                var newdata = MapRuleDataPointersToValues(node, rule, contextNodeArray);
 
-                                                try
-                                                {
-                                                    var newdata = MapRuleDataPointersToValues(node, rule, contextNodeArray);
+                                                //TODO: the following commented line does not work with the variableRule implementation with context array passed in.
+                                                //var jruleresult = jrule.Apply(newdata, contextNodeArray);
+                                                var jruleresult = jrule.Apply(newdata);
+                                                result = rule.Test.Expected.IsEquivalentTo(jruleresult);
+                                                var ruleLogType = ConvertRuleLogType(rule.LogType);
+                                                string resultString = string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty);
 
-                                                    //TODO: the following commented line does not work with the variableRule implementation with context array passed in.
-                                                    //var jruleresult = jrule.Apply(newdata, contextNodeArray);
-                                                    var jruleresult = jrule.Apply(newdata);
-                                                    result = rule.Test.Expected.IsEquivalentTo(jruleresult);
-                                                    var ruleLogType = ConvertRuleLogType(rule.LogType);
-                                                    string resultString = string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty);
-
-                                                    //yield return new TestResult { RuleName = rule.Name, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult };
-                                                    testResults.Add(new TestResult { RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
-                                                }
-                                                catch (PBIXInspectorException e)
-                                                {
-                                                    testResults.Add(new TestResult { RuleName = rule.Name, LogType = MessageTypeEnum.Error, RuleDescription = rule.Description, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
-                                                    continue;
-                                                }
+                                                //yield return new TestResult { RuleName = rule.Name, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult };
+                                                testResults.Add(new TestResult { RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
+                                            }
+                                            catch (PBIXInspectorException e)
+                                            {
+                                                testResults.Add(new TestResult { RuleName = rule.Name, LogType = MessageTypeEnum.Error, RuleDescription = rule.Description, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
+                                                continue;
                                             }
                                         }
                                     }
@@ -344,7 +343,7 @@ namespace PBIXInspectorLibrary
         /// <param name="jo"></param>
         /// <param name="rule"></param>
         /// <returns></returns>
-        private List<JToken>? ExecutePath(JObject? jo, string ruleName, string rulePath, bool rulePathErrorWhenNoMatch)
+        private List<JToken>? ExecuteTokensPath(JToken jo, string ruleName, string rulePath, bool rulePathErrorWhenNoMatch)
         {
             string parentPath, queryPath = string.Empty;
             List<JToken>? tokens = new List<JToken>();
@@ -398,12 +397,88 @@ namespace PBIXInspectorLibrary
             return tokens;
         }
 
+        /*
+        private JToken? ExecuteTokenPath(JToken jo, string ruleName, string rulePath, bool rulePathErrorWhenNoMatch)
+        {
+            string parentPath, queryPath = string.Empty;
+            JToken? token = new JToken();
+
+            //TODO: a regex match to extract the substring would be better
+            if (rulePath.Contains(SUBJPATHSTART)) //check for subpath syntax
+            {
+                if (rulePath.EndsWith(SUBJPATHEND))
+                {
+                    //TODO: currently subpath is assumed to be the last path (i.e. the whole string end in "})" but we should be able to resolve inner subpath and return to parent path
+                    var index = rulePath.IndexOf(SUBJPATHSTART);
+                    parentPath = rulePath.Substring(0, index);
+                    queryPath = rulePath.Substring(index + SUBJPATHSTART.Length, rulePath.Length - (index + SUBJPATHSTART.Length) - 1);
+                    var parentTokens = SelectTokens(jo, ruleName, parentPath, rulePathErrorWhenNoMatch);
+
+                    if (parentTokens == null || parentTokens.Count() == 0) { return token; }
+
+                    if (parentPath.Contains(FILTEREXPRESSIONMARKER))
+                    {
+                        JArray ja = new JArray();
+                        foreach (var t in parentTokens)
+                        {
+                            //HACK: why do I have to parse a token into a token to make the subsequent SelectTokens call work?
+                            var jt = JToken.Parse(t.ToString());
+                            ja.Add(jt);
+                        }
+
+                        token = ja.SelectTokens(queryPath, rulePathErrorWhenNoMatch);
+                    }
+                    else
+                    {
+                        foreach (var t in parentTokens)
+                        {
+                            //var childtokens = SelectTokens((JObject?)t, rule.Name, childPath, rule.PathErrorWhenNoMatch); //TODO: this seems better but throws InvalidCastException
+                            var childtokens = SelectTokens(((JObject)JToken.Parse(t.ToString())), ruleName, queryPath, rulePathErrorWhenNoMatch);
+                            //only return children tokens, the reference to parent tokens is lost. 
+                            if (childtokens != null) tokens.AddRange(childtokens.ToList());
+                        }
+                    }
+                }
+                else
+                {
+                    throw new PBIXInspectorException(string.Format("Path \"{0}\" needs to end with \"{1}\" as it contains a subpath.", rulePath, "}"));
+                }
+            }
+            else
+            {
+                tokens = SelectTokens(jo, ruleName, rulePath, rulePathErrorWhenNoMatch)?.ToList();
+            }
+
+            return tokens;
+        }
+        */
+
+        /*
         private IEnumerable<JToken>? SelectTokens(JObject? jo, string ruleName, string rulePath, bool rulePathErrorWhenNoMatch)
         {
             IEnumerable<JToken>? tokens;
 
             //TODO: for some reason I can't catch Newtonsoft.Json.JsonException when rule.PathErrorWhenNoMatch is true
             tokens = jo.SelectTokens(rulePath, false);
+
+
+            if (tokens == null || tokens.Count() == 0)
+            {
+                var msgType = rulePathErrorWhenNoMatch ? MessageTypeEnum.Error : MessageTypeEnum.Information;
+                OnMessageIssued(msgType, string.Format("Rule \"{0}\" with JPath \"{1}\" did not return any tokens.", ruleName, rulePath));
+            }
+
+            return tokens;
+        }
+        */
+
+        private IEnumerable<JToken>? SelectTokens(JToken? jo, string ruleName, string rulePath, bool rulePathErrorWhenNoMatch)
+        {
+            IEnumerable<JToken>? tokens;
+
+            //TODO: for some reason I can't catch Newtonsoft.Json.JsonException when rule.PathErrorWhenNoMatch is true
+            tokens = jo.SelectTokens(rulePath, false);
+
 
             if (tokens == null || tokens.Count() == 0)
             {
@@ -530,7 +605,7 @@ namespace PBIXInspectorLibrary
             }
             catch
             {
-                OnMessageIssued(MessageTypeEnum.Warning, string.Format("Encoding code page value {0} for PBIX entry is not valid, defaulting to {1}.", codePage, enc.EncodingName));
+                OnMessageIssued(MessageTypeEnum.Warning, string.Format("Encoding code page value {0} for PBIentry is not valid, defaulting to {1}.", codePage, enc.EncodingName));
             }
 
             return enc;

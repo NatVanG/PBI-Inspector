@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="JsonLogic" Version="4.0.4" />
-    <PackageReference Include="JsonPath.Net" Version="0.6.2" />
+    <PackageReference Include="JsonPath.Net" Version="0.6.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

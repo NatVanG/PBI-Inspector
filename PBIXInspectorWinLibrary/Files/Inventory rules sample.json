@@ -72,7 +72,7 @@
               ]
             },
             {
-              "v": "/visualContainers"
+              "v": "/0/visualContainers"
             },
             5
           ]
@@ -89,7 +89,7 @@
                   "reduce": [
                     {
                       "map": [
-                        { "var": "v" },
+                        { "var": "visualContainers" },
                         {
                           "if": [
                             { "!!": [ { "var": "" } ] },
@@ -112,8 +112,7 @@
               ]
             },
             {
-              "d": "/displayName",
-              "v": "/visualContainers"
+              "v": "."
             },
             true
           ]
@@ -209,7 +208,7 @@
                 "image"
               ]
             },
-            { "chartType": "/singleVisual/visualType" },
+            { "chartType": "/0/singleVisual/visualType" },
             true
           ]
         },
@@ -265,7 +264,7 @@
               ]
             },
             {
-              "name": "/name"
+              "name": "/0/name"
             },
             true
           ]
@@ -287,7 +286,7 @@
             true]
             },
             {
-              "name": "/name"
+              "name": "/0/name"
             },
             true
           ]
@@ -320,10 +319,10 @@
               ]
             },
             {
-              "tabOrder": "/layouts/0/position/tabOrder",
-              "drillFilterOtherVisuals": "/singleVisual/drillFilterOtherVisuals",
-              "title": "/singleVisual/vcObjects/title/0/properties/text/expr/Literal/Value",
-              "somepath": "/xyz"
+              "tabOrder": "/0/layouts/0/position/tabOrder",
+              "drillFilterOtherVisuals": "/0/singleVisual/drillFilterOtherVisuals",
+              "title": "/0/singleVisual/vcObjects/title/0/properties/text/expr/Literal/Value",
+              "somepath": "/0/xyz"
 
             },
             true

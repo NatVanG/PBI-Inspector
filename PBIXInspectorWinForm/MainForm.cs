@@ -5,7 +5,7 @@ namespace PBIXInspectorWinForm
 {
     public partial class MainForm : Form
     {
-        private static CLIArgs _args;
+        private static Args _args;
 
         public MainForm()
         {
@@ -71,7 +71,7 @@ namespace PBIXInspectorWinForm
         private void UseSamplePBIFileStateCheck()
         {
             var enabled = !this.chckUseSamplePBIFile.Checked;
-            if (!enabled) { this.txtPBIDesktopFile.Text = Constants.SamplePBIXFilePath; } else { this.txtPBIDesktopFile.Clear(); };
+            if (!enabled) { this.txtPBIDesktopFile.Text = Constants.SamplePBIPReportFilePath; } else { this.txtPBIDesktopFile.Clear(); };
             this.txtPBIDesktopFile.Enabled = enabled;
             this.btnBrowsePBIDesktopFile.Enabled = enabled;
             this.chckVerbose.Checked = !enabled;
@@ -113,12 +113,12 @@ namespace PBIXInspectorWinForm
         {
             Clear();
             btnRun.Enabled = false;
-            var pbiFilePath = !string.IsNullOrEmpty(this.txtPBIDesktopFile.Text) && this.txtPBIDesktopFile.Text.ToLower().EndsWith("report.json") ? Path.GetDirectoryName(this.txtPBIDesktopFile.Text) : this.txtPBIDesktopFile.Text;
+            var pbiFilePath = ArgsUtils.ResolvePbiFilePathInput(this.txtPBIDesktopFile.Text);
             var rulesFilePath = this.txtRulesFilePath.Text;
             var outputPath = this.txtOutputDirPath.Text;
             var verboseString = this.chckVerbose.Checked.ToString();
             var formatsString = string.Concat(this.chckJsonOutput.Checked ? "JSON" : string.Empty, ",", this.chckHTMLOutput.Checked ? "HTML" : string.Empty);
-            _args = new CLIArgs { PBIFilePath = pbiFilePath, RulesFilePath = rulesFilePath, OutputPath = outputPath, FormatsString = formatsString, VerboseString = verboseString };
+            _args = new Args { PBIFilePath = pbiFilePath, RulesFilePath = rulesFilePath, OutputPath = outputPath, FormatsString = formatsString, VerboseString = verboseString };
 
             Main.Run(_args);
             btnRun.Enabled = true;

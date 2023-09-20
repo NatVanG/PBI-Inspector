@@ -47,8 +47,8 @@
               ]
             },
             {
-              "h": "/height",
-              "w": "/width"
+              "h": "/0/height",
+              "w": "/0/width"
             },
             true
           ]
@@ -65,8 +65,8 @@
               ]
             },
             {
-              "h": "/height",
-              "w": "/width"
+              "h": "/0/height",
+              "w": "/0/width"
             },
             true
           ]
@@ -93,8 +93,8 @@
               ]
             },
             {
-              "h": "/height",
-              "w": "/width"
+              "h": "/0/height",
+              "w": "/0/width"
             },
             true
           ]
