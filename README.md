@@ -284,7 +284,7 @@ Example output:
 }
 ```
 
-- Check that the ratio of visuals across the report using custom custom colours does not exceed 10%  while exclude textbox visuals from the analysis). 
+- Check that the ratio of visuals across the report using custom colours does not exceed 10%  while excluding textbox visuals from the analysis). 
 
 ```
  {
