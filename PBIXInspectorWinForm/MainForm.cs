@@ -74,7 +74,7 @@ namespace PBIXInspectorWinForm
             if (!enabled) { this.txtPBIDesktopFile.Text = Constants.SamplePBIPReportFilePath; } else { this.txtPBIDesktopFile.Clear(); };
             this.txtPBIDesktopFile.Enabled = enabled;
             this.btnBrowsePBIDesktopFile.Enabled = enabled;
-            this.chckVerbose.Checked = !enabled;
+            //this.chckVerbose.Checked = !enabled;
         }
 
         private void chckUseSamplePBIFile_CheckedChanged(object sender, EventArgs e)

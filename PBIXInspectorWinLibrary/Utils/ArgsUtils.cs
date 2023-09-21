@@ -7,6 +7,7 @@ namespace PBIXInspectorWinLibrary.Utils
         {
             const string PBIX = "-pbix", PBIP = "-pbip", PBIPREPORT = "-pbipreport", RULES = "-rules", OUTPUT = "-output", FORMATS = "-formats", VERBOSE = "-verbose";
             const string TRUE = "true";
+            const string FALSE = "false";
             string[] validOptions = { PBIX, PBIP, PBIPREPORT, RULES, OUTPUT, FORMATS, VERBOSE };
             
             int index = 0;
@@ -33,7 +34,7 @@ namespace PBIXInspectorWinLibrary.Utils
             pbiFilePath = ResolvePbiFilePathInput(pbiFilePath);
             var rulesPath = dic.ContainsKey(RULES) ? dic[RULES] : Constants.SampleRulesFilePath;
             var outputPath = dic.ContainsKey(OUTPUT) ? dic[OUTPUT] : string.Empty;
-            var verboseString = dic.ContainsKey(VERBOSE) ? dic[VERBOSE] : TRUE;
+            var verboseString = dic.ContainsKey(VERBOSE) ? dic[VERBOSE] : FALSE;
             var formatsString = dic.ContainsKey(FORMATS) ? dic[FORMATS] : string.Empty;
 
             return new Args { PBIFilePath = pbiFilePath, RulesFilePath = rulesPath, OutputPath = outputPath, FormatsString = formatsString,  VerboseString = verboseString};

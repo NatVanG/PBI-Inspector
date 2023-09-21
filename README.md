@@ -1,6 +1,6 @@
 # VisOps with PBI Inspector (i.e. automated visual layer testing for Microsoft Power BI.)
 
-***NOTE***: This is a personal side project that is not supported by Microsoft. Parsing the contents of a Power BI Desktop file (.pbix) is not supported either. 
+***NOTE***: This is a personal project that is not supported by Microsoft. Parsing the contents of a Power BI Desktop file (.pbix) is not supported either. 
 
 *Update*: Release v1.2.0.0 of PBI Inspector can now inspect files in the new PBIP format (see announcement at https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/). At some point this project's name will be updated from "PBIX Inspector" to something that better reflects this change. 
 
@@ -17,7 +17,7 @@
 
 ## <a id="intro"></a>Intro
 
-So we've DevOps, MLOps and DataOps... but why not VisOps? How can we ensure that business intelligence charts and other visuals within report pages are published in a consistent, performance optimised and accessible state? For example, are chart axes titles displayed? Is alternative text defined on visuals for use by screen readers? Are charts kept lean so they render quickly? etc.
+So we've DevOps, MLOps and DataOps... but why not VisOps? How can we ensure that business intelligence charts and other visuals within report pages are published in a consistent, performance optimised and accessible state? For example, are local report settings set in a consistent manner for a consistent user experience? Are visuals deviating from the specified theme by, say, using custom colours? Are visuals kept lean so they render quickly? Are charts axes titles displayed? etc.
 
 With Microsoft Power BI, visuals are placed on a canvas and formatted as desired, images may be included and theme files referenced. Testing the consistency of the visuals output has thus far typically been a manual process. However because a Power BI .pbix file is packaged as an archive (.zip) file it is possible to unzip it and read the entries within. More recently, a [new Power BI Project file (.pbip) was introduced](https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/) for improved source control and, as it happens, better testability as far as PBI Inspector is concerned. In both cases, the visuals layout definition  and any associated theme are in json format and therefore readable by both machines and humans. However upon new releases of Power BI, the visual layout's json schema definition may introduce changes without warning to include new features for example. Therefore an automated visual layout inspection or testing tool should be resilient to such changes while providing a powerful rule logic creation framework. PBI Inspector provides the ability to define fully configurable testing rules (themselves written in json) powered by Greg Dennis's Json Logic .NET implementation, see https://json-everything.net/json-logic. 
 
@@ -65,13 +65,13 @@ All command line parameters are as follows:
 
 ```-pbip filepath```: Deprecated. Please use -pbipreport argument instead.
 
-```-pbipreport filepath```: The path to the PBIP's "*.Report" folder.
+```-pbipreport folderpath```: The path to the PBIP's "*.Report" folder. If not specified then the sample PBIP folder at "\Files\pbip\Inventory sample.Report" will be used.
 
-```-pbix filepath```: Optional. The filepath of the Power BI Desktop file to be inspected. If not specified then the sample PBIP file at "Files\Inventory Sample.pbix" will be inspected.
+```-pbix filepath```: Optional. The filepath of the PBIX Power BI Desktop file to be inspected. If not specified then the sample PBIP file at "\Files\pbip\Inventory sample.Report\report.json" will be used.
 
 ```-rules filepath```: Optional. The filepath to the rules file. If not specified, then base rules at "Files\Base rules.json" will be used.
 
-```-verbose true|false```: Optional, true by default. If false then only rule violations will be shown otherwise all results will be listed.
+```-verbose true|false```: Optional, false by default. If false then only rule violations will be shown otherwise all results will be listed.
 
 ```-output directorypath```: Optional. Writes results to the specified directory, any existing files will be overwritten. If not supplied then a temporary directory will be created in the user's temporary files folder. 
 
@@ -189,7 +189,7 @@ Besides the base rules defined at ```"Files\Base rules.json"```, see other rules
                 }
 ```
 
-- Check that charts are wider than they are tall (for fun or seriously):
+- Check that visuals are wider than they are tall (for fun or seriously):
 
 ```
 {
@@ -238,7 +238,7 @@ Besides the base rules defined at ```"Files\Base rules.json"```, see other rules
 Example output:
 ![Charts wider than tall test output](DocsImages/WireframeChartsWiderThanTall.png)
 
-- Check that slow data source settings are all disabled:
+- For a consistent user experience over import mode or a fast direct query source, check that slow data source settings are all disabled:
 
 ```
 {
@@ -282,4 +282,99 @@ Example output:
                         true
                     ]
 }
+```
+
+- Check that the ratio of visuals across the report using custom custom colours does not exceed 10%  while exclude textbox visuals from the analysis). 
+
+```
+ {
+          "name": "Percentage of charts across the report using custom colours is not greater than 10%",
+          "description": "Check that charts avoid custom colours and use theme colours instead.",
+          "disabled": false,
+          "logType": "warning",
+          "path": "$.sections[*].visualContainers[*].config",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "<=": [
+                {
+                  "/": [
+                    {
+                      "count": [
+                        {
+                          "filter": [
+                            {
+                              "var": "visualConfigArray"
+                            },
+                            {
+                              "and": [
+                                {
+                                  "!": [
+                                    {
+                                      "in": [
+                                        {
+                                          "var": "singleVisual.visualType"
+                                        },
+                                        [
+                                          "textbox"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "strcontains": [
+                                    {
+                                      "tostring": [
+                                        {
+                                          "var": ""
+                                        }
+                                      ]
+                                    },
+                                    "#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})"
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "count": [
+                        {
+                          "filter": [
+                            {
+                              "var": "visualConfigArray"
+                            },
+                            {
+                              "!": [
+                                {
+                                  "in": [
+                                    {
+                                      "var": "singleVisual.visualType"
+                                    },
+                                    [
+                                      "textbox"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                { "var": "paramMaxAllowedRatio" }
+              ]
+            },
+            {
+              "visualConfigArray": ".",
+              "paramMaxAllowedRatio": 0.1
+            },
+            true
+          ]
+        }
 ```

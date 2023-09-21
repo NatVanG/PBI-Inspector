@@ -38,7 +38,7 @@ namespace PBIXInspectorTests
             string[] args = "-pbipreport pbipPath -rules rulesPath".Split(" ");
             var parsedArgs = ArgsUtils.ParseArgs(args);
 
-            Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.RulesFilePath.Equals("rulesPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.Verbose);
+            Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.RulesFilePath.Equals("rulesPath", StringComparison.OrdinalIgnoreCase) && !parsedArgs.Verbose);
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace PBIXInspectorTests
             parsedArgs = ArgsUtils.ParseArgs(args);
 
             Assert.IsTrue(parsedArgs.CONSOLEOutput 
-                && parsedArgs.Verbose 
+                && !parsedArgs.Verbose 
                 && parsedArgs.DeleteOutputDirOnExit 
                 && !string.IsNullOrEmpty(parsedArgs.OutputDirPath)
                 && !string.IsNullOrEmpty(parsedArgs.PBIFilePath)
