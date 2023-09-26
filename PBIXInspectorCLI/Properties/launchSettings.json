@@ -2,6 +2,9 @@
   "profiles": {
     "PBIXInspectorCLI": {
       "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
     }
   }
 }

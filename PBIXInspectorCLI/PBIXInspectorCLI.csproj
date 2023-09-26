@@ -14,6 +14,7 @@
     <Version>$(VersionPrefix)</Version>
     <Product>$(AssembblyName)</Product>
     <ApplicationIcon>pbiinspector.ico</ApplicationIcon>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,7 +36,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE" Link="LICENSE">
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
