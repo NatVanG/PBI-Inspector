@@ -10,6 +10,7 @@
 - [Base rules](#baserulesoverview)
 - [Graphical user interface](#gui)
 - [Command line](#cli)
+- [Azure DevOps integration](#ado)
 - [Interpreting results](#results)
 - [Known issues](#knownissues)
 - [Custom rules examples](#customrulesexamples)
@@ -85,6 +86,24 @@ All command line parameters are as follows:
 If run without arguments, PBIX inspector will use the sample PBIP file and the base rules file under the application's "Files" directory:
 
 ```PBIXInspectorCLI.exe```
+
+**Commmand line examples:**
+
+- Run "Base rules.json" rule definitions against PBI report file at "Sales.Report and return results in Json and HTML formats:
+
+``` PBIXInspectorCLI.exe -pbipreport "C:\Files\Sales.Report" -rules ".\Files\Base rules.json" -output "C:\Files\TestRun" -formats "JSON,HTML"```
+
+- Run "Base rules.json" rule definitions against PBI report file at "Sales.Report and return results to the console only:
+
+``` PBIXInspectorCLI.exe -pbipreport "C:\Files\Sales.Report" -rules ".\Files\Base rules.json" -output "C:\Files\TestRun" -formats "Console"```
+
+- Run "Base rules.json" rule definitions against PBI report file at "Sales.Report and return results as Azure DevOps compatible log and tasks commands (see https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&tabs=bash#task-commands):
+
+``` PBIXInspectorCLI.exe -pbipreport "C:\Files\Sales.Report" -rules ".\Files\Base rules.json"  -formats "ADO"```
+
+## <a id="ado"></a>Azure DevOps integration
+
+For an example on how to run PBI Inspector as part of an Azure DevOps pipeline job (alongside Tabular Editor's BPA rules), see Rui Romano's repo at https://github.com/RuiRomano/powerbi-devmode-pipelines and this YAML file in particular: https://github.com/RuiRomano/powerbi-devmode-pipelines/blob/main/azure-pipelines-build.yml.
 
 ## <a id="results"></a>Interpreting results
 
@@ -235,7 +254,7 @@ Besides the base rules defined at ```"Files\Base rules.json"```, see other rules
 }
 ```
 
-Example output:
+Example wireframe output highlighting two visuals that failed the test because they are taller than they are wide:
 ![Charts wider than tall test output](DocsImages/WireframeChartsWiderThanTall.png)
 
 - For a consistent user experience over import mode or a fast direct query source, check that slow data source settings are all disabled:
