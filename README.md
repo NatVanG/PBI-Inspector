@@ -1,10 +1,22 @@
-# VisOps with PBI Inspector (i.e. automated visual layer testing for Microsoft Power BI.)
+# VisOps with PBI Inspector (i.e. automated visual layer testing for Microsoft Power BI)
 
-***NOTE***: This is a personal project that is not supported by Microsoft. Parsing the contents of a Power BI Desktop file (.pbix) is not supported either. 
+<img src="DocsImages/pbiinspector.png" alt="PBI Inspector logo" height="150"/>
 
-*Update*: Release v1.2.0.0 of PBI Inspector can now inspect files in the new PBIP format (see announcement at https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/). At some point this project's name will be updated from "PBIX Inspector" to something that better reflects this change. 
+## NOTE :pencil:
 
-## <a name="contents"></a>Contents
+This is a personal project that is not supported by Microsoft. 
+
+Please also note that while PBI Inspector can read Power BI Desktop files with the ".pbix" extension as well as files in the PBIP format, the former is not supported by Microsoft.
+
+## Thanks :pray:
+
+Thanks to [Michael Kovalsky](https://github.com/m-kovalsky) and [Rui Romano](https://github.com/ruiromano) for their feedback on this project. Thanks also to [Luke Young](https://www.linkedin.com/in/luke-young-2301/) for creating the PBI Inspector logo.
+
+## Bugs :beetle:
+
+Please report issues [here](https://github.com/NatVanG/PBI-Inspector/issues).
+
+## <a name="contents"></a>Documentation contents
 
 - [Intro](#intro)
 - [Base rules](#baserulesoverview)
@@ -20,7 +32,7 @@
 
 So we've DevOps, MLOps and DataOps... but why not VisOps? How can we ensure that business intelligence charts and other visuals within report pages are published in a consistent, performance optimised and accessible state? For example, are local report settings set in a consistent manner for a consistent user experience? Are visuals deviating from the specified theme by, say, using custom colours? Are visuals kept lean so they render quickly? Are charts axes titles displayed? etc.
 
-With Microsoft Power BI, visuals are placed on a canvas and formatted as desired, images may be included and theme files referenced. Testing the consistency of the visuals output has thus far typically been a manual process. However because a Power BI .pbix file is packaged as an archive (.zip) file it is possible to unzip it and read the entries within. More recently, a [new Power BI Project file (.pbip) was introduced](https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/) for improved source control and, as it happens, better testability as far as PBI Inspector is concerned. In both cases, the visuals layout definition  and any associated theme are in json format and therefore readable by both machines and humans. However upon new releases of Power BI, the visual layout's json schema definition may introduce changes without warning to include new features for example. Therefore an automated visual layout inspection or testing tool should be resilient to such changes while providing a powerful rule logic creation framework. PBI Inspector provides the ability to define fully configurable testing rules (themselves written in json) powered by Greg Dennis's Json Logic .NET implementation, see https://json-everything.net/json-logic. 
+With Microsoft Power BI, visuals are placed on a canvas and formatted as desired, images may be included and theme files referenced. Testing the consistency of the visuals output has thus far typically been a manual process. Recently, a [new Power BI file format (.pbip) was introduced](https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/) to enable pro developer application lifecycle management and source control. In particular, the report's layout definition and any associated theme are in json format and therefore readable by both machines and humans. However upon new releases of Power BI, the json structure may introduce changes without warning to include new features for example. Therefore an automated visual layout testing tool should be resilient to such changes while providing a powerful rule logic creation framework. PBI Inspector provides the ability to define fully configurable testing rules (themselves written in json) powered by Greg Dennis's Json Logic .NET implementation, see https://json-everything.net/json-logic. 
 
 ## <a id="baserulesoverview"></a>Base rules
 
@@ -121,20 +133,22 @@ Visuals with a dotted border are visuals hidden by default as the following exam
  
  ![Tooltip page with incorrect aspect ratio](DocsImages/TooltipPageWithIncorrectAspectRatio.png)
 
+ - Currently page wireframes do not faithfully represents the report page layout when visual groups are present.
+
 ## <a id="customrulesexamples"></a>Custom Rules Examples
 
 *Please note that this section is not a guide to creating custom rules, just a very high-level overview and some examples for now. I intend to write such a guide in the near future.*
 
 A PBI Inspector test is written in json and is in in three parts:
-1. The [JSON Logic](https://json-everything.net/json-logic) rule
+1. The [JSONLogic](https://json-everything.net/json-logic) rule
 2. Some data mapping logic
 3. The expected result
 
 As an added benefit, a rule can be written in such a way as to return a result more useful than just true or false. For example, an array of visual IDs or names failing the test can be returned and plotted on a wireframe diagram for ease of identification, for an illustration of this, see the second rule example below.
 
-Besides the base rules defined at ```"Files\Base rules.json"```, see other rules examples below (included in the sample rules file at ```"Files\Inventory rules samples.json"```). 
+Besides the base rules defined at ```"Files\Base rules.json"```, see other rules examples below (these are also available at [Example rules.json](https://github.com/NatVanG/PBI-Inspector/blob/main/DocsExamples/Example%20rules.json)).
 
-- Check that certain types of charts have both axes titles displayed (this is quite an old example, it would be better to have a page outer loop otherwise a test result is generated for each visual of the report):
+- Check that certain types of charts have both axes titles displayed:
 
 ```
  {
@@ -230,7 +244,7 @@ Besides the base rules defined at ```"Files\Base rules.json"```, see other rules
                                             "var": "visualsConfigArray"
                                         },
                                         {
-                                            "<": [
+                                            "<=": [
                                                 {
                                                     "var": "layouts.0.position.width"
                                                 },
