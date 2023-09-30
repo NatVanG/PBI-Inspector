@@ -17,6 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PBIXInspectorTests", "PBIXI
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsImages", "DocsImages", "{AD4E6E10-AD07-4A1E-B6D4-258C5BCF261F}"
 	ProjectSection(SolutionItems) = preProject
+		DocsImages\pbiinspector.png = DocsImages\pbiinspector.png
 		DocsImages\TooltipPageWithIncorrectAspectRatio.png = DocsImages\TooltipPageWithIncorrectAspectRatio.png
 		DocsImages\WinForm1.png = DocsImages\WinForm1.png
 		DocsImages\WireframeChartsWiderThanTall.png = DocsImages\WireframeChartsWiderThanTall.png
