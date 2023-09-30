@@ -19,7 +19,21 @@
             {
               "map": [
                 {
-                  "var": "v"
+                  "filter": [
+                    {
+                      "var": "v"
+                    },
+                    {
+                      "and": [
+                        { "!!": [ { "var": "name" } ] },
+                        { "!!": [ { "var": "singleVisual.visualType" } ] },
+                        { ">=": [ { "var": "layouts.0.position.x" }, 0 ] },
+                        { ">=": [ { "var": "layouts.0.position.y" }, 0 ] },
+                        { ">=": [ { "var": "layouts.0.position.width" }, 0 ] },
+                        { ">=": [ { "var": "layouts.0.position.height" }, 0 ] }
+                      ]
+                    }
+                  ]
                 },
                 {
                   "torecord": [
