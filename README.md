@@ -55,6 +55,10 @@ Currently these changes need to be made directly in the rules file json, however
 
 ## <a id="gui"></a>Run from the graphical user interface (GUI)
 
+***Binaries***: 
+- The self-contained (.NET 6.0 runtime included) Windows Forms application is available at: https://github.com/NatVanG/PBI-Inspector/releases/latest
+- For a leaner version (.NET 6.0 runtime not included) of the Windows Forms application see: https://github.com/NatVanG/PBI-Inspector/releases/tag/v1.8.2
+
 Running ```PBIXInspectorWinForm.exe``` presents the user with the following interface: 
 
 ![WinForm 1](DocsImages/WinForm1.png)
@@ -67,7 +71,9 @@ Running ```PBIXInspectorWinForm.exe``` presents the user with the following inte
 6. Select "Run". The test run log messages are displayed at the bottom of the window. If "Use temp files" is selected (or the Output directory field is left blank) along with the HTML output check box, then the browser will open to display the HTML results.
 7. Any test run information, warnings or errors are displayed in the console output textbox.
 
-## <a id="cli"></a>Run from the command line 
+## <a id="cli"></a>Run from the command line  
+
+***Binaries***: The command line interface application is available at:  https://github.com/NatVanG/PBI-Inspector/releases/tag/v1.8.2-CLI (.NET 6.0 dependency not included).
 
 To inspect a PBIP file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: ```PBIXInspectorCLI.exe -pbipreport "Files\pbip\Inventory sample.pbip" -rules "Files\Base rules.json"```
 
