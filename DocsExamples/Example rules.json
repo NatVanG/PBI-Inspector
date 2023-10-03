@@ -159,67 +159,6 @@
           ]
         },
         {
-          "name": "Ensure charts use theme colours except textboxes",
-          "description": "Check that charts avoid custom colours and use theme colours instead.",
-          "disabled": false,
-          "logType": "warning",
-          "forEachPath": "$.sections[*]",
-          "forEachPathName": "$.name",
-          "forEachPathDisplayName": "$.displayName",
-          "path": "$.visualContainers[*].config",
-          "pathErrorWhenNoMatch": false,
-          "test": [
-            {
-              "map": [
-                {
-                  "filter": [
-                    {
-                      "var": "visualsConfigArray"
-                    },
-                    {
-                      "and": [
-                        {
-                          "!": [
-                            {
-                              "in": [
-                                {
-                                  "var": "singleVisual.visualType"
-                                },
-                                [
-                                  "textbox"
-                                ]
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "strcontains": [
-                            {
-                              "tostring": [
-                                {
-                                  "var": ""
-                                }
-                              ]
-                            },
-                            "#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})"
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "var": "name"
-                }
-              ]
-            },
-            {
-              "visualsConfigArray": "."
-            },
-            []
-          ]
-        },
-        {
           "name": "Percentage of charts across the report using custom colours is not greater than 10%",
           "description": "Check that charts avoid custom colours and use theme colours instead.",
           "disabled": false,
@@ -307,6 +246,57 @@
               "paramMaxAllowedRatio": 0.1
             },
             true
+          ]
+        },
+        {
+          "name": "Ensure alternativeText has been defined for all visuals",
+          "description": "Alt-text is required for screen readers",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "none": [
+                        {
+                          "var": "singleVisual.vcObjects.general"
+                        },
+                        {
+                          "or": [
+                            {
+                              "!!": [ { "var": "properties.altText.expr.Aggregation" } ]
+                            },
+                            {
+                              "!=": [
+                                { "var": "properties.altText.expr.Literal.Value" },
+                                "''"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "var": "name"
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
           ]
         }
       ]

@@ -84,15 +84,15 @@ All command line parameters are as follows:
 
 ```-pbip filepath```: Deprecated. Please use -pbipreport argument instead.
 
-```-pbipreport folderpath```: The path to the PBIP's "*.Report" folder. If not specified then the sample PBIP folder at "\Files\pbip\Inventory sample.Report" will be used.
+```-pbipreport folderpath```: Required (or specify -pbix). The path to the PBIP's "*.Report" folder.
 
-```-pbix filepath```: Optional. The filepath of the PBIX Power BI Desktop file to be inspected. If not specified then the sample PBIP file at "\Files\pbip\Inventory sample.Report\report.json" will be used.
+```-pbix filepath```: Reuquired (or specify -pbipreport). The filepath of the PBIX Power BI Desktop file to be inspected. If not specified then the sample PBIP file at "\Files\pbip\Inventory sample.Report\report.json" will be used.
 
-```-rules filepath```: Optional. The filepath to the rules file. If not specified, then base rules at "Files\Base rules.json" will be used.
+```-rules filepath```: Required. The filepath to the rules file.
 
 ```-verbose true|false```: Optional, false by default. If false then only rule violations will be shown otherwise all results will be listed.
 
-```-output directorypath```: Optional. Writes results to the specified directory, any existing files will be overwritten. If not supplied then a temporary directory will be created in the user's temporary files folder. 
+```-output directorypath```: Optional. If -formats is set to either JSON, HTML or PNG, writes results to the specified directory, any existing files will be overwritten. If not supplied then a temporary directory will be created in the user's temporary files folder. 
 
 ```-formats CONSOLE,JSON,HTML,PNG,ADO```: Optional. Comma-separated list of output formats. 
 - **CONSOLE** (default) writes results to the console output. If "-formats" is not specified then "CONSOLE" will be used by default.

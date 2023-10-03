@@ -106,7 +106,7 @@
             },
             {
               "visuals": ".",
-              "paramMaxVisualsPerPage": 10
+              "paramMaxVisualsPerPage": 20
             },
             true
           ]
@@ -114,7 +114,7 @@
         {
           "name": "Reduce the number of objects within visuals",
           "description": "Reports a test fail if the rule's maximum number of objects within visuals on a page is exceeded. An object is a data field that is assigned to a visual. By default, the base rules file specifies 4 as the maximum objects within a visual.",
-          "logType":  "warning",
+          "logType": "warning",
           "disabled": false,
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
@@ -380,6 +380,67 @@
               "c": "."
             },
             true
+          ]
+        },
+        {
+          "name": "Ensure charts use theme colours",
+          "description": "Check that charts avoid custom colours and use theme colours instead. Exclude textboxes.",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "textbox"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "strcontains": [
+                            {
+                              "tostring": [
+                                {
+                                  "var": ""
+                                }
+                              ]
+                            },
+                            "#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "var": "name"
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
           ]
         },
         {
