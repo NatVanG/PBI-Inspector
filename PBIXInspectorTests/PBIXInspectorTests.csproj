@@ -9,10 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\PBIXInspectorWinLibrary\Files\Base rules.json" Link="Files\Base rules.json">
+    <Content Include="..\PBIXInspectorWinLibrary\Files\ReportPageFieldMap.json" Link="Files\ReportPageFieldMap.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\PBIXInspectorWinLibrary\Files\ReportPageFieldMap.json" Link="Files\ReportPageFieldMap.json">
+    <Content Include="..\Rules\Base rules.json" Link="Files\Base rules.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

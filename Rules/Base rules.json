@@ -444,54 +444,6 @@
           ]
         },
         {
-          "name": "Ensure alternativeText has been defined for all visuals",
-          "description": "Alt-text is required for screen readers",
-          "disabled": false,
-          "logType": "warning",
-          "forEachPath": "$.sections[*]",
-          "forEachPathName": "$.name",
-          "forEachPathDisplayName": "$.displayName",
-          "path": "$.visualContainers[*].config",
-          "pathErrorWhenNoMatch": false,
-          "test": [
-            {
-              "map": [
-                {
-                  "filter": [
-                    {
-                      "var": "visualsConfigArray"
-                    },
-                    {
-                      "none": [
-                        {
-                          "var": "singleVisual.vcObjects.general"
-                        },
-                        {
-                          "or": [
-                            {
-                              "!!": [ { "var": "properties.altText.expr.Aggregation" } ]
-                            },
-                            {
-                              "!=": [ { "var": "properties.altText.expr.Literal.Value" }, "''" ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "var": "name"
-                }
-              ]
-            },
-            {
-              "visualsConfigArray": "."
-            },
-            []
-          ]
-        },
-        {
           "name": "Rule Template",
           "description": "Rule template",
           "disabled": true,
