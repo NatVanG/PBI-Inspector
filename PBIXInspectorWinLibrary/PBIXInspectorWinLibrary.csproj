@@ -20,10 +20,6 @@
   <ItemGroup>
     <Folder Include="Files\html\" />
     <Folder Include="Files\icon\" />
-    <Folder Include="Files\pbip\Inventory sample - fails.Dataset\" />
-    <Folder Include="Files\pbip\Inventory sample - fails.Report\" />
-    <Folder Include="Files\pbip\Inventory sample.Dataset\" />
-    <Folder Include="Files\pbip\Inventory sample.Report\" />
     <Folder Include="Files\png\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
@@ -41,92 +37,8 @@
     <None Update="Files\icon\pbiinspector.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Files\Inventory rules sample.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\Inventory sample - fails.pbix">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\Inventory sample.pbix">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample - fails.Dataset\definition.pbidataset">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample - fails.Dataset\diagramLayout.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample - fails.Dataset\item.config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample - fails.Dataset\item.metadata.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample - fails.Dataset\model.bim">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample - fails.pbip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample - fails.Report\definition.pbir">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample - fails.Report\item.config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample - fails.Report\item.metadata.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample - fails.Report\report.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample - fails.Report\StaticResources\RegisteredResources\pbilogo011716949638171492.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample - fails.Report\StaticResources\SharedResources\BaseThemes\CY22SU11.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.Dataset\definition.pbidataset">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.Dataset\diagramLayout.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.Dataset\item.config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.Dataset\item.metadata.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.Dataset\model.bim">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.pbip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.Report\datasetDiagramLayout.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.Report\definition.pbir">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.Report\item.config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.Report\item.metadata.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.Report\report.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.Report\StaticResources\RegisteredResources\pbilogo011716949638171492.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory sample.Report\StaticResources\SharedResources\BaseThemes\CY22SU11.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Files\png\nowireframe.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="Files\ReportPageFieldMap.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -12,9 +12,6 @@
     <Content Include="..\PBIXInspectorWinLibrary\Files\Base rules.json" Link="Files\Base rules.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\PBIXInspectorWinLibrary\Files\Inventory rules sample.json" Link="Files\Inventory rules sample.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\PBIXInspectorWinLibrary\Files\ReportPageFieldMap.json" Link="Files\ReportPageFieldMap.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -40,7 +37,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Files\Inventory rules sample.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Files\Inventory rules test.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\Inventory sample - fails.pbix">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\Inventory sample.pbix">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Files\Inventory test.pbix">
@@ -83,13 +89,6 @@
 
   <ItemGroup>
     <Folder Include="Files\pbip\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\PBIXInspectorWinLibrary\Files\Inventory sample - fails.pbix" Link="Files\Inventory sample - fails.pbix" />
-    <None Include="..\PBIXInspectorWinLibrary\Files\Inventory sample.pbix" Link="Files\Inventory sample.pbix">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
