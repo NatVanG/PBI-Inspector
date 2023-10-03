@@ -367,3 +367,5 @@ FodyWeavers.xsd
 /PBIXInspectorCLI/Files/pbip/.gitignore
 /PBIXInspectorTests/Files/pbip/.gitignore
 /PBIXInspectorCLI/Properties/PublishProfiles/FolderProfile.pubxml
+/PBIXInspectorWinLibrary/Files/pbip/Inventory sample - fails.Dataset/.pbi/localSettings.json
+/PBIXInspectorWinLibrary/Files/pbip/Inventory sample - fails.Report/.pbi/localSettings.json
