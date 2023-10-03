@@ -57,7 +57,6 @@ Currently these changes need to be made directly in the rules file json, however
 
 ***Binaries***: 
 - The self-contained (.NET 6.0 runtime included) Windows Forms application is available at: https://github.com/NatVanG/PBI-Inspector/releases/latest
-- For a leaner version (.NET 6.0 runtime not included) of the Windows Forms application see: https://github.com/NatVanG/PBI-Inspector/releases/tag/v1.8.2
 
 Running ```PBIXInspectorWinForm.exe``` presents the user with the following interface: 
 
@@ -73,7 +72,7 @@ Running ```PBIXInspectorWinForm.exe``` presents the user with the following inte
 
 ## <a id="cli"></a>Run from the command line  
 
-***Binaries***: The command line interface application is available at:  https://github.com/NatVanG/PBI-Inspector/releases/tag/v1.8.2-CLI (.NET 6.0 dependency not included).
+***Binaries***: The command line interface application is available at:  https://github.com/NatVanG/PBI-Inspector/releases/tag/v1.9.0-CLI (.NET 6.0 dependency not included).
 
 To inspect a PBIP file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: ```PBIXInspectorCLI.exe -pbipreport "Files\pbip\Inventory sample.pbip" -rules "Files\Base rules.json"```
 
