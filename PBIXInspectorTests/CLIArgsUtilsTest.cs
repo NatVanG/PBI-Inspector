@@ -71,7 +71,7 @@ namespace PBIXInspectorTests
         [Test]
         public void TestCLIArgsUtilsPBIX()
         {
-            string[] args = "-pbix pbixPath".Split(" ");
+            string[] args = "-pbix pbixPath -rules rulespath".Split(" ");
             Args? parsedArgs = null;
 
             parsedArgs = ArgsUtils.ParseArgs(args);
@@ -93,7 +93,7 @@ namespace PBIXInspectorTests
         [Test]
         public void TestCLIArgsUtilsFormats()
         {
-            string[] args = "-pbipreport path -formats CONSOLE,HTML,PNG,JSON".Split(" ");
+            string[] args = "-pbipreport path -rules rulepath -formats CONSOLE,HTML,PNG,JSON".Split(" ");
             Args? parsedArgs = null;
 
             parsedArgs = ArgsUtils.ParseArgs(args);
@@ -104,7 +104,7 @@ namespace PBIXInspectorTests
         [Test]
         public void TestCLIArgsUtilsDefaults()
         {
-            string[] args = "-pbipreport path".Split(" ");
+            string[] args = "-pbipreport path -rules rulespath".Split(" ");
             Args? parsedArgs = null;
 
             parsedArgs = ArgsUtils.ParseArgs(args);
@@ -113,10 +113,29 @@ namespace PBIXInspectorTests
                 && !parsedArgs.Verbose 
                 && parsedArgs.DeleteOutputDirOnExit 
                 && !string.IsNullOrEmpty(parsedArgs.OutputDirPath)
-                && !string.IsNullOrEmpty(parsedArgs.RulesFilePath)
                 && !parsedArgs.HTMLOutput 
                 && !parsedArgs.JSONOutput 
                 && !parsedArgs.PNGOutput);
+        }
+
+        [Test]
+        public void TestCLIArgsUtilsThrows()
+        {
+            string[] args = "-pbipreport pbipreportpath".Split(" ");
+            Args? parsedArgs = null;
+
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+            () => parsedArgs = ArgsUtils.ParseArgs(args));
+        }
+
+        [Test]
+        public void TestCLIArgsUtilsThrows1()
+        {
+            string[] args = "-pbix pbixpath".Split(" ");
+            Args? parsedArgs = null;
+
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+            () => parsedArgs = ArgsUtils.ParseArgs(args));
         }
 
         [Test]
