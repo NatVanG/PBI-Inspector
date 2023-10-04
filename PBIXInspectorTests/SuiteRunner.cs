@@ -133,7 +133,7 @@ public class SuiteRunner
     public static IEnumerable<TestCaseData> BaseSuite()
     {
         string PBIXFilePath = @"Files\Inventory sample.pbix";
-        string RulesFilePath = @"Files\Base rules.json";
+        string RulesFilePath = @"Files\Base-rules.json";
 
         Console.WriteLine("Running base suite...");
         return Suite(PBIXFilePath, RulesFilePath);
@@ -150,7 +150,7 @@ public class SuiteRunner
     //public static IEnumerable<TestCaseData> BaseFailSuite()
     //{
     //    string PBIXFilePath = @"Files\Inventory sample - fails.pbix";
-    //    string RulesFilePath = @"Files\Base rules.json";
+    //    string RulesFilePath = @"Files\Base-rules.json";
 
     //    Console.WriteLine("Running base fail suite...");
     //    return Suite(PBIXFilePath, RulesFilePath);
