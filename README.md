@@ -36,7 +36,7 @@ With Microsoft Power BI, visuals are placed on a canvas and formatted as desired
 
 ## <a id="baserulesoverview"></a>Base rules
 
-While PBI Inspector supports custom rules, it also includes the following base rules defined at ```"Files\Base rules.json"```, some rules allow for user parameters:
+While PBI Inspector supports custom rules, it also includes the following base rules defined at ```"Files\Base-rules.json"```, some rules allow for user parameters:
 
 1. Remove custom visuals which are not used in the report (no user parameters)
 2. Reduce the number of visible visuals on the page (set parameter ```paramMaxVisualsPerPage``` to the maximum number of allowed visible visuals on the page)
@@ -47,7 +47,7 @@ While PBI Inspector supports custom rules, it also includes the following base r
 7. Avoid setting ‘Show items with no data’ on columns (no user parameters)
 8. Tooltip and Drillthrough pages should be hidden (no user parameters)
 
-Before modifying parameters, you may wish to either take a copy of the file at ```"Files\Base rules.json"``` within your local PBI Inspector deployment folder. If you need a fresh copy, see the PBI Inspector releases in Github at https://github.com/NatVanG/PBIXInspector/releases.
+Before modifying parameters, you may wish to either take a copy of the file at ```"Files\Base-rules.json"``` within your local PBI Inspector deployment folder. If you need a fresh copy, see the PBI Inspector releases in Github at https://github.com/NatVanG/PBIXInspector/releases.
 
 To disable a rule, edit the rule json to specify ```"disabled": true```. At runtime PBI Inspector will ignore any disabled rule.
 
@@ -72,12 +72,12 @@ Running ```PBIXInspectorWinForm.exe``` presents the user with the following inte
 
 ## <a id="cli"></a>Run from the command line  
 
-***Binaries***: The command line interface application is available at:  https://github.com/NatVanG/PBI-Inspector/releases/tag/v1.9.0-CLI (.NET 6.0 dependency not included).
+***Binaries***: The command line interface application is available at:  https://github.com/NatVanG/PBI-Inspector/releases/tag/latest (.NET 6.0 dependency not included).
 
-To inspect a PBIP file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: ```PBIXInspectorCLI.exe -pbipreport "Files\pbip\Inventory sample.pbip" -rules "Files\Base rules.json"```
+To inspect a PBIP file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: ```PBIXInspectorCLI.exe -pbipreport "Files\pbip\Inventory sample.pbip" -rules "Files\Base-rules.json"```
 
 To inspect a PBIX file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: 
-```PBIXInspectorCLI.exe -pbix "Files\Inventory Sample.pbix" -rules "Files\Base rules.json"```
+```PBIXInspectorCLI.exe -pbix "Files\Inventory Sample.pbix" -rules "Files\Base-rules.json"```
 
 All command line parameters are as follows:
 
@@ -106,17 +106,17 @@ If run without arguments, PBIX inspector will use the sample PBIP file and the b
 
 **Commmand line examples:**
 
-- Run "Base rules.json" rule definitions against PBI report file at "Sales.Report and return results in Json and HTML formats:
+- Run "Base-rules.json" rule definitions against PBI report file at "Sales.Report and return results in Json and HTML formats:
 
-``` PBIXInspectorCLI.exe -pbipreport "C:\Files\Sales.Report" -rules ".\Files\Base rules.json" -output "C:\Files\TestRun" -formats "JSON,HTML"```
+``` PBIXInspectorCLI.exe -pbipreport "C:\Files\Sales.Report" -rules ".\Files\Base-rules.json" -output "C:\Files\TestRun" -formats "JSON,HTML"```
 
-- Run "Base rules.json" rule definitions against PBI report file at "Sales.Report and return results to the console only:
+- Run "Base-rules.json" rule definitions against PBI report file at "Sales.Report and return results to the console only:
 
-``` PBIXInspectorCLI.exe -pbipreport "C:\Files\Sales.Report" -rules ".\Files\Base rules.json" -output "C:\Files\TestRun" -formats "Console"```
+``` PBIXInspectorCLI.exe -pbipreport "C:\Files\Sales.Report" -rules ".\Files\Base-rules.json" -output "C:\Files\TestRun" -formats "Console"```
 
-- Run "Base rules.json" rule definitions against PBI report file at "Sales.Report and return results as Azure DevOps compatible log and tasks commands (see https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&tabs=bash#task-commands):
+- Run "Base-rules.json" rule definitions against PBI report file at "Sales.Report and return results as Azure DevOps compatible log and tasks commands (see https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&tabs=bash#task-commands):
 
-``` PBIXInspectorCLI.exe -pbipreport "C:\Files\Sales.Report" -rules ".\Files\Base rules.json"  -formats "ADO"```
+``` PBIXInspectorCLI.exe -pbipreport "C:\Files\Sales.Report" -rules ".\Files\Base-rules.json"  -formats "ADO"```
 
 ## <a id="ado"></a>Azure DevOps integration
 
@@ -151,7 +151,7 @@ A PBI Inspector test is written in json and is in in three parts:
 
 As an added benefit, a rule can be written in such a way as to return a result more useful than just true or false. For example, an array of visual IDs or names failing the test can be returned and plotted on a wireframe diagram for ease of identification, for an illustration of this, see the second rule example below.
 
-Besides the base rules defined at ```"Files\Base rules.json"```, see other rules examples below (these are also available at [Example rules.json](https://github.com/NatVanG/PBI-Inspector/blob/main/DocsExamples/Example%20rules.json)).
+Besides the base rules defined at ```"Files\Base-rules.json"```, see other rules examples below (these are also available at [Example rules.json](https://github.com/NatVanG/PBI-Inspector/blob/main/DocsExamples/Example%20rules.json)).
 
 - Check that certain types of charts have both axes titles displayed:
 
