@@ -117,6 +117,9 @@ namespace PBIXInspectorLibrary
             Json.Logic.RuleRegistry.AddRule<CustomRules.StringContains>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.ToString>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.ToRecordRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.DrillVariableRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.RectOverlapRule>();
+
         }
 
         /// <summary>
