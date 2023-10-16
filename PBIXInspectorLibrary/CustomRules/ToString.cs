@@ -14,7 +14,7 @@ namespace PBIXInspectorLibrary.CustomRules
     {
         internal Json.Logic.Rule InputString { get; }
 
-        internal ToString(Json.Logic.Rule inputString)
+        public ToString(Json.Logic.Rule inputString)
         {
             InputString = inputString;
         }

@@ -345,7 +345,7 @@
         },
         {
           "name": "Give visible pages meaningful names",
-          "description": "Checks for visible pages with a default 'Page x' display name.",
+          "description": "Returns an array of visible page names with a default 'Page x' display name.",
           "disabled": false,
           "logType": "warning",
           "path": "$.sections[*]",
@@ -392,8 +392,8 @@
           ]
         },
         {
-          "name": "Check Deneb charts properties - In progress",
-          "description": "Check that drillvar operator can read deneb properties",
+          "name": "Check Deneb charts properties - work in progress",
+          "description": "Checks that the drillvar custom rule can read deneb custom visual nested jsonspec properties. This is an example in progress that demonstrates the used of the drillvar custom rule but doesn't yet do anything useful.",
           "disabled": true,
           "logType": "error",
           "path": "$.sections[*]",
@@ -429,7 +429,7 @@
         },
         {
           "name": "Check for visuals overlap with a 5px margin",
-          "description": "Returns names of visuals that overlap.",
+          "description": "Returns names of visuals that overlap while inflacting visuals rectangle area by 5px left, right, top and bottom. Currently this does not check for overlap with the sides of report page itself. This rule does not currently work with visual groups.",
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",

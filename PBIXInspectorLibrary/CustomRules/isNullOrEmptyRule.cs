@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 namespace PBIXInspectorLibrary.CustomRules
 {
     /// <summary>
-    /// Handles the `count` operation.
+    /// Handles the `isnullorempty` operation.
     /// </summary>
     [Operator("isnullorempty")]
     [JsonConverter(typeof(IsNullOrEmptyJsonConverter))]
@@ -15,7 +15,7 @@ namespace PBIXInspectorLibrary.CustomRules
     {
         internal Json.Logic.Rule Value { get; }
 
-        internal IsNullOrEmptyRule(Json.Logic.Rule value)
+        public IsNullOrEmptyRule(Json.Logic.Rule value)
         {
             Value = value;
         }
