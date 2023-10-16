@@ -16,7 +16,7 @@ namespace PBIXInspectorLibrary.CustomRules
         internal Json.Logic.Rule SearchString { get; }
         internal Json.Logic.Rule ContainsString { get; }
 
-        internal StringContains(Json.Logic.Rule searchString, Json.Logic.Rule containsString)
+        public StringContains(Json.Logic.Rule searchString, Json.Logic.Rule containsString)
         {
             SearchString = searchString;
             ContainsString = containsString;

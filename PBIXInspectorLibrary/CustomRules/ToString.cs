@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace PBIXInspectorLibrary.CustomRules
 {
     /// <summary>
-    /// Handles the `strcontains` operation.
+    /// Handles the `tostring` operation. Converts a JsonNode to a string.
     /// </summary>
     [Operator("tostring")]
     [JsonConverter(typeof(ToStringJsonConverter))]
@@ -14,7 +14,7 @@ namespace PBIXInspectorLibrary.CustomRules
     {
         internal Json.Logic.Rule InputString { get; }
 
-        internal ToString(Json.Logic.Rule inputString)
+        public ToString(Json.Logic.Rule inputString)
         {
             InputString = inputString;
         }

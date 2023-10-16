@@ -20,37 +20,35 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
+using System.Text.Json.Nodes;
+using Json.More;
 
 namespace PBIXInspectorTests
 {
-    [JsonConverter(typeof(JsonLogicTestSuiteConverter))]
-    public class JsonLogicTestSuite
+    public static class JsonAssert
     {
-#pragma warning disable CS8618
-        public List<JsonLogicTest> Tests { get; set; }
-#pragma warning restore CS8618
-    }
-
-    public class JsonLogicTestSuiteConverter : JsonConverter<JsonLogicTestSuite?>
-    {
-        public override JsonLogicTestSuite? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public static void AreEquivalent(JsonNode? expected, JsonNode? actual)
         {
-            if (reader.TokenType != JsonTokenType.StartArray)
-                throw new JsonException("Test suite must be an array of tests.");
-
-            var tests = JsonSerializer.Deserialize<List<JsonLogicTest>>(ref reader, options)!
-                .Where(t => t != null)
-                .ToList();
-
-            return new JsonLogicTestSuite { Tests = tests };
+            if (!expected.IsEquivalentTo(actual))
+                Assert.Fail($"Expected: {expected.AsJsonString()}\nActual: {actual.AsJsonString()}");
         }
 
-        public override void Write(Utf8JsonWriter writer, JsonLogicTestSuite? value, JsonSerializerOptions options)
+        public static void IsNull(JsonNode? actual)
         {
-            throw new NotImplementedException();
+            if (actual != null)
+                Assert.Fail($"Expected: null\nActual: {actual.AsJsonString()}");
+        }
+
+        public static void IsTrue(JsonNode? actual)
+        {
+            if (actual is not JsonValue value || !value.TryGetValue(out bool b) || !b)
+                Assert.Fail($"Expected: true\nActual: {actual.AsJsonString()}");
+        }
+
+        public static void IsFalse(JsonNode? actual)
+        {
+            if (actual is not JsonValue value || !value.TryGetValue(out bool b) || b)
+                Assert.Fail($"Expected: true\nActual: {actual.AsJsonString()}");
         }
     }
 }

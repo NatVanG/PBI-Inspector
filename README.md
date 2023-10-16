@@ -152,7 +152,7 @@ A PBI Inspector test is written in json and is in in three parts:
 
 As an added benefit, a rule can be written in such a way as to return a result more useful than just true or false. For example, an array of visual IDs or names failing the test can be returned and plotted on a wireframe diagram for ease of identification, for an illustration of this, see the second rule example below.
 
-Besides the base rules defined at ```"Files\Base-rules.json"```, see other rules examples below (these are also available at [Example rules.json](https://github.com/NatVanG/PBI-Inspector/blob/main/DocsExamples/Example%20rules.json)).
+Besides the base rules defined at ```"Files\Base-rules.json"```, see other rules examples below (these are also available at [Example rules.json](https://github.com/NatVanG/PBI-Inspector/blob/main/DocsExamples/Example-rules.json)).
 
 - Check that certain types of charts have both axes titles displayed:
 

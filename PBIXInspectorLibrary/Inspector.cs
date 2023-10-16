@@ -112,11 +112,14 @@ namespace PBIXInspectorLibrary
             q.ToList().ForEach(t1 => Json.Logic.RuleRegistry.AddRule<t1>());
             */
 
-            Json.Logic.RuleRegistry.AddRule<CustomRules.CountRule>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.IsNullOrEmptyRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.CountRule>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.StringContains>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.ToString>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.ToRecordRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.DrillVariableRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.RectOverlapRule>();
+
         }
 
         /// <summary>
