@@ -56,6 +56,8 @@
             lnkHelp = new LinkLabel();
             lnkLicense = new LinkLabel();
             lnkAbout = new LinkLabel();
+            lnkLatestRelease = new LinkLabel();
+            lnkReportIssue = new LinkLabel();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             SuspendLayout();
@@ -302,7 +304,7 @@
             // lnkHelp
             // 
             lnkHelp.AutoSize = true;
-            lnkHelp.Location = new Point(702, 23);
+            lnkHelp.Location = new Point(392, 23);
             lnkHelp.Name = "lnkHelp";
             lnkHelp.Size = new Size(81, 25);
             lnkHelp.TabIndex = 5;
@@ -313,7 +315,7 @@
             // lnkLicense
             // 
             lnkLicense.AutoSize = true;
-            lnkLicense.Location = new Point(808, 23);
+            lnkLicense.Location = new Point(809, 23);
             lnkLicense.Name = "lnkLicense";
             lnkLicense.Size = new Size(68, 25);
             lnkLicense.TabIndex = 6;
@@ -332,11 +334,35 @@
             lnkAbout.Text = "About";
             lnkAbout.LinkClicked += lnkAbout_LinkClicked;
             // 
+            // lnkLatestRelease
+            // 
+            lnkLatestRelease.AutoSize = true;
+            lnkLatestRelease.Location = new Point(666, 23);
+            lnkLatestRelease.Name = "lnkLatestRelease";
+            lnkLatestRelease.Size = new Size(117, 25);
+            lnkLatestRelease.TabIndex = 8;
+            lnkLatestRelease.TabStop = true;
+            lnkLatestRelease.Text = "Latest release";
+            lnkLatestRelease.LinkClicked += lnkLatestRelease_LinkClicked;
+            // 
+            // lnkReportIssue
+            // 
+            lnkReportIssue.AutoSize = true;
+            lnkReportIssue.Location = new Point(505, 23);
+            lnkReportIssue.Name = "lnkReportIssue";
+            lnkReportIssue.Size = new Size(133, 25);
+            lnkReportIssue.TabIndex = 9;
+            lnkReportIssue.TabStop = true;
+            lnkReportIssue.Text = "Report an issue";
+            lnkReportIssue.LinkClicked += lnkReportIssue_LinkClicked;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1002, 712);
+            Controls.Add(lnkReportIssue);
+            Controls.Add(lnkLatestRelease);
             Controls.Add(lnkAbout);
             Controls.Add(lnkLicense);
             Controls.Add(lnkHelp);
@@ -388,5 +414,7 @@
         private LinkLabel lnkHelp;
         private LinkLabel lnkLicense;
         private LinkLabel lnkAbout;
+        private LinkLabel lnkLatestRelease;
+        private LinkLabel lnkReportIssue;
     }
 }
