@@ -36,7 +36,7 @@ namespace PBIXInspectorLibrary.CustomRules
 
             var count = Items.Count;
 
-            if (count % 2 != 0) { throw new JsonLogicException("The ToRecord rule expects an even number of paramaters"); }
+            if (count % 2 != 0) { throw new JsonLogicException("The torecord rule expects an even number of paramaters"); }
 
             for (var i = 0; i < count - 1; i += 2)
             {
@@ -61,7 +61,7 @@ namespace PBIXInspectorLibrary.CustomRules
                     : new[] { node.Deserialize<Json.Logic.Rule>()! };
 
                 if (parameters == null || parameters.Length == 0)
-                    throw new JsonException("The cat rule needs an array of parameters.");
+                    throw new JsonException("The torecord rule needs an array of parameters.");
 
                 return new ToRecordRule(parameters[0], parameters.Skip(1).ToArray());
             }

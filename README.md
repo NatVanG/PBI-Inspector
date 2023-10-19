@@ -4,7 +4,7 @@
 
 ## NOTE :pencil:
 
-This is a personal project that is not supported by Microsoft. 
+This is a community project that is not supported by Microsoft. 
 
 Please also note that while PBI Inspector can read Power BI Desktop files with the ".pbix" extension as well as files in the PBIP format, the former is not supported by Microsoft.
 
@@ -143,7 +143,7 @@ Visuals with a dotted border are visuals hidden by default as the following exam
 
 ## <a id="customrulesexamples"></a>Custom Rules Examples
 
-*Please note that this section is not a guide to creating custom rules, just a very high-level overview and some examples for now. I intend to write such a guide in the near future.*
+*Please note that this section is not a guide to creating custom rules, just a very high-level overview and some examples. I'm currently writing a guide to rule creation in the project's wiki, see **[Anatomy of a rules file](https://github.com/NatVanG/PBI-Inspector/wiki/Anatomy-of-a-rules-file)**.*
 
 A PBI Inspector test is written in json and is in in three parts:
 1. The [JSONLogic](https://json-everything.net/json-logic) rule

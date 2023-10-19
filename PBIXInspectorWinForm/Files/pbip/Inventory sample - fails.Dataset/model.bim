@@ -12,7 +12,7 @@
       },
       {
         "name": "PBIDesktopVersion",
-        "value": "2.120.731.0 (23.08)"
+        "value": "2.121.903.0 (23.09)"
       },
       {
         "name": "PBI_ProTooling",
@@ -46,10 +46,6 @@
           {
             "name": "PBI_ResultType",
             "value": "Table"
-          },
-          {
-            "name": "PBI_NavigationStepName",
-            "value": "Navigation"
           }
         ],
         "columns": [

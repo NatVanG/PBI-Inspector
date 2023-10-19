@@ -1,5 +1,5 @@
 {
-  "config": "{\"version\":\"5.42\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY22SU11\",\"version\":\"5.40\",\"type\":2}},\"activeSectionIndex\":0,\"defaultDrillFilterOtherVisuals\":true,\"slowDataSourceSettings\":{\"isCrossHighlightingDisabled\":false,\"isSlicerSelectionsButtonEnabled\":false,\"isFilterSelectionsButtonEnabled\":false,\"isFieldWellButtonEnabled\":false,\"isApplyAllButtonEnabled\":false},\"linguisticSchemaSyncVersion\":2,\"settings\":{\"isPersistentUserStateDisabled\":true,\"hideVisualContainerHeader\":false,\"useStylableVisualContainerHeader\":true,\"exportDataMode\":1,\"useNewFilterPaneExperience\":true,\"optOutNewFilterPaneExperience\":false,\"defaultFilterActionIsDataFilter\":true,\"useCrossReportDrillthrough\":false,\"allowChangeFilterTypes\":true,\"allowInlineExploration\":false,\"disableFilterPaneSearch\":false,\"enableDeveloperMode\":false,\"useEnhancedTooltips\":true,\"useDefaultAggregateDisplayName\":true},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Middle'\"}}}}}],\"outspacePane\":[{\"properties\":{\"expanded\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}",
+  "config": "{\"version\":\"5.42\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY22SU11\",\"version\":\"5.40\",\"type\":2}},\"activeSectionIndex\":12,\"defaultDrillFilterOtherVisuals\":true,\"slowDataSourceSettings\":{\"isCrossHighlightingDisabled\":false,\"isSlicerSelectionsButtonEnabled\":false,\"isFilterSelectionsButtonEnabled\":false,\"isFieldWellButtonEnabled\":false,\"isApplyAllButtonEnabled\":false},\"linguisticSchemaSyncVersion\":2,\"settings\":{\"isPersistentUserStateDisabled\":true,\"hideVisualContainerHeader\":false,\"useStylableVisualContainerHeader\":true,\"exportDataMode\":1,\"useNewFilterPaneExperience\":true,\"optOutNewFilterPaneExperience\":false,\"defaultFilterActionIsDataFilter\":true,\"useCrossReportDrillthrough\":false,\"allowChangeFilterTypes\":true,\"allowInlineExploration\":false,\"disableFilterPaneSearch\":false,\"enableDeveloperMode\":false,\"useEnhancedTooltips\":true,\"useDefaultAggregateDisplayName\":true},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Middle'\"}}}}}],\"outspacePane\":[{\"properties\":{\"expanded\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}]}}",
   "layoutOptimization": 0,
   "pods": [
     {
@@ -19,7 +19,8 @@
   ],
   "publicCustomVisuals": [
     "Aquarium1442671919391",
-    "BarChartF5983CEA542C47889C9DE852B430DE5F"
+    "BarChartF5983CEA542C47889C9DE852B430DE5F",
+    "deneb7E15AEF80B9E4D4F8E12924291ECE89A"
   ],
   "resourcePackages": [
     {
@@ -346,6 +347,27 @@
       "width": 1280.00
     },
     {
+      "config": "{}",
+      "displayName": "Deneb custom visual",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "ReportSection6c3c3f97279fafdeeb57",
+      "ordinal": 12,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"1a67964cf02b6170c3b8\",\"layouts\":[{\"id\":0,\"position\":{\"x\":548.5714285714286,\"y\":8.407224958949097,\"z\":0,\"width\":731.4285714285714,\"height\":692.5451559934319}}],\"singleVisual\":{\"visualType\":\"deneb7E15AEF80B9E4D4F8E12924291ECE89A\",\"projections\":{\"dataset\":[{\"queryRef\":\"Inventory.Colour\"},{\"queryRef\":\"Inventory.Sum of Qty\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"i\",\"Entity\":\"Inventory\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Colour\"},\"Name\":\"Inventory.Colour\",\"NativeReferenceName\":\"Colour\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Sum of Qty\"},\"Name\":\"Inventory.Sum of Qty\",\"NativeReferenceName\":\"Sum of Qty\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Sum of Qty\"}}}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"display\":[{\"properties\":{\"viewportHeight\":{\"expr\":{\"Literal\":{\"Value\":\"682.5451559934319D\"}}},\"viewportWidth\":{\"expr\":{\"Literal\":{\"Value\":\"721.4285714285714D\"}}}}}],\"developer\":[{\"properties\":{\"version\":{\"expr\":{\"Literal\":{\"Value\":\"'1.5.1.0'\"}}},\"showVersionNotification\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}],\"vega\":[{\"properties\":{\"provider\":{\"expr\":{\"Literal\":{\"Value\":\"'vegaLite'\"}}},\"jsonSpec\":{\"expr\":{\"Literal\":{\"Value\":\"'{\\n  \\\"data\\\": {\\\"name\\\": \\\"dataset\\\"},\\n  \\\"layer\\\": [\\n    {\\n      \\\"mark\\\": {\\n        \\\"type\\\": \\\"bar\\\",\\n        \\\"opacity\\\": 0.3,\\n        \\\"tooltip\\\": true\\n      },\\n      \\\"encoding\\\": {\\n        \\\"x\\\": {\\\"field\\\": \\\"Sum of Qty\\\"}\\n      }\\n    },\\n    {\\n      \\\"mark\\\": {\\n        \\\"type\\\": \\\"bar\\\",\\n        \\\"tooltip\\\": true\\n      },\\n      \\\"encoding\\\": {\\n        \\\"x\\\": {\\n          \\\"field\\\": \\\"Sum of Qty__highlight\\\"\\n        },\\n        \\\"opacity\\\": {\\n          \\\"condition\\\": {\\n            \\\"test\\\": {\\n              \\\"field\\\": \\\"__selected__\\\",\\n              \\\"equal\\\": \\\"off\\\"\\n            },\\n            \\\"value\\\": 0\\n          },\\n          \\\"value\\\": 1\\n        }\\n      }\\n    }\\n  ],\\n  \\\"encoding\\\": {\\n    \\\"y\\\": {\\n      \\\"field\\\": \\\"Colour\\\",\\n      \\\"type\\\": \\\"nominal\\\"\\n    },\\n    \\\"x\\\": {\\n      \\\"type\\\": \\\"quantitative\\\",\\n      \\\"axis\\\": {\\\"title\\\": \\\"Sum of Qty\\\"}\\n    }\\n  }\\n}'\"}}},\"jsonConfig\":{\"expr\":{\"Literal\":{\"Value\":\"'{\\n  \\\"view\\\": {\\\"stroke\\\": \\\"transparent\\\"},\\n  \\\"font\\\": \\\"Segoe UI\\\",\\n  \\\"arc\\\": {},\\n  \\\"area\\\": {\\n    \\\"line\\\": true,\\n    \\\"opacity\\\": 0.6\\n  },\\n  \\\"bar\\\": {},\\n  \\\"line\\\": {\\n    \\\"strokeWidth\\\": 3,\\n    \\\"strokeCap\\\": \\\"round\\\",\\n    \\\"strokeJoin\\\": \\\"round\\\"\\n  },\\n  \\\"path\\\": {},\\n  \\\"point\\\": {\\\"filled\\\": true, \\\"size\\\": 75},\\n  \\\"rect\\\": {},\\n  \\\"shape\\\": {},\\n  \\\"symbol\\\": {\\n    \\\"strokeWidth\\\": 1.5,\\n    \\\"size\\\": 50\\n  },\\n  \\\"text\\\": {\\n    \\\"font\\\": \\\"Segoe UI\\\",\\n    \\\"fontSize\\\": 12,\\n    \\\"fill\\\": \\\"#605E5C\\\"\\n  },\\n  \\\"axis\\\": {\\n    \\\"ticks\\\": false,\\n    \\\"grid\\\": false,\\n    \\\"domain\\\": false,\\n    \\\"labelColor\\\": \\\"#605E5C\\\",\\n    \\\"labelFontSize\\\": 12,\\n    \\\"titleFont\\\": \\\"wf_standard-font, helvetica, arial, sans-serif\\\",\\n    \\\"titleColor\\\": \\\"#252423\\\",\\n    \\\"titleFontSize\\\": 16,\\n    \\\"titleFontWeight\\\": \\\"normal\\\"\\n  },\\n  \\\"axisQuantitative\\\": {\\n    \\\"tickCount\\\": 3,\\n    \\\"grid\\\": true,\\n    \\\"gridColor\\\": \\\"#C8C6C4\\\",\\n    \\\"gridDash\\\": [1, 5],\\n    \\\"labelFlush\\\": false\\n  },\\n  \\\"axisX\\\": {\\\"labelPadding\\\": 5},\\n  \\\"axisY\\\": {\\\"labelPadding\\\": 10},\\n  \\\"header\\\": {\\n    \\\"titleFont\\\": \\\"wf_standard-font, helvetica, arial, sans-serif\\\",\\n    \\\"titleFontSize\\\": 16,\\n    \\\"titleColor\\\": \\\"#252423\\\",\\n    \\\"labelFont\\\": \\\"Segoe UI\\\",\\n    \\\"labelFontSize\\\": 13.333333333333332,\\n    \\\"labelColor\\\": \\\"#605E5C\\\"\\n  },\\n  \\\"legend\\\": {\\n    \\\"titleFont\\\": \\\"Segoe UI\\\",\\n    \\\"titleFontWeight\\\": \\\"bold\\\",\\n    \\\"titleColor\\\": \\\"#605E5C\\\",\\n    \\\"labelFont\\\": \\\"Segoe UI\\\",\\n    \\\"labelFontSize\\\": 13.333333333333332,\\n    \\\"labelColor\\\": \\\"#605E5C\\\",\\n    \\\"symbolType\\\": \\\"circle\\\",\\n    \\\"symbolSize\\\": 75\\n  }\\n}'\"}}},\"isNewDialogOpen\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}},\"version\":{\"expr\":{\"Literal\":{\"Value\":\"'5.6.1'\"}}},\"enableTooltips\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"enableContextMenu\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"enableHighlight\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"enableSelection\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"selectionMaxDataPoints\":{\"expr\":{\"Literal\":{\"Value\":\"50D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 692.55,
+          "width": 731.43,
+          "x": 548.57,
+          "y": 8.41,
+          "z": 0.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
       "config": "{\"visibility\":0,\"type\":2}",
       "displayName": "Detail",
       "displayOption": 1,
@@ -395,6 +417,27 @@
         }
       ],
       "width": 320.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Scrolling page",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 1280.00,
+      "name": "ReportSectionc9582afbe6f823e9059c",
+      "ordinal": 11,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"85573979ecf319df2ca4\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":17,\"z\":0,\"width\":1280,\"height\":1112,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"columnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Inventory.Colour\",\"active\":true}],\"Y\":[{\"queryRef\":\"Inventory.Sum of Qty\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"i\",\"Entity\":\"Inventory\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Colour\"},\"Name\":\"Inventory.Colour\",\"NativeReferenceName\":\"Colour\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Sum of Qty\"},\"Name\":\"Inventory.Sum of Qty\",\"NativeReferenceName\":\"Sum of Qty\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"i\"}},\"Property\":\"Sum of Qty\"}}}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 1112.00,
+          "width": 1280.00,
+          "x": 0.00,
+          "y": 17.00,
+          "z": 0.00
+        }
+      ],
+      "width": 1280.00
     },
     {
       "config": "{}",

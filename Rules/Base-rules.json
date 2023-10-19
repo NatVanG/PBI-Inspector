@@ -9,7 +9,7 @@
       "rules": [
         {
           "name": "Remove custom visuals which are not used in the report.",
-          "description": "Returns an array of custom visual names to be removed if any.",
+          "description": "Returns an array of custom visual names to be removed if any. To disable this rule, mark it as disabled in the base rules file.",
           "logType": "warning",
           "disabled": false,
           "path": "$",
@@ -69,7 +69,7 @@
         },
         {
           "name": "Reduce the number of visible visuals on the page",
-          "description": "Reports a test fail if the rule's maximum number of visible visuals on the page is exceeded. By default the base rules file specifies 10 as the maximum, set the paramMaxVisualsPerPage parameter to change this.",
+          "description": "Reports a test fail if the rule's maximum number of visible visuals on the page is exceeded. By default the base rules file specifies 20 as the maximum, set the paramMaxVisualsPerPage parameter to change this. To disable this rule, mark it as disabled in the base rules file.",
           "logType": "warning",
           "disabled": false,
           "forEachPath": "$.sections[*]",
@@ -88,11 +88,32 @@
                           "var": "visuals"
                         },
                         {
-                          "!=": [
+                          "and": [
                             {
-                              "var": "singleVisual.display.mode"
+                              "!=": [
+                                {
+                                  "var": "singleVisual.display.mode"
+                                },
+                                "hidden"
+                              ]
                             },
-                            "hidden"
+                            {
+                              "!": [
+                                {
+                                  "in": [
+                                    {
+                                      "var": "singleVisual.visualType"
+                                    },
+                                    [
+                                      "shape",
+                                      "slicer",
+                                      "actionButton",
+                                      "textbox"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            }
                           ]
                         }
                       ]
@@ -113,7 +134,7 @@
         },
         {
           "name": "Reduce the number of objects within visuals",
-          "description": "Reports a test fail if the rule's maximum number of objects within visuals on a page is exceeded. An object is a data field that is assigned to a visual. By default, the base rules file specifies 4 as the maximum objects within a visual.",
+          "description": "Reports a test fail if the rule's maximum number of objects within visuals on a page is exceeded. An object is a data field that is assigned to a visual. By default, the base rules file specifies 6 as the maximum objects within a visual. To disable this rule, mark it as disabled in the base rules file.",
           "logType": "warning",
           "disabled": false,
           "forEachPath": "$.sections[*]",
@@ -138,7 +159,7 @@
                             }
                           ]
                         },
-                        4
+                        6
                       ]
                     }
                   ]
@@ -156,7 +177,7 @@
         },
         {
           "name": "Reduce usage of TopN filtering visuals by page",
-          "description": "Reports a test fail if the rule's maximum number of visuals using TopN filtering on a the page is exceeded. By default the base rules file specifies 2 as the maximum objects within a visual, set the paramMaxTopNFilteringPerPage to change this.",
+          "description": "Reports a test fail if the rule's maximum number of visuals using TopN filtering on a the page is exceeded. By default the base rules file specifies 4 as the maximum objects within a visual, set the paramMaxTopNFilteringPerPage to change this. To disable this rule, mark it as disabled in the base rules file.",
           "logType": "warning",
           "disabled": false,
           "forEachPath": "$.sections[*]",
@@ -200,14 +221,14 @@
             },
             {
               "f": ".",
-              "paramMaxTopNFilteringPerPage": 2
+              "paramMaxTopNFilteringPerPage": 4
             },
             true
           ]
         },
         {
           "name": "Reduce usage of Advanced filtering visuals by page",
-          "description": "Reports a test fail if the rule's maximum number of visuals using Advanced filtering on a the page is exceeded. By default, the base rules file specifies 2 as the maximum objects within a visual, set the paramMaxAdvancedFilteringVisualsPerPage parameter value to change this.",
+          "description": "Reports a test fail if the rule's maximum number of visuals using Advanced filtering on a the page is exceeded. By default, the base rules file specifies 4 as the maximum objects within a visual, set the paramMaxAdvancedFilteringVisualsPerPage parameter value to change this. To disable this rule, mark it as disabled in the base rules file.",
           "logType": "warning",
           "disabled": false,
           "forEachPath": "$.sections[*]",
@@ -251,14 +272,14 @@
             },
             {
               "f": ".",
-              "paramMaxAdvancedFilteringVisualsPerPage": 2
+              "paramMaxAdvancedFilteringVisualsPerPage": 4
             },
             true
           ]
         },
         {
           "name": "Reduce number of pages per report",
-          "description": "Reports a test fail if the rule's maximum number of pages per report is exceeded. By default, the base rules file specifies 10 as the maximum number of pages. Set the paramMaxNumberOfPagesPerReport parameter to change this.",
+          "description": "Reports a test fail if the rule's maximum number of pages per report is exceeded. By default, the base rules file specifies 10 as the maximum number of pages. Set the paramMaxNumberOfPagesPerReport parameter to change this. To disable this rule, mark it as disabled in the base rules file.",
           "logType": "warning",
           "disabled": false,
           "path": "$.sections",
@@ -384,7 +405,7 @@
         },
         {
           "name": "Ensure charts use theme colours",
-          "description": "Check that charts avoid custom colours and use theme colours instead. Exclude textboxes.",
+          "description": "Check that charts (excluding textboxes) avoid custom colours and use theme colours instead. To disable this rule, mark it as disabled in the base rules file.",
           "disabled": false,
           "logType": "warning",
           "forEachPath": "$.sections[*]",
@@ -439,6 +460,57 @@
             },
             {
               "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "name": "Ensure pages do not scroll vertically",
+          "description": "Returns an array of visible page names with a height great than 720px. Modify the rule parameter value if a different maximum height value is required. To disable this rule, mark it as disabled in the base rules file.",
+          "disabled": false,
+          "logType": "warning",
+          "path": "$.sections[*]",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "pageArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          ">": [
+                            {
+                              "var": "height"
+                            },
+                            {
+                              "var": "paramMaxAllowedPageHeight"
+                            }
+                          ]
+                        },
+                        {
+                          "!=": [
+                            {
+                              "drillvar": "config>visibility"
+                            },
+                            1
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "var": "displayName"
+                }
+              ]
+            },
+            {
+              "pageArray": ".",
+              "paramMaxAllowedPageHeight": 720
             },
             []
           ]

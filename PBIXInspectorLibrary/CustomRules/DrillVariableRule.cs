@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Json.Pointer;
+using System.Net.Http.Headers;
 
 namespace PBIXInspectorLibrary.CustomRules;
 
@@ -64,7 +65,18 @@ public class DrillVariableRule : Json.Logic.Rule
             {
                 if (pathEval is JsonValue val)
                 {
-                    var pathEvalNode = JsonNode.Parse(val.ToString()!.Replace("'","")); //TODO: This is a hack to remove single quotes from the string.  Probably need to remove start and end single quotes only.
+                    //remove single quotes from beginning and end of string if any.
+                    string strVal;
+                    if  (val.ToString()!.StartsWith("'") && val.ToString()!.EndsWith("'"))
+                    {
+                        strVal = val.ToString()!.Substring(1, val.ToString()!.Length - 2);
+                    }
+                    else
+                    {
+                        strVal = val.ToString()!;
+                    }
+
+                    var pathEvalNode = JsonNode.Parse(strVal);
                     return EvalPath(rightString, data, pathEvalNode);
                 }
                 else

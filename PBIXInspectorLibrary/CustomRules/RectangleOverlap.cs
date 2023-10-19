@@ -8,7 +8,7 @@ namespace PBIXInspectorLibrary.CustomRules
 {
 
     /// <summary>
-    /// Handles the `count` operation.
+    /// Handles the `rectoverlap` operation.
     /// </summary>
     [Operator("rectoverlap")]
     [JsonConverter(typeof(RectOverlapJsonConverter))]

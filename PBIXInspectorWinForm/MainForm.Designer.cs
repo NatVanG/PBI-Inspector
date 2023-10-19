@@ -345,7 +345,9 @@
             Controls.Add(txtConsoleOutput);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             Name = "MainForm";
             Text = "VisOps with PBI Inspector";
             Load += Form1_Load;
