@@ -407,7 +407,7 @@
           "name": "Ensure charts use theme colours",
           "description": "Check that charts (excluding textboxes) avoid custom colours and use theme colours instead. To disable this rule, mark it as disabled in the base rules file.",
           "disabled": false,
-          "logType": "warning",
+          "logType": "error",
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
