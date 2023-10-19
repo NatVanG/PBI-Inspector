@@ -188,5 +188,29 @@ namespace PBIXInspectorWinForm
         {
             MessageBox.Show(AppUtils.About());
         }
+
+        private void lnkLatestRelease_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                AppUtils.WinOpen(Constants.LatestReleasePageUrl);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to open link that was clicked.");
+            }
+        }
+
+        private void lnkReportIssue_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                AppUtils.WinOpen(Constants.IssuesPageUrl);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to open link that was clicked.");
+            }
+        }
     }
 }

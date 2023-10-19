@@ -21,6 +21,8 @@ namespace PBIXInspectorWinLibrary
         public const string ADOCompleteTemplate = "##vso[task.complete result={0};]DONE";//Failed|SucceededWithIssues|Succeeded
         public const string GitHubMsgTemplate = "::{0}::";
         public const string ReadmePageUrl = "https://github.com/NatVanG/PBIXInspector/blob/main/README.md";
+        public const string LatestReleasePageUrl = "https://github.com/NatVanG/PBI-Inspector/releases";
         public const string LicensePageUrl = "https://github.com/NatVanG/PBIXInspector/blob/main/LICENSE";
+        public const string IssuesPageUrl = "https://github.com/NatVanG/PBI-Inspector/issues";
     }
 }

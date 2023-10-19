@@ -37,10 +37,10 @@ namespace PBIXInspectorLibrary.CustomRules
             var containsString = ContainsString.Apply(data, contextData);
 
             if (searchString is not JsonValue searchStringValue || !searchStringValue.TryGetValue(out string? stringSearchString))
-                throw new JsonLogicException($"Cannot stringcontains a non-string searchString.");
+                throw new JsonLogicException($"strcontains rule: searchString parameter value is not a string.");
 
             if (containsString is not JsonValue containsStringValue || !containsStringValue.TryGetValue(out string? stringContainsString))
-                throw new JsonLogicException($"Cannot stringcontains a non-string containsString.");
+                throw new JsonLogicException($"strcontains rule: containsString parameter value is not a string.");
 
             return Regex.Matches(stringSearchString, stringContainsString).Count;
         }
@@ -53,7 +53,7 @@ namespace PBIXInspectorLibrary.CustomRules
             var parameters = JsonSerializer.Deserialize<Json.Logic.Rule[]>(ref reader, options);
 
             if (parameters is not { Length: 2 })
-                throw new JsonException("The stringcontains rule needs an array with 2 parameters.");
+                throw new JsonException("The strcontains rule needs an array with 2 parameters.");
 
             if (parameters.Length == 2) return new StringContains(parameters[0], parameters[1]);
 

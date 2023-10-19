@@ -267,19 +267,37 @@
                       "var": "visualsConfigArray"
                     },
                     {
-                      "none": [
+                      "and": [
                         {
-                          "var": "singleVisual.vcObjects.general"
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "shape"
+                                ]
+                              ]
+                            }
+                          ]
                         },
                         {
-                          "or": [
+                          "none": [
                             {
-                              "!!": [ { "var": "properties.altText.expr.Aggregation" } ]
+                              "var": "singleVisual.vcObjects.general"
                             },
                             {
-                              "!=": [
-                                { "var": "properties.altText.expr.Literal.Value" },
-                                "''"
+                              "or": [
+                                {
+                                  "!!": [ { "var": "properties.altText.expr.Aggregation" } ]
+                                },
+                                {
+                                  "!=": [
+                                    { "var": "properties.altText.expr.Literal.Value" },
+                                    "''"
+                                  ]
+                                }
                               ]
                             }
                           ]
@@ -395,7 +413,7 @@
           "name": "Check Deneb charts properties - work in progress",
           "description": "Checks that the drillvar custom rule can read deneb custom visual nested jsonspec properties. This is an example in progress that demonstrates the used of the drillvar custom rule but doesn't yet do anything useful.",
           "disabled": true,
-          "logType": "error",
+          "logType": "warning",
           "path": "$.sections[*]",
           "pathErrorWhenNoMatch": true,
           "test": [
@@ -407,11 +425,23 @@
                       "var": "pageArray"
                     },
                     {
-                      "==": [
+                      "and": [
                         {
-                          "drillvar": "visualContainers.0.config>singleVisual.objects.vega.0.properties.jsonSpec.expr.Literal.Value>data.name"
+                          "strcontains": [
+                            {
+                              "drillvar": "visualContainers.0.config>singleVisual.visualType"
+                            },
+                            "^deneb[A-Z0-9]+$"
+                          ]
                         },
-                        "dataset"
+                        {
+                          "==": [
+                            {
+                              "drillvar": "visualContainers.0.config>singleVisual.objects.vega.0.properties.jsonSpec.expr.Literal.Value>data.name"
+                            },
+                            "dataset"
+                          ]
+                        }
                       ]
                     }
                   ]
