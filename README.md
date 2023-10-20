@@ -16,7 +16,7 @@ Thanks to [Michael Kovalsky](https://github.com/m-kovalsky) and [Rui Romano](htt
 
 Please report issues [here](https://github.com/NatVanG/PBI-Inspector/issues).
 
-## <a name="contents"></a>Documentation contents
+## <a name="contents"></a>Contents
 
 - [Intro](#intro)
 - [Base rules](#baserulesoverview)
@@ -26,6 +26,9 @@ Please report issues [here](https://github.com/NatVanG/PBI-Inspector/issues).
 - [Interpreting results](#results)
 - [Known issues](#knownissues)
 - [Custom rules examples](#customrulesexamples)
+- [Custom rules guide](#customrulesguide)
+- [Contributing ideas and discussions](#contributing)
+- [Report an issue](#reportanissue)
 
 
 ## <a id="intro"></a>Intro
@@ -36,7 +39,7 @@ With Microsoft Power BI, visuals are placed on a canvas and formatted as desired
 
 ## <a id="baserulesoverview"></a>Base rules
 
-While PBI Inspector supports custom rules, it also includes the following base rules defined at ```"Files\Base-rules.json"```, some rules allow for user parameters:
+While PBI Inspector supports custom rules, it also includes the following base rules defined at https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/Rules/Base-rules.json, some rules allow for user parameters:
 
 1. Remove custom visuals which are not used in the report (no user parameters)
 2. Reduce the number of visible visuals on the page (set parameter ```paramMaxVisualsPerPage``` to the maximum number of allowed visible visuals on the page)
@@ -47,16 +50,16 @@ While PBI Inspector supports custom rules, it also includes the following base r
 7. Avoid setting ‘Show items with no data’ on columns (no user parameters)
 8. Tooltip and Drillthrough pages should be hidden (no user parameters)
 
-Before modifying parameters, you may wish to either take a copy of the file at ```"Files\Base-rules.json"``` within your local PBI Inspector deployment folder. If you need a fresh copy, see the PBI Inspector releases in Github at https://github.com/NatVanG/PBIXInspector/releases.
+To modify parameters, save a local copy of the Base-rules.json file at https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/Rules/Base-rules.json and point PBI Inspector to the new file.
 
-To disable a rule, edit the rule json to specify ```"disabled": true```. At runtime PBI Inspector will ignore any disabled rule.
+To disable a rule, edit the rule's json to specify ```"disabled": true```. At runtime PBI Inspector will ignore any disabled rule.
 
 Currently these changes need to be made directly in the rules file json, however the plan is to provide a more intuitive user interface in upcoming releases of PBI Inspector.
 
 ## <a id="gui"></a>Run from the graphical user interface (GUI)
 
 ***Binaries***: 
-- The self-contained (.NET 6.0 runtime included) Windows Forms application is available at: https://github.com/NatVanG/PBI-Inspector/releases/tag/v1.9.1-WinForm
+- The self-contained (.NET 6.0 runtime included) Windows Forms application is available at: https://github.com/NatVanG/PBI-Inspector/releases/tag/v1.9.3-WinForm.
 
 Running ```PBIXInspectorWinForm.exe``` presents the user with the following interface: 
 
@@ -75,20 +78,15 @@ Running ```PBIXInspectorWinForm.exe``` presents the user with the following inte
 ***Binaries***: The command line interface application is available at: https://github.com/NatVanG/PBI-Inspector/releases/latest
 (.NET 6.0 dependency not included).
 
-To inspect a PBIP file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: ```PBIXInspectorCLI.exe -pbipreport "Files\pbip\Inventory sample.pbip" -rules "Files\Base-rules.json"```
-
-To inspect a PBIX file using the samples included in the [release files](https://github.com/NatVanG/PBIXInspector/releases), use the following command line: 
-```PBIXInspectorCLI.exe -pbix "Files\Inventory Sample.pbix" -rules "Files\Base-rules.json"```
-
 All command line parameters are as follows:
 
 ```-pbip filepath```: Deprecated. Please use -pbipreport argument instead.
 
 ```-pbipreport folderpath```: Required (or specify -pbix). The path to the PBIP's "*.Report" folder.
 
-```-pbix filepath```: Reuquired (or specify -pbipreport). The filepath of the PBIX Power BI Desktop file to be inspected. If not specified then the sample PBIP file at "\Files\pbip\Inventory sample.Report\report.json" will be used.
+```-pbix filepath```: Required (or specify -pbipreport). The filepath of the PBIX Power BI Desktop file to be inspected. 
 
-```-rules filepath```: Required. The filepath to the rules file.
+```-rules filepath```: Required. The filepath to the rules file. Save a local copy of the base rules file at https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/Rules/Base-rules.json and modify as required.
 
 ```-verbose true|false```: Optional, false by default. If false then only rule violations will be shown otherwise all results will be listed.
 
@@ -100,10 +98,6 @@ All command line parameters are as follows:
 - **HTML** writes results to a formatted Html page. If no output directory is specified and the HTML format is specified, then a browser page will be opened to display the HTML results. When specifying "HTML" format, report page wireframe images will be created so there is no need to also include the "PNG" format. 
 - **PNG** draws report pages wireframes clearly showing any failing visuals. 
 - **ADO** outputs Azure DevOps compatible task commands for use in a deployment pipeline. Task commands issued are "task.logissue" and "task.complete", see https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&tabs=bash#task-commands. PBI Inspector rules definition can be given a "logType" attribute of either "warning" or "error" which will be passed to the Azure DevOps task command as follows: ```##vso[task.logissue type=warning|error]```. When specifying "ADO" all other output format types will be ignored.
-
-If run without arguments, PBIX inspector will use the sample PBIP file and the base rules file under the application's "Files" directory:
-
-```PBIXInspectorCLI.exe```
 
 **Commmand line examples:**
 
@@ -125,7 +119,7 @@ For an example on how to run PBI Inspector as part of an Azure DevOps pipeline j
 
 ## <a id="results"></a>Interpreting results
 
-Depending on user selections or CLI arguments, the output will consist of either a JSON file or an HTML document or both. If a verbose output was requested, then results for both test passes and failures will be reported. The JSON output is intended to be consumed by a subsequent process, for example a Power BI report may be created that uses the JSON file as a data source and visualises the PBI Inspector test results. The HTML page is a more readable format for humans which also includes report page wireframe images when tests are at the page level. These images are intended to help the user identify visuals that have failed the test such as the example image below. The PBI Inspector logo is also displayed at the centre of each failing visuals as an additional identification aid when the wireframe is busy. 
+ If a verbose output was requested, then results for both test passes and failures will be reported. The JSON output is intended to be consumed by a subsequent process, for example a Power BI report may be created that uses the JSON file as a data source and visualises the PBI Inspector test results. The HTML page is a more readable format for humans which also includes report page wireframe images when tests are at the report page level. These images are intended to help the user identify visuals that have failed the test such as the example image below. The PBI Inspector logo is also displayed at the centre of each failing visuals as an additional identification aid when the wireframe is busy. 
 
 ![Wireframe with failures](DocsImages/WireframeWithFailures.png)
 
@@ -140,6 +134,8 @@ Visuals with a dotted border are visuals hidden by default as the following exam
  ![Tooltip page with incorrect aspect ratio](DocsImages/TooltipPageWithIncorrectAspectRatio.png)
 
  - Currently page wireframes do not faithfully represents the report page layout when visual groups are present.
+ 
+ All issues should be logged at https://github.com/NatVanG/PBI-Inspector/issues.
 
 ## <a id="customrulesexamples"></a>Custom Rules Examples
 
@@ -152,7 +148,7 @@ A PBI Inspector test is written in json and is in in three parts:
 
 As an added benefit, a rule can be written in such a way as to return a result more useful than just true or false. For example, an array of visual IDs or names failing the test can be returned and plotted on a wireframe diagram for ease of identification, for an illustration of this, see the second rule example below.
 
-Besides the base rules defined at ```"Files\Base-rules.json"```, see other rules examples below (these are also available at [Example rules.json](https://github.com/NatVanG/PBI-Inspector/blob/main/DocsExamples/Example-rules.json)).
+Besides the base rules defined at https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/Rules/Base-rules.json, see other rules examples below (these are available at [Example rules.json](https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/DocsExamples/Example-rules.json)).
 
 - Check that certain types of charts have both axes titles displayed:
 
@@ -417,3 +413,15 @@ Example wireframe output highlighting two visuals that failed the test because t
           ]
         }
 ```
+
+## <a id="customrulesguide"></a>Custom rules guide
+
+I've started writing this guide to rule creation in the project's wiki: **[Anatomy of a rules file](https://github.com/NatVanG/PBI-Inspector/wiki/Anatomy-of-a-rules-file)**. I'll be adding more content to this guide over time so do check back in.
+
+## <a id="contributing"></a>Contributing ideas and discussions
+
+Please contribute to ideas (for example ideas for new rules) and discussions at https://github.com/NatVanG/PBI-Inspector/discussions.
+
+## <a id="reportanissue"></a>Report an issue
+
+Please report issues at https://github.com/NatVanG/PBI-Inspector/issues.
