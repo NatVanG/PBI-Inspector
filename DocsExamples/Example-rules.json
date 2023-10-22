@@ -49,10 +49,10 @@
           ]
         },
         {
-          "name": "Sample - ReportSlowDatasourceSettings",
+          "name": "Disable local slow datasource settings",
+          "description": "Check that report slow data source settings are all disabled.",
           "disabled": false,
           "logType": "warning",
-          "description": "Check that report slow data source settings are all disabled.",
           "path": "$.config",
           "pathErrorWhenNoMatch": true,
           "test": [
@@ -76,6 +76,7 @@
                       "var": "isApplyAllButtonEnabled"
                     }
                   ]
+
                 }
               ]
             },
@@ -87,6 +88,120 @@
               "isApplyAllButtonEnabled": "/slowDataSourceSettings/isApplyAllButtonEnabled"
             },
             true
+          ]
+        },
+        {
+          "name": "Local report settings",
+          "disabled": false,
+          "logType": "warning",
+          "description": "Check local report settings other than slow data source settings. This rule creates a json record of current local setting values and compares to a json record of expected values. Currently, if this rules fails, I recommend comparing both output json records formatted in Visual Studio code to easily identify the failed setting values.",
+          "path": "$.config",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "torecord": [
+                "activePageIndex",
+                {
+                  "var": "activePageIndex"
+                },
+                "defaultDrillFilterOtherVisuals",
+                {
+                  "var": "defaultDrillFilterOtherVisuals"
+                },
+                "isPersistentUserStateDisabled",
+                {
+                  "var": "isPersistentUserStateDisabled"
+                },
+                "hideVisualContainerHeader",
+                {
+                  "var": "hideVisualContainerHeader"
+                },
+                "useStylableVisualContainerHeader",
+                {
+                  "var": "useStylableVisualContainerHeader"
+                },
+                "exportDataMode",
+                {
+                  "var": "exportDataMode"
+                },
+                "useNewFilterPaneExperience",
+                {
+                  "var": "useNewFilterPaneExperience"
+                },
+                "optOutNewFilterPaneExperience",
+                {
+                  "var": "optOutNewFilterPaneExperience"
+                },
+                "defaultFilterActionIsDataFilter",
+                {
+                  "var": "defaultFilterActionIsDataFilter"
+                },
+                "useCrossReportDrillthrough",
+                {
+                  "var": "useCrossReportDrillthrough"
+                },
+                "allowChangeFilterTypes",
+                {
+                  "var": "allowChangeFilterTypes"
+                },
+                "allowInlineExploration",
+                {
+                  "var": "allowInlineExploration"
+                },
+                "disableFilterPaneSearch",
+                {
+                  "var": "disableFilterPaneSearch"
+                },
+                "enableDeveloperMode",
+                {
+                  "var": "enableDeveloperMode"
+                },
+                "useEnhancedTooltips",
+                {
+                  "var": "useEnhancedTooltips"
+                },
+                "useDefaultAggregateDisplayName",
+                {
+                  "var": "useDefaultAggregateDisplayName"
+                }
+              ]
+            },
+            {
+              "activePageIndex": "/activeSectionIndex",
+              "defaultDrillFilterOtherVisuals": "/defaultDrillFilterOtherVisuals",
+              "isPersistentUserStateDisabled": "/settings/isPersistentUserStateDisabled",
+              "hideVisualContainerHeader": "/settings/hideVisualContainerHeader",
+              "useStylableVisualContainerHeader": "/settings/useStylableVisualContainerHeader",
+              "exportDataMode": "/settings/exportDataMode",
+              "useNewFilterPaneExperience": "/settings/useNewFilterPaneExperience",
+              "optOutNewFilterPaneExperience": "/settings/optOutNewFilterPaneExperience",
+              "defaultFilterActionIsDataFilter": "/settings/defaultFilterActionIsDataFilter",
+              "useCrossReportDrillthrough": "/settings/useCrossReportDrillthrough",
+              "allowChangeFilterTypes": "/settings/allowChangeFilterTypes",
+              "allowInlineExploration": "/settings/allowInlineExploration",
+              "disableFilterPaneSearch": "/settings/disableFilterPaneSearch",
+              "enableDeveloperMode": "/settings/enableDeveloperMode",
+              "useEnhancedTooltips": "/settings/useEnhancedTooltips",
+              "useDefaultAggregateDisplayName": "/settings/useDefaultAggregateDisplayName"
+            },
+            {
+              "activePageIndex": 0,
+              "defaultDrillFilterOtherVisuals": true,
+              "isPersistentUserStateDisabled": true,
+              "hideVisualContainerHeader": false,
+              "useStylableVisualContainerHeader": true,
+              "exportDataMode": 1,
+              "useNewFilterPaneExperience": true,
+              "optOutNewFilterPaneExperience": false,
+              "defaultFilterActionIsDataFilter": true,
+              "useCrossReportDrillthrough": false,
+              "allowChangeFilterTypes": true,
+              "allowInlineExploration": false,
+              "disableFilterPaneSearch": false,
+              "enableDeveloperMode": false,
+              "useEnhancedTooltips": true,
+              "useDefaultAggregateDisplayName": true
+            }
           ]
         },
         {
@@ -249,8 +364,8 @@
           ]
         },
         {
-          "name": "Ensure alternativeText has been defined for all visuals",
-          "description": "Alt-text is required for screen readers",
+          "name": "Ensure alt-text has been defined for visuals",
+          "description": "Alt-text is required for screen readers.",
           "disabled": true,
           "logType": "warning",
           "forEachPath": "$.sections[*]",
@@ -411,8 +526,8 @@
         },
         {
           "name": "Check Deneb charts properties - work in progress",
-          "description": "Checks that the drillvar custom rule can read deneb custom visual nested jsonspec properties. This is an example in progress that demonstrates the used of the drillvar custom rule but doesn't yet do anything useful.",
-          "disabled": true,
+          "description": "Checks that the drillvar custom rule can read deneb custom visual nested jsonspec properties. This is an example in progress that demonstrates the use of the drillvar custom rule but doesn't yet do anything useful.",
+          "disabled": false,
           "logType": "warning",
           "path": "$.sections[*]",
           "pathErrorWhenNoMatch": true,
@@ -459,7 +574,9 @@
         },
         {
           "name": "Check for visuals overlap with a 5px margin",
-          "description": "Returns names of visuals that overlap while inflacting visuals rectangle area by 5px left, right, top and bottom. Currently this does not check for overlap with the sides of report page itself. This rule does not currently work with visual groups.",
+          "description": "Returns names of visuals that overlap while inflating visuals rectangle area by 5px left, right, top and bottom. Currently this does not check for overlap with the sides of report page itself. This rule does not currently work with visual groups.",
+          "disabled": false,
+          "logType": "warning",
           "forEachPath": "$.sections[*]",
           "forEachPathName": "$.name",
           "forEachPathDisplayName": "$.displayName",
@@ -563,6 +680,80 @@
               "v": "."
             },
             []
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Report theme",
+      "description": "Check report theme properties.",
+      "pbixEntryPath": "Report/StaticResources/SharedResources/BaseThemes/CY22SU11.json",
+      "pbipEntryPath": "StaticResources/SharedResources/BaseThemes/CY22SU11.json",
+      "contentType": "json",
+      "codepage": 65001,
+      "rules": [
+        {
+          "name": "Report theme name",
+          "description": "Check Report theme name",
+          "disabled": false,
+          "logType": "warning",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "==": [
+                { "var": "n" },
+                "CY22SU09"
+              ]
+            },
+            {
+              "n": "/name"
+            },
+            true
+          ]
+        },
+        {
+          "name": "Report theme title font properties",
+          "description": "Checks theme's' title foreground, fontface and fontsize",
+          "disabled": false,
+          "logType": "warning",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "and": [
+                {
+                  "==": [
+                    { "var": "foreground" },
+                    "#252423"
+                  ]
+                },
+                {
+                  "==": [
+                    { "var": "fontface" },
+                    "DIN"
+                  ]
+                },
+                {
+                  ">=": [
+                    { "var": "fontsize" },
+                    10
+                  ]
+                },
+                {
+                  "<=": [
+                    { "var": "fontsize" },
+                    12
+                  ]
+                }
+              ]
+            },
+            {
+              "foreground": "/foreground",
+              "fontface": "/textClasses/title/fontFace",
+              "fontsize": "/textClasses/title/fontSize"
+            },
+            true
           ]
         }
       ]
