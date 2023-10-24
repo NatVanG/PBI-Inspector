@@ -148,9 +148,66 @@ A PBI Inspector test is written in json and is in in three parts:
 
 As an added benefit, a rule can be written in such a way as to return a result more useful than just true or false. For example, an array of visual IDs or names failing the test can be returned and plotted on a wireframe diagram for ease of identification, for an illustration of this, see the second rule example below.
 
-Besides the base rules defined at https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/Rules/Base-rules.json, see other rules examples below (these are available at [Example rules.json](https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/DocsExamples/Example-rules.json)).
+Besides the base rules defined at https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/Rules/Base-rules.json, see other rules examples below (*make sure to also view the full **[Example rules.json](https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/DocsExamples/Example-rules.json)** rule file definition*):
 
-- Check that certain types of charts have both axes titles displayed:
+- [Check that visuals are wider than they are tall](#checkthatvisualsarewiderthantheyaretall)
+- [Check that certain types of charts have both axes titles displayed](#checkthatcertaintypesofchartshavebothaxestitlesdisplayed)
+- [Avoid publishing report pages with default names e.g. "Page 1", "Page 2" etc.](#avoidpublishingreportpageswithdefaultnamesegpage1page2etc)
+- [Check that slow data source settings are all disabled](#checkthatslowdatasourcesettingsarealldisabled)
+- [Check other local report settings](#checkotherlocalreportsettings)
+- [Check that the ratio of visuals across the report using custom colours does not exceed 10%](#checkthattheratioofvisualsacrossthereportusingcustomcoloursdoesnotexceed10)
+- [Check report theme properties](#checkreportthemeproperties)
+
+### <a id="checkthatvisualsarewiderthantheyaretall"></a>Check that visuals are wider than they are tall (for fun or seriously):
+
+```
+{
+                    "name": "Charts wider than tall",
+                    "description": "Want to check that your charts are wider than tall?",
+                    "disabled": false,
+                    "logType": "warning",
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*].config",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                            "var": "visualsConfigArray"
+                                        },
+                                        {
+                                            "<=": [
+                                                {
+                                                    "var": "layouts.0.position.width"
+                                                },
+                                                {
+                                                    "var": "layouts.0.position.height"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "var": "name"
+                                }
+                            ]
+                        },
+                        {
+                            "visualsConfigArray": "."
+                        },
+                        []
+                    ]
+}
+```
+
+Example wireframe output highlighting two visuals that failed the test because they are taller than they are wide:
+![Charts wider than tall test output](DocsImages/WireframeChartsWiderThanTall.png)
+
+### <a id="checkthatcertaintypesofchartshavebothaxestitlesdisplayed"></a>Check that certain types of charts have both axes titles displayed:
 
 ```
  {
@@ -224,56 +281,60 @@ Besides the base rules defined at https://raw.githubusercontent.com/NatVanG/PBI-
                 }
 ```
 
-- Check that visuals are wider than they are tall (for fun or seriously):
+### <a id="avoidpublishingreportpageswithdefaultnamesegpage1page2etc"></a>Avoid publishing report pages with default names e.g. "Page 1", "Page 2" etc.:
 
 ```
 {
-                    "name": "Charts wider than tall",
-                    "description": "Want to check that your charts are wider than tall?",
-                    "disabled": false,
-                    "logType": "warning",
-                    "forEachPath": "$.sections[*]",
-                    "forEachPathName": "$.name",
-                    "forEachPathDisplayName": "$.displayName",
-                    "path": "$.visualContainers[*].config",
-                    "pathErrorWhenNoMatch": false,
-                    "test": [
+          "name": "Give visible pages meaningful names",
+          "description": "Returns an array of visible page names with a default 'Page x' display name.",
+          "disabled": false,
+          "logType": "warning",
+          "path": "$.sections[*]",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "pageArray"
+                    },
+                    {
+                      "and": [
                         {
-                            "map": [
-                                {
-                                    "filter": [
-                                        {
-                                            "var": "visualsConfigArray"
-                                        },
-                                        {
-                                            "<=": [
-                                                {
-                                                    "var": "layouts.0.position.width"
-                                                },
-                                                {
-                                                    "var": "layouts.0.position.height"
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
-                                {
-                                    "var": "name"
-                                }
-                            ]
+                          "strcontains": [
+                            {
+                              "var": "displayName"
+                            },
+                            "^Page [1-9]+$"
+                          ]
                         },
                         {
-                            "visualsConfigArray": "."
-                        },
-                        []
-                    ]
-}
+                          "!=": [
+                            {
+                              "drillvar": "config>visibility"
+                            },
+                            1
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "var": "displayName"
+                }
+              ]
+            },
+            {
+              "pageArray": "."
+            },
+            []
+          ]
+        }
 ```
 
-Example wireframe output highlighting two visuals that failed the test because they are taller than they are wide:
-![Charts wider than tall test output](DocsImages/WireframeChartsWiderThanTall.png)
-
-- For a consistent user experience over import mode or a fast direct query source, check that slow data source settings are all disabled:
+### <a id="checkthatslowdatasourcesettingsarealldisabled"></a>For a consistent user experience over import mode or a fast direct query source, check that slow data source settings are all disabled:
 
 ```
 {
@@ -319,7 +380,135 @@ Example wireframe output highlighting two visuals that failed the test because t
 }
 ```
 
-- Check that the ratio of visuals across the report using custom colours does not exceed 10%  while excluding textbox visuals from the analysis). 
+### <a id="checkotherlocalreportsettings"></a>Check other local report settings such as the default active page index and many others as shown in the example below:
+
+``` 
+{
+          "name": "Local report settings",
+          "disabled": false,
+          "logType": "warning",
+          "description": "Check local report settings other than slow data source settings.
+          This rule creates a json record of current local setting values and compares to a json record of expected values. If this rules fails, I recommend comparing both output json records formatted in Visual Studio code to easily identify the failed setting values.",
+          "path": "$.config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "torecord": [
+                "activePageIndex",
+                {
+                  "var": "activePageIndex"
+                },
+                "defaultDrillFilterOtherVisuals",
+                {
+                  "var": "defaultDrillFilterOtherVisuals"
+                },
+                "isPersistentUserStateDisabled",
+                {
+                  "var": "isPersistentUserStateDisabled"
+                },
+                "hideVisualContainerHeader",
+                {
+                  "var": "hideVisualContainerHeader"
+                },
+                "useStylableVisualContainerHeader",
+                {
+                  "var": "useStylableVisualContainerHeader"
+                },
+                "exportDataMode",
+                {
+                  "var": "exportDataMode"
+                },
+                "useNewFilterPaneExperience",
+                {
+                  "var": "useNewFilterPaneExperience"
+                },
+                "optOutNewFilterPaneExperience",
+                {
+                  "var": "optOutNewFilterPaneExperience"
+                },
+                "defaultFilterActionIsDataFilter",
+                {
+                  "var": "defaultFilterActionIsDataFilter"
+                },
+                "useCrossReportDrillthrough",
+                {
+                  "var": "useCrossReportDrillthrough"
+                },
+                "allowChangeFilterTypes",
+                {
+                  "var": "allowChangeFilterTypes"
+                },
+                "allowInlineExploration",
+                {
+                  "var": "allowInlineExploration"
+                },
+                "disableFilterPaneSearch",
+                {
+                  "var": "disableFilterPaneSearch"
+                },
+                "enableDeveloperMode",
+                {
+                  "if": [
+                    {
+                      "!!": [ { "var": "enableDeveloperMode" } ]
+                    },
+                    {
+                      "var": "enableDeveloperMode"
+                    },
+                    false
+                  ]
+                },
+                "useEnhancedTooltips",
+                {
+                  "var": "useEnhancedTooltips"
+                },
+                "useDefaultAggregateDisplayName",
+                {
+                  "var": "useDefaultAggregateDisplayName"
+                }
+              ]
+            },
+            {
+              "activePageIndex": "/activeSectionIndex",
+              "defaultDrillFilterOtherVisuals": "/defaultDrillFilterOtherVisuals",
+              "isPersistentUserStateDisabled": "/settings/isPersistentUserStateDisabled",
+              "hideVisualContainerHeader": "/settings/hideVisualContainerHeader",
+              "useStylableVisualContainerHeader": "/settings/useStylableVisualContainerHeader",
+              "exportDataMode": "/settings/exportDataMode",
+              "useNewFilterPaneExperience": "/settings/useNewFilterPaneExperience",
+              "optOutNewFilterPaneExperience": "/settings/optOutNewFilterPaneExperience",
+              "defaultFilterActionIsDataFilter": "/settings/defaultFilterActionIsDataFilter",
+              "useCrossReportDrillthrough": "/settings/useCrossReportDrillthrough",
+              "allowChangeFilterTypes": "/settings/allowChangeFilterTypes",
+              "allowInlineExploration": "/settings/allowInlineExploration",
+              "disableFilterPaneSearch": "/settings/disableFilterPaneSearch",
+              "enableDeveloperMode": "/settings/enableDeveloperMode",
+              "useEnhancedTooltips": "/settings/useEnhancedTooltips",
+              "useDefaultAggregateDisplayName": "/settings/useDefaultAggregateDisplayName"
+            },
+            {
+              "activePageIndex": 0,
+              "defaultDrillFilterOtherVisuals": true,
+              "isPersistentUserStateDisabled": true,
+              "hideVisualContainerHeader": false,
+              "useStylableVisualContainerHeader": true,
+              "exportDataMode": 1,
+              "useNewFilterPaneExperience": true,
+              "optOutNewFilterPaneExperience": false,
+              "defaultFilterActionIsDataFilter": true,
+              "useCrossReportDrillthrough": false,
+              "allowChangeFilterTypes": true,
+              "allowInlineExploration": false,
+              "disableFilterPaneSearch": false,
+              "enableDeveloperMode": false,
+              "useEnhancedTooltips": true,
+              "useDefaultAggregateDisplayName": true
+            }
+          ]
+        }
+```
+
+### <a id="checkthattheratioofvisualsacrossthereportusingcustomcoloursdoesnotexceed10"></a>Check that the ratio of visuals across the report using custom colours does not exceed 10%  while excluding textbox visuals from the analysis:
 
 ```
  {
@@ -408,6 +597,55 @@ Example wireframe output highlighting two visuals that failed the test because t
             {
               "visualConfigArray": ".",
               "paramMaxAllowedRatio": 0.1
+            },
+            true
+          ]
+        }
+```
+
+### <a id="checkreportthemeproperties"></a>Check report theme properties, for example:
+
+```
+{
+          "name": "Report theme title font properties",
+          "description": "Checks theme's title foreground, fontface and fontsize",
+          "disabled": false,
+          "logType": "warning",
+          "path": "$",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "and": [
+                {
+                  "==": [
+                    { "var": "foreground" },
+                    "#252423"
+                  ]
+                },
+                {
+                  "==": [
+                    { "var": "fontface" },
+                    "DIN"
+                  ]
+                },
+                {
+                  ">=": [
+                    { "var": "fontsize" },
+                    10
+                  ]
+                },
+                {
+                  "<=": [
+                    { "var": "fontsize" },
+                    12
+                  ]
+                }
+              ]
+            },
+            {
+              "foreground": "/foreground",
+              "fontface": "/textClasses/title/fontFace",
+              "fontsize": "/textClasses/title/fontSize"
             },
             true
           ]
