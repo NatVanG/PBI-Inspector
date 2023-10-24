@@ -96,7 +96,7 @@
           "logType": "warning",
           "description": "Check local report settings other than slow data source settings. This rule creates a json record of current local setting values and compares to a json record of expected values. Currently, if this rules fails, I recommend comparing both output json records formatted in Visual Studio code to easily identify the failed setting values.",
           "path": "$.config",
-          "pathErrorWhenNoMatch": true,
+          "pathErrorWhenNoMatch": false,
           "test": [
             {
               "torecord": [
@@ -154,7 +154,15 @@
                 },
                 "enableDeveloperMode",
                 {
-                  "var": "enableDeveloperMode"
+                  "if": [
+                    {
+                      "!!": [ { "var": "enableDeveloperMode" } ]
+                    },
+                    {
+                      "var": "enableDeveloperMode"
+                    },
+                    false
+                  ]
                 },
                 "useEnhancedTooltips",
                 {
