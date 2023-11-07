@@ -67,20 +67,20 @@ public class SuiteRunner
     #endregion
 
     #region BaseFailSuite 
-    //public static IEnumerable<TestCaseData> BaseFailPBIXSuite()
-    //{
-    //    string PBIXFilePath = @"Files\Inventory sample - fails.pbix";
-    //    string RulesFilePath = @"Files\Base-rules.json";
+    public static IEnumerable<TestCaseData> BaseFailPBIXSuite()
+    {
+        string PBIXFilePath = @"Files\Inventory sample - fails.pbix";
+        string RulesFilePath = @"Files\Base-rules.json";
 
-    //    Console.WriteLine("Running base fail PBIX suite...");
-    //    return Suite(PBIXFilePath, RulesFilePath);
-    //}
+        Console.WriteLine("Running base fail PBIX suite...");
+        return Suite(PBIXFilePath, RulesFilePath);
+    }
 
-    //[TestCaseSource(nameof(BaseFailPBIXSuite))]
-    //public static void RunBaseFailPBIX(TestResult testResult)
-    //{
-    //    RunBaseFail(testResult);
-    //}
+    [TestCaseSource(nameof(BaseFailPBIXSuite))]
+    public void RunBaseFailPBIX(TestResult testResult)
+    {
+        RunBaseFail(testResult);
+    }
 
     public static IEnumerable<TestCaseData> BaseFailPBIPSuite()
     {
