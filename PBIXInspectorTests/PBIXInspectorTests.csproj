@@ -71,6 +71,9 @@
     <None Update="Files\Inventory sample - fails.pbix">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Files\Inventory sample - passes.pbix">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Files\Inventory sample.pbix">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

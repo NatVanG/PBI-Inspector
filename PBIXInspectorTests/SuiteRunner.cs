@@ -66,6 +66,23 @@ public class SuiteRunner
     }
     #endregion
 
+    #region BasePassSuite
+    public static IEnumerable<TestCaseData> BasePassPBIXSuite()
+    {
+        string PBIXFilePath = @"Files\Inventory sample - passes.pbix";
+        string RulesFilePath = @"Files\Base-rules.json";
+
+        Console.WriteLine("Running base pass PBIX suite...");
+        return Suite(PBIXFilePath, RulesFilePath);
+    }
+
+    [TestCaseSource(nameof(BasePassPBIXSuite))]
+    public void RunBasePassPBIX(TestResult testResult)
+    {
+        Assert.True(testResult.Pass, testResult.Message);
+    }
+    #endregion
+
     #region BaseFailSuite 
     public static IEnumerable<TestCaseData> BaseFailPBIXSuite()
     {
