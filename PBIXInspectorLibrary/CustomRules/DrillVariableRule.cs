@@ -1,9 +1,8 @@
 ﻿using Json.Logic;
+using Json.Pointer;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using Json.Pointer;
-using System.Net.Http.Headers;
 
 namespace PBIXInspectorLibrary.CustomRules;
 
@@ -67,7 +66,7 @@ public class DrillVariableRule : Json.Logic.Rule
                 {
                     //remove single quotes from beginning and end of string if any.
                     string strVal;
-                    if  (val.ToString()!.StartsWith("'") && val.ToString()!.EndsWith("'"))
+                    if (val.ToString()!.StartsWith("'") && val.ToString()!.EndsWith("'"))
                     {
                         strVal = val.ToString()!.Substring(1, val.ToString()!.Length - 2);
                     }

@@ -1,7 +1,5 @@
 ﻿using PBIXInspectorLibrary;
-using PBIXInspectorLibrary.Output;
 using PBIXInspectorWinLibrary;
-using PBIXInspectorWinLibrary.Drawing;
 using PBIXInspectorWinLibrary.Utils;
 
 internal partial class Program
@@ -9,7 +7,7 @@ internal partial class Program
     private static Args _parsedArgs = null;
 
     private static void Main(string[] args)
-    { 
+    {
 #if DEBUG
         Console.WriteLine("Attach debugger to process? Press any key to continue.");
         Console.ReadLine();
@@ -20,7 +18,7 @@ internal partial class Program
             _parsedArgs = ArgsUtils.ParseArgs(args);
 
             Welcome();
-            
+
             PBIXInspectorWinLibrary.Main.WinMessageIssued += Main_MessageIssued;
             PBIXInspectorWinLibrary.Main.Run(_parsedArgs);
 
@@ -76,7 +74,7 @@ internal partial class Program
         string template = _parsedArgs.ADOOutput ? Constants.ADOLogIssueTemplate : "{0}";
         string msgType = _parsedArgs.ADOOutput ? messageType.ToString().ToLower() : messageType.ToString();
         string msgSeparator = _parsedArgs.ADOOutput ? "" : ": ";
-        string messageTypeFormat = string.Format(template,msgType);
+        string messageTypeFormat = string.Format(template, msgType);
 
         return string.Concat(messageTypeFormat, msgSeparator, message);
     }

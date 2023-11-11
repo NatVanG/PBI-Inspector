@@ -16,7 +16,7 @@ namespace PBIXInspectorLibrary.CustomRules
 
         public CountRule(Json.Logic.Rule input)
         {
-            Input = input; 
+            Input = input;
         }
 
         /// <summary>

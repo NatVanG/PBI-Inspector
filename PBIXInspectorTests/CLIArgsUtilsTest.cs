@@ -109,12 +109,12 @@ namespace PBIXInspectorTests
 
             parsedArgs = ArgsUtils.ParseArgs(args);
 
-            Assert.IsTrue(parsedArgs.CONSOLEOutput 
-                && !parsedArgs.Verbose 
-                && parsedArgs.DeleteOutputDirOnExit 
+            Assert.IsTrue(parsedArgs.CONSOLEOutput
+                && !parsedArgs.Verbose
+                && parsedArgs.DeleteOutputDirOnExit
                 && !string.IsNullOrEmpty(parsedArgs.OutputDirPath)
-                && !parsedArgs.HTMLOutput 
-                && !parsedArgs.JSONOutput 
+                && !parsedArgs.HTMLOutput
+                && !parsedArgs.JSONOutput
                 && !parsedArgs.PNGOutput);
         }
 
@@ -207,6 +207,63 @@ namespace PBIXInspectorTests
             Assert.IsTrue(resolvedPath == expectedPath);
         }
 
+        [Test]
+        public void TestCLIArgsUtilsResolvePbiFilePathInput3()
+        {
+            string inputPath = @"C:\TEMP\VisOps\Sales - custom colours.Report\report.pbix";
+            string expectedPath = @"C:\TEMP\VisOps\Sales - custom colours.Report\report.pbix";
+            string resolvedPath = ArgsUtils.ResolvePbiFilePathInput(inputPath);
+
+            Assert.IsTrue(resolvedPath == expectedPath);
+        }
+
+        [Test]
+        public void TestCLIArgsUtilsSuccess_FormatsOption()
+        {
+            string[] args = "-pbipreport pbipPath -rules rulesPath -formats CONSOLE,HTML,PNG,JSON -verbose true".Split(" ");
+            var parsedArgs = ArgsUtils.ParseArgs(args);
+
+            Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.RulesFilePath.Equals("rulesPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.CONSOLEOutput && parsedArgs.HTMLOutput && parsedArgs.PNGOutput && parsedArgs.JSONOutput && parsedArgs.Verbose);
+        }
+
+        [Test]
+        public void TestCLIArgsUtilsSuccess_FormatsOptionMissing()
+        {
+            string[] args = "-pbipreport pbipPath -rules rulesPath -verbose true".Split(" ");
+            var parsedArgs = ArgsUtils.ParseArgs(args);
+
+            Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.RulesFilePath.Equals("rulesPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.CONSOLEOutput && !parsedArgs.HTMLOutput && !parsedArgs.PNGOutput && !parsedArgs.JSONOutput && parsedArgs.Verbose);
+        }
+
+        [Test]
+        public void TestCLIArgsUtilsSuccess_FormatsOptionUnparseable()
+        {
+            string[] args = "-pbipreport pbipPath -rules rulesPath -formats XYZ -verbose true".Split(" ");
+            var parsedArgs = ArgsUtils.ParseArgs(args);
+
+            Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.RulesFilePath.Equals("rulesPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.CONSOLEOutput && !parsedArgs.HTMLOutput && !parsedArgs.PNGOutput && !parsedArgs.JSONOutput && parsedArgs.Verbose);
+        }
+
+        [Test]
+        public void TestCLIArgsUtilsSuccess_VerboseOption()
+        {
+            string[] args = "-pbipreport pbipPath -rules rulesPath -verbose true".Split(" ");
+            var parsedArgs = ArgsUtils.ParseArgs(args);
+
+            Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.RulesFilePath.Equals("rulesPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.Verbose);
+        }
+
+        [Test]
+        public void TestCLIArgsUtilsSuccess_VerboseOptionFalse2()
+        {
+            string[] args = "-pbipreport pbipPath -rules rulesPath -verbose false".Split(" ");
+            var parsedArgs = ArgsUtils.ParseArgs(args);
+
+            Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.RulesFilePath.Equals("rulesPath", StringComparison.OrdinalIgnoreCase) && !parsedArgs.Verbose);
+        }
+
+
     }
 }
-#pragma warning restore CS8602 
+
+#pragma warning restore CS8602

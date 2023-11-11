@@ -18,8 +18,8 @@ namespace PBIXInspectorWinLibrary.Utils
                 }
                 else
                 {
-                    OutputDirPath = Path.Combine(Path.GetTempPath(), String.Concat(Constants.DefaultVisOpsFolder, Guid.NewGuid().ToString())) ;
-                    DeleteOutputDirOnExit = true; 
+                    OutputDirPath = Path.Combine(Path.GetTempPath(), String.Concat(Constants.DefaultVisOpsFolder, Guid.NewGuid().ToString()));
+                    DeleteOutputDirOnExit = true;
                 }
             }
         }
@@ -53,7 +53,7 @@ namespace PBIXInspectorWinLibrary.Utils
 
         public bool PNGOutput { get; private set; }
 
-        public bool HTMLOutput { get; private set;  }
+        public bool HTMLOutput { get; private set; }
 
         public bool JSONOutput { get; private set; }
 

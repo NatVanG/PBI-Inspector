@@ -1,5 +1,5 @@
-﻿using PBIXInspectorLibrary.Output;
-using PBIXInspectorLibrary;
+﻿using PBIXInspectorLibrary;
+using PBIXInspectorLibrary.Output;
 using PBIXInspectorWinLibrary.Drawing;
 using PBIXInspectorWinLibrary.Utils;
 using System.Text.Json;
@@ -104,8 +104,8 @@ namespace PBIXInspectorWinLibrary
                 if (!_args.ADOOutput && (_args.PNGOutput || _args.HTMLOutput))
                 {
                     _fieldMapInsp = new Inspector(_args.PBIFilePath, Constants.ReportPageFieldMapFilePath);
-                     _fieldMapResults = _fieldMapInsp.Inspect();
- 
+                    _fieldMapResults = _fieldMapInsp.Inspect();
+
                     var outputPNGDirPath = Path.Combine(_args.OutputDirPath, Constants.PNGOutputDir);
 
                     if (Directory.Exists(outputPNGDirPath))

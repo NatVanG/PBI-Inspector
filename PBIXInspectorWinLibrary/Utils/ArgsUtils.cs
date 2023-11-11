@@ -9,7 +9,7 @@ namespace PBIXInspectorWinLibrary.Utils
             const string TRUE = "true";
             const string FALSE = "false";
             string[] validOptions = { PBIX, PBIP, PBIPREPORT, RULES, OUTPUT, FORMATS, VERBOSE };
-            
+
             int index = 0;
             int maxindex = args.Length - 2;
             var dic = new Dictionary<string, string>();
@@ -41,13 +41,13 @@ namespace PBIXInspectorWinLibrary.Utils
             var verboseString = dic.ContainsKey(VERBOSE) ? dic[VERBOSE] : FALSE;
             var formatsString = dic.ContainsKey(FORMATS) ? dic[FORMATS] : string.Empty;
 
-            return new Args { PBIFilePath = pbiFilePath, RulesFilePath = rulesPath, OutputPath = outputPath, FormatsString = formatsString,  VerboseString = verboseString};
+            return new Args { PBIFilePath = pbiFilePath, RulesFilePath = rulesPath, OutputPath = outputPath, FormatsString = formatsString, VerboseString = verboseString };
         }
 
         public static string? ResolvePbiFilePathInput(string pbiFilePath)
         {
-            var resolvedPath = !string.IsNullOrEmpty(pbiFilePath) && pbiFilePath.ToLower().EndsWith(Constants.PBIPReportJsonFileName) 
-                               ? Path.GetDirectoryName(pbiFilePath) 
+            var resolvedPath = !string.IsNullOrEmpty(pbiFilePath) && pbiFilePath.ToLower().EndsWith(Constants.PBIPReportJsonFileName)
+                               ? Path.GetDirectoryName(pbiFilePath)
                                : pbiFilePath;
 
             return resolvedPath;

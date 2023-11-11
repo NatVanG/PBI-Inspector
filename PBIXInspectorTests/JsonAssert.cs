@@ -20,8 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Text.Json.Nodes;
 using Json.More;
+using System.Text.Json.Nodes;
 
 namespace PBIXInspectorTests
 {

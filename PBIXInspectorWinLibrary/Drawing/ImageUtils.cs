@@ -1,7 +1,6 @@
-﻿using System.Drawing;
+﻿using PBIXInspectorLibrary.Output;
+using System.Drawing;
 using System.Text.Json.Nodes;
-using PBIXInspectorLibrary;
-using PBIXInspectorLibrary.Output;
 
 namespace PBIXInspectorWinLibrary.Drawing
 {
