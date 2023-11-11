@@ -4,9 +4,7 @@ using Json.Pointer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PBIXInspectorLibrary.Output;
-using System.Linq.Expressions;
 using System.Text;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace PBIXInspectorLibrary
@@ -39,7 +37,7 @@ namespace PBIXInspectorLibrary
             this._inspectionRules = inspectionRules;
             AddCustomRulesToRegistry();
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -49,7 +47,7 @@ namespace PBIXInspectorLibrary
         {
             this._pbiFilePath = pbiFilePath;
             this._rulesFilePath = rulesFilePath;
-            
+
             try
             {
                 var inspectionRules = this.DeserialiseRules<InspectionRules>(rulesFilePath);
@@ -83,19 +81,19 @@ namespace PBIXInspectorLibrary
             //}
             //else
             //{
-                switch (PbiFile.PBIFileType(pbiFilePath))
-                {
-                    case PbiFile.PBIFileTypeEnum.PBIX:
-                        return new PbixFile(pbiFilePath);
-                        break;
-                    case PbiFile.PBIFileTypeEnum.PBIP:
-                        return new PbipFile(pbiFilePath);
-                        break;
-                    case PbiFile.PBIFileTypeEnum.PBIPReport:
-                        return new PbipReportFile(pbiFilePath);
-                    default:
-                        throw new PBIXInspectorException(string.Format("Could not determine the extension of PBI file with path \"{0}\".", pbiFilePath));
-                }
+            switch (PbiFile.PBIFileType(pbiFilePath))
+            {
+                case PbiFile.PBIFileTypeEnum.PBIX:
+                    return new PbixFile(pbiFilePath);
+                    break;
+                case PbiFile.PBIFileTypeEnum.PBIP:
+                    return new PbipFile(pbiFilePath);
+                    break;
+                case PbiFile.PBIFileTypeEnum.PBIPReport:
+                    return new PbipReportFile(pbiFilePath);
+                default:
+                    throw new PBIXInspectorException(string.Format("Could not determine the extension of PBI file with path \"{0}\".", pbiFilePath));
+            }
             //}
         }
 
@@ -135,7 +133,7 @@ namespace PBIXInspectorLibrary
                 {
                     string pbiEntryPath;
 
-                    switch  (pbiFile.FileType)
+                    switch (pbiFile.FileType)
                     {
                         case PbiFile.PBIFileTypeEnum.PBIX:
                             pbiEntryPath = entry.PbixEntryPath;
@@ -211,7 +209,7 @@ namespace PBIXInspectorLibrary
 
                                                 var forEachDisplayName = !string.IsNullOrEmpty(rule.ForEachPathDisplayName) ? ExecuteTokensPath((JObject?)forEachToken, rule.Name, rule.ForEachPathDisplayName, rule.PathErrorWhenNoMatch) : null;
                                                 var strForEachDisplayName = forEachDisplayName != null ? forEachDisplayName[0].ToString() : string.Empty;
-                                                
+
                                                 try
                                                 {
                                                     var tokens = ExecuteTokensPath(forEachToken, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
@@ -289,7 +287,7 @@ namespace PBIXInspectorLibrary
                 }
             }
 
-            return testResults; 
+            return testResults;
         }
 
         private MessageTypeEnum ConvertRuleLogType(string ruleLogType)
@@ -516,7 +514,7 @@ namespace PBIXInspectorLibrary
                         {
                             if (item.Value is JsonValue)
                             {
-                                
+
                                 var value = item.Value.AsValue().Stringify();
                                 //TODO: enable navigation to parent path
                                 //while (value.StartsWith("."))

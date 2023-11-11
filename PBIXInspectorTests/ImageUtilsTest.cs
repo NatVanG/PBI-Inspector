@@ -1,6 +1,5 @@
 ﻿using PBIXInspectorLibrary.Output;
 using PBIXInspectorWinLibrary.Drawing;
-using PBIXInspectorWinLibrary.Utils;
 
 namespace PBIXInspectorTests
 {
@@ -11,7 +10,7 @@ namespace PBIXInspectorTests
         public void ConvertBitmapToBase64Test()
         {
             var bitmapPath = string.Empty;
-            
+
             ArgumentException ex = Assert.Throws<ArgumentException>(
                 () => ImageUtils.ConvertBitmapToBase64(bitmapPath));
         }

@@ -1,11 +1,10 @@
-﻿using System.Data;
-using System.IO.Compression;
+﻿using System.IO.Compression;
 
 namespace PBIXInspectorLibrary
 {
     internal class PbixFile : PbiFile, IDisposable
     {
-     
+
         private ZipArchive _za = null;
         private bool disposedValue;
 
@@ -63,7 +62,7 @@ namespace PBIXInspectorLibrary
                     }
                 }
 
-                
+
                 // TODO: set large fields to null
                 disposedValue = true;
             }
@@ -76,6 +75,6 @@ namespace PBIXInspectorLibrary
             GC.SuppressFinalize(this);
         }
 
-      
+
     }
 }

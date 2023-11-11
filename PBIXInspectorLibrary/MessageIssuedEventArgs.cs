@@ -10,7 +10,7 @@
 
         public string Message { get; private set; }
         public MessageTypeEnum MessageType { get; private set; }
-        public bool DialogOKResponse { get;  set;}
+        public bool DialogOKResponse { get; set; }
     }
 
     public enum MessageTypeEnum

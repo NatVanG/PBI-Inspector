@@ -109,12 +109,12 @@ namespace PBIXInspectorTests
 
             parsedArgs = ArgsUtils.ParseArgs(args);
 
-            Assert.IsTrue(parsedArgs.CONSOLEOutput 
-                && !parsedArgs.Verbose 
-                && parsedArgs.DeleteOutputDirOnExit 
+            Assert.IsTrue(parsedArgs.CONSOLEOutput
+                && !parsedArgs.Verbose
+                && parsedArgs.DeleteOutputDirOnExit
                 && !string.IsNullOrEmpty(parsedArgs.OutputDirPath)
-                && !parsedArgs.HTMLOutput 
-                && !parsedArgs.JSONOutput 
+                && !parsedArgs.HTMLOutput
+                && !parsedArgs.JSONOutput
                 && !parsedArgs.PNGOutput);
         }
 
@@ -262,8 +262,8 @@ namespace PBIXInspectorTests
             Assert.True(parsedArgs.PBIFilePath.Equals("pbipPath", StringComparison.OrdinalIgnoreCase) && parsedArgs.RulesFilePath.Equals("rulesPath", StringComparison.OrdinalIgnoreCase) && !parsedArgs.Verbose);
         }
 
-        
+
     }
 }
 
-#pragma warning restore CS8602 
+#pragma warning restore CS8602

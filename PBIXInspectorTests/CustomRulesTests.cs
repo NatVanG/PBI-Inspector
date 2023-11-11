@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Nodes;
-using PBIXInspectorLibrary.CustomRules;
+﻿using PBIXInspectorLibrary.CustomRules;
+using System.Text.Json.Nodes;
 
 namespace PBIXInspectorTests
 {
