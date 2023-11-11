@@ -19,9 +19,9 @@ namespace PBIXInspectorLibrary
         private const string FILTEREXPRESSIONMARKER = "?";
         private const string JSONPOINTERSTART = "/";
         private const string CONTEXTARRAY = ".";
+        internal const char DRILLCHAR = '>';
 
         private string _pbiFilePath, _rulesFilePath;
-        //private PbiFile _pbiFile;
         private InspectionRules? _inspectionRules;
 
         public event EventHandler<MessageIssuedEventArgs>? MessageIssued;
@@ -75,12 +75,6 @@ namespace PBIXInspectorLibrary
 
         private PbiFile InitPbiFile(string pbiFilePath)
         {
-            //if (!File.Exists(pbiFilePath))
-            //{
-            //    throw new PBIXInspectorException(string.Format("The PBI file with path \"{0}\" does not exist.", pbiFilePath));
-            //}
-            //else
-            //{
             switch (PbiFile.PBIFileType(pbiFilePath))
             {
                 case PbiFile.PBIFileTypeEnum.PBIX:
@@ -94,7 +88,6 @@ namespace PBIXInspectorLibrary
                 default:
                     throw new PBIXInspectorException(string.Format("Could not determine the extension of PBI file with path \"{0}\".", pbiFilePath));
             }
-            //}
         }
 
         private void AddCustomRulesToRegistry()
@@ -398,81 +391,6 @@ namespace PBIXInspectorLibrary
             return tokens;
         }
 
-        /*
-        private JToken? ExecuteTokenPath(JToken jo, string ruleName, string rulePath, bool rulePathErrorWhenNoMatch)
-        {
-            string parentPath, queryPath = string.Empty;
-            JToken? token = new JToken();
-
-            //TODO: a regex match to extract the substring would be better
-            if (rulePath.Contains(SUBJPATHSTART)) //check for subpath syntax
-            {
-                if (rulePath.EndsWith(SUBJPATHEND))
-                {
-                    //TODO: currently subpath is assumed to be the last path (i.e. the whole string end in "})" but we should be able to resolve inner subpath and return to parent path
-                    var index = rulePath.IndexOf(SUBJPATHSTART);
-                    parentPath = rulePath.Substring(0, index);
-                    queryPath = rulePath.Substring(index + SUBJPATHSTART.Length, rulePath.Length - (index + SUBJPATHSTART.Length) - 1);
-                    var parentTokens = SelectTokens(jo, ruleName, parentPath, rulePathErrorWhenNoMatch);
-
-                    if (parentTokens == null || parentTokens.Count() == 0) { return token; }
-
-                    if (parentPath.Contains(FILTEREXPRESSIONMARKER))
-                    {
-                        JArray ja = new JArray();
-                        foreach (var t in parentTokens)
-                        {
-                            //HACK: why do I have to parse a token into a token to make the subsequent SelectTokens call work?
-                            var jt = JToken.Parse(t.ToString());
-                            ja.Add(jt);
-                        }
-
-                        token = ja.SelectTokens(queryPath, rulePathErrorWhenNoMatch);
-                    }
-                    else
-                    {
-                        foreach (var t in parentTokens)
-                        {
-                            //var childtokens = SelectTokens((JObject?)t, rule.Name, childPath, rule.PathErrorWhenNoMatch); //TODO: this seems better but throws InvalidCastException
-                            var childtokens = SelectTokens(((JObject)JToken.Parse(t.ToString())), ruleName, queryPath, rulePathErrorWhenNoMatch);
-                            //only return children tokens, the reference to parent tokens is lost. 
-                            if (childtokens != null) tokens.AddRange(childtokens.ToList());
-                        }
-                    }
-                }
-                else
-                {
-                    throw new PBIXInspectorException(string.Format("Path \"{0}\" needs to end with \"{1}\" as it contains a subpath.", rulePath, "}"));
-                }
-            }
-            else
-            {
-                tokens = SelectTokens(jo, ruleName, rulePath, rulePathErrorWhenNoMatch)?.ToList();
-            }
-
-            return tokens;
-        }
-        */
-
-        /*
-        private IEnumerable<JToken>? SelectTokens(JObject? jo, string ruleName, string rulePath, bool rulePathErrorWhenNoMatch)
-        {
-            IEnumerable<JToken>? tokens;
-
-            //TODO: for some reason I can't catch Newtonsoft.Json.JsonException when rule.PathErrorWhenNoMatch is true
-            tokens = jo.SelectTokens(rulePath, false);
-
-
-            if (tokens == null || tokens.Count() == 0)
-            {
-                var msgType = rulePathErrorWhenNoMatch ? MessageTypeEnum.Error : MessageTypeEnum.Information;
-                OnMessageIssued(msgType, string.Format("Rule \"{0}\" with JPath \"{1}\" did not return any tokens.", ruleName, rulePath));
-            }
-
-            return tokens;
-        }
-        */
-
         private IEnumerable<JToken>? SelectTokens(JToken? jo, string ruleName, string rulePath, bool rulePathErrorWhenNoMatch)
         {
             IEnumerable<JToken>? tokens;
@@ -514,21 +432,14 @@ namespace PBIXInspectorLibrary
                         {
                             if (item.Value is JsonValue)
                             {
-
                                 var value = item.Value.AsValue().Stringify();
-                                //TODO: enable navigation to parent path
-                                //while (value.StartsWith("."))
-                                //{
-                                //    target = target.Parent;
-                                //    value = value.Substring(1, value.Length - 1);
-                                //}
-
                                 if (value.StartsWith(JSONPOINTERSTART)) //check for JsonPointer syntax
                                 {
                                     try
                                     {
-                                        var pointer = JsonPointer.Parse(value);
-                                        var evalsuccess = pointer.TryEvaluate(target, out var newval);
+                                        //var pointer = JsonPointer.Parse(value);
+                                        //var evalsuccess = pointer.TryEvaluate(target, out var newval);
+                                        var evalsuccess = EvalPath(value, target, out var newval);
                                         if (evalsuccess)
                                         {
                                             if (newval != null)
@@ -566,7 +477,7 @@ namespace PBIXInspectorLibrary
                                         }
                                     }
                                 }
-                                else if (value.StartsWith(CONTEXTARRAY))
+                                else if (value.Equals(CONTEXTARRAY))
                                 {
                                     //context array token was used so pass in the parent array
                                     newdata.Add(new KeyValuePair<string, JsonNode?>(item.Key, contextNodeArray.Copy()));
@@ -593,6 +504,50 @@ namespace PBIXInspectorLibrary
             }
 
             return newdata;
+        }
+
+        internal bool EvalPath(string pathString, JsonNode? data, out JsonNode? result)
+        {
+            if (pathString.Contains(DRILLCHAR))
+            {
+                var leftString = pathString.Substring(0, pathString.IndexOf(DRILLCHAR));
+                var rightString = pathString.Substring(pathString.IndexOf(DRILLCHAR) + 1);
+
+                var leftStringPath = string.Concat(leftString.StartsWith(JSONPOINTERSTART) ? string.Empty : JSONPOINTERSTART, leftString.Replace('.', '/'));
+                var pointer = JsonPointer.Parse(leftStringPath);
+                if (pointer.TryEvaluate(data, out result))
+                {
+                    if (result is JsonValue val)
+                    {
+                        //remove single quotes from beginning and end of string if any.
+                        string strVal;
+                        if (val.ToString()!.StartsWith("'") && val.ToString()!.EndsWith("'"))
+                        {
+                            strVal = val.ToString()!.Substring(1, val.ToString()!.Length - 2);
+                        }
+                        else
+                        {
+                            strVal = val.ToString()!;
+                        }
+
+                        var pathEvalNode = JsonNode.Parse(strVal);
+                        return EvalPath(rightString, pathEvalNode, out result);
+                    }
+                    else
+                    {
+                        return EvalPath(rightString, result, out result);
+                    }
+                }
+            }
+            else
+            {
+                var pathStringPath = string.Concat(pathString.StartsWith(JSONPOINTERSTART) ? string.Empty : JSONPOINTERSTART, pathString.Replace('.', '/'));
+                var pointer = JsonPointer.Parse(pathStringPath);
+                return pointer.TryEvaluate(data, out result);
+            }
+
+            result = null;
+            return false;
         }
 
 
