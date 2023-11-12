@@ -110,7 +110,11 @@ namespace PBIXInspectorLibrary
             Json.Logic.RuleRegistry.AddRule<CustomRules.ToRecordRule>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.DrillVariableRule>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.RectOverlapRule>();
-
+            Json.Logic.RuleRegistry.AddRule<CustomRules.SetIntersectionRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.SetUnionRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.SetDifferenceRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.SetSymmetricDifferenceRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.SetEqualRule>();
         }
 
         /// <summary>
