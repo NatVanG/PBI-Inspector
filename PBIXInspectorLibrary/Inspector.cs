@@ -216,7 +216,9 @@ namespace PBIXInspectorLibrary
 
                                                     bool result = false;
 
-                                                    var newdata = MapRuleDataPointersToValues(contextNodeArray, rule, contextNodeArray);
+                                                    //HACK: checking if the rule's intention is to return an array or a single object 
+                                                    var node = rule.Path.Contains("*") || rule.Path.Contains("?") ? contextNodeArray : (contextNodeArray != null ? contextNodeArray.FirstOrDefault() : null);
+                                                    var newdata = MapRuleDataPointersToValues(node, rule, contextNodeArray);
 
                                                     //TODO: the following commented line does not work with the variableRule implementation with context array passed in.
                                                     //var jruleresult = jrule.Apply(newdata, contextNodeArray);
@@ -542,6 +544,11 @@ namespace PBIXInspectorLibrary
                         return EvalPath(rightString, result, out result);
                     }
                 }
+            }
+            else if (pathString.Trim().Equals(CONTEXTARRAY))
+            {
+                result = data;
+                return true;
             }
             else
             {
