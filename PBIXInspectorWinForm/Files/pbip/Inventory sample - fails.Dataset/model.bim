@@ -12,11 +12,11 @@
       },
       {
         "name": "PBIDesktopVersion",
-        "value": "2.121.903.0 (23.09)"
+        "value": "2.123.684.0 (23.11)"
       },
       {
         "name": "PBI_ProTooling",
-        "value": "[\"DevMode\"]"
+        "value": "[\"DevMode\",\"DaxQueryView_Desktop\"]"
       }
     ],
     "culture": "fr-FR",

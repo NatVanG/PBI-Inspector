@@ -283,7 +283,6 @@
             // 
             // openRulesFileDialog
             // 
-            openRulesFileDialog.FileName = "openFileDialog2";
             openRulesFileDialog.Filter = "Json files (*.json)|*.json|All files (*.*)|*.*";
             openRulesFileDialog.FileOk += openRulesFileDialog_FileOk;
             // 
