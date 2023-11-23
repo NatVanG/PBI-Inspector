@@ -37,6 +37,13 @@ So we've DevOps, MLOps and DataOps... but why not VisOps? How can we ensure that
 
 With Microsoft Power BI, visuals are placed on a canvas and formatted as desired, images may be included and theme files referenced. Testing the consistency of the visuals output has thus far typically been a manual process. Recently, a [new Power BI file format (.pbip) was introduced](https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/) to enable pro developer application lifecycle management and source control. In particular, the report's layout definition and any associated theme are in json format and therefore readable by both machines and humans. However upon new releases of Power BI, the json structure may introduce changes without warning to include new features for example. Therefore an automated visual layout testing tool should be resilient to such changes while providing a powerful rule logic creation framework. PBI Inspector provides the ability to define fully configurable testing rules (themselves written in json) powered by Greg Dennis's Json Logic .NET implementation, see https://json-everything.net/json-logic. 
 
+### YouTube session with Reid Havens
+
+[![YouTube session with Reid Havens](DocsImages/ReidSession.png)](https://www.youtube.com/watch?v=Moxci_B7kv8)
+
+
+The rules files used in the session can be found at [Reid-rules.json](DocsExamples/Reid-rules.json). 
+
 ## <a id="baserulesoverview"></a>Base rules
 
 While PBI Inspector supports custom rules, it also includes the following base rules defined at https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/Rules/Base-rules.json, some rules allow for user parameters:
