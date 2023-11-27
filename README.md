@@ -69,7 +69,7 @@ Currently these changes need to be made directly in the rules file json, however
 ## <a id="gui"></a>Run from the graphical user interface (GUI)
 
 ***Binaries***: 
-- The self-contained (.NET 6.0 runtime included) Windows Forms application is available at: https://github.com/NatVanG/PBI-Inspector/releases/tag/v1.9.3-WinForm.
+- The self-contained (.NET 6.0 runtime included) Windows Forms application is available at: https://github.com/NatVanG/PBI-Inspector/releases/tag/v1.9.4-WinForm.
 
 Running ```PBIXInspectorWinForm.exe``` presents the user with the following interface: 
 
