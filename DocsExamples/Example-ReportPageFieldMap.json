@@ -1,0 +1,86 @@
+{
+  "pbiEntries": [
+    {
+      "name": "reportLayout",
+      "pbixEntryPath": "Report/Layout",
+      "pbipEntryPath": "report.json",
+      "contentType": "json",
+      "codepage": 1200,
+      "rules": [
+        {
+          "name": "Return visual properties",
+          "description": "Returns an array of visual names",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "v"
+                    },
+                    {
+                      "and": [
+                        { "!!": [ { "var": "name" } ] },
+                        { "!!": [ { "var": "singleVisual.visualType" } ] },
+                        { ">=": [ { "var": "layouts.0.position.x" }, 0 ] },
+                        { ">=": [ { "var": "layouts.0.position.y" }, 0 ] },
+                        { ">=": [ { "var": "layouts.0.position.width" }, 0 ] },
+                        { ">=": [ { "var": "layouts.0.position.height" }, 0 ] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "visualType",
+                    {
+                      "var": "singleVisual.visualType"
+                    },
+                    "x",
+                    {
+                      "var": "layouts.0.position.x"
+                    },
+                    "y",
+                    {
+                      "var": "layouts.0.position.y"
+                    },
+                    "width",
+                    {
+                      "var": "layouts.0.position.width"
+                    },
+                    "height",
+                    {
+                      "var": "layouts.0.position.height"
+                    },
+                    "visible",
+                    {
+                      "!=": [
+                        {
+                          "var": "singleVisual.display.mode"
+                        },
+                        "hidden"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "v": "."
+            },
+            []
+          ]
+        }
+      ]
+    }
+  ]
+}

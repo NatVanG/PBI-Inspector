@@ -1,0 +1,977 @@
+{
+  "compatibilityLevel": 1567,
+  "model": {
+    "annotations": [
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"Report\",\"Sample File\",\"Parameter1\",\"Transform Sample File\",\"Transform File\",\"JsonReportsFolder\"]"
+      },
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "1"
+      },
+      {
+        "name": "PBIDesktopVersion",
+        "value": "2.123.684.0 (23.11)"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"DevMode\"]"
+      }
+    ],
+    "culture": "en-US",
+    "cultures": [
+      {
+        "name": "en-US",
+        "linguisticMetadata": {
+          "content": {
+            "DynamicImprovement": "HighConfidence",
+            "Language": "en-US",
+            "Version": "1.0.0"
+          },
+          "contentType": "json"
+        }
+      }
+    ],
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "expressions": [
+      {
+        "name": "Sample File",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Binary"
+          },
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          }
+        ],
+        "expression": [
+          "let",
+          "    Source = Folder.Files(JsonReportsFolder),",
+          "    Navigation1 = Source{0}[Content]",
+          "in",
+          "    Navigation1"
+        ],
+        "kind": "m",
+        "lineageTag": "d37b9ae1-ce4d-4d7f-b3ca-2f17f8cf2123",
+        "queryGroup": "Transform File from TestRuns\\Helper Queries"
+      },
+      {
+        "name": "Parameter1",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Binary"
+          },
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          }
+        ],
+        "expression": "#\"Sample File\" meta [IsParameterQuery=true, BinaryIdentifier=#\"Sample File\", Type=\"Binary\", IsParameterQueryRequired=true]",
+        "kind": "m",
+        "lineageTag": "b51f89be-a4a2-4020-a776-dd9862d4ba48",
+        "queryGroup": "Transform File from TestRuns\\Helper Queries"
+      },
+      {
+        "name": "Transform Sample File",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "expression": [
+          "let",
+          "    Source = Json.Document(Parameter1),",
+          "    #\"Converted to Table\" = Table.FromRecords({Source}),",
+          "    #\"Expanded Results\" = Table.ExpandListColumn(#\"Converted to Table\", \"Results\"),",
+          "    #\"Expanded Results1\" = Table.ExpandRecordColumn(#\"Expanded Results\", \"Results\", {\"Id\", \"RuleName\", \"RuleDescription\", \"LogType\", \"ParentName\", \"ParentDisplayName\", \"Pass\", \"Expected\", \"Actual\", \"Message\"}, {\"Results.Id\", \"Results.RuleName\", \"Results.RuleDescription\", \"Results.LogType\", \"Results.ParentName\", \"Results.ParentDisplayName\", \"Results.Pass\", \"Results.Expected\", \"Results.Actual\", \"Results.Message\"}),",
+          "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Expanded Results1\",{{\"Id\", type text}, {\"TestedFilePath\", type text}, {\"RulesFilePath\", type text}, {\"CompletionTime\", type datetime}, {\"Verbose\", type logical}, {\"Results.Id\", type text}, {\"Results.RuleName\", type text}, {\"Results.RuleDescription\", type text}, {\"Results.LogType\", Int64.Type}, {\"Results.ParentName\", type text}, {\"Results.ParentDisplayName\", type text}, {\"Results.Pass\", type logical}, {\"Results.Expected\", type any}, {\"Results.Actual\", type any}, {\"Results.Message\", type text}})",
+          "in",
+          "    #\"Changed Type\""
+        ],
+        "kind": "m",
+        "lineageTag": "74821add-6f5c-40af-83f2-0eb271be1e96",
+        "queryGroup": "Transform File from TestRuns"
+      },
+      {
+        "name": "Transform File",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Function"
+          }
+        ],
+        "expression": [
+          "let",
+          "    Source = (Parameter1 as binary) => let",
+          "    Source = Json.Document(Parameter1),",
+          "    #\"Converted to Table\" = Table.FromRecords({Source}),",
+          "    #\"Expanded Results\" = Table.ExpandListColumn(#\"Converted to Table\", \"Results\"),",
+          "    #\"Expanded Results1\" = Table.ExpandRecordColumn(#\"Expanded Results\", \"Results\", {\"Id\", \"RuleName\", \"RuleDescription\", \"LogType\", \"ParentName\", \"ParentDisplayName\", \"Pass\", \"Expected\", \"Actual\", \"Message\"}, {\"Results.Id\", \"Results.RuleName\", \"Results.RuleDescription\", \"Results.LogType\", \"Results.ParentName\", \"Results.ParentDisplayName\", \"Results.Pass\", \"Results.Expected\", \"Results.Actual\", \"Results.Message\"}),",
+          "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Expanded Results1\",{{\"Id\", type text}, {\"TestedFilePath\", type text}, {\"RulesFilePath\", type text}, {\"CompletionTime\", type datetime}, {\"Verbose\", type logical}, {\"Results.Id\", type text}, {\"Results.RuleName\", type text}, {\"Results.RuleDescription\", type text}, {\"Results.LogType\", Int64.Type}, {\"Results.ParentName\", type text}, {\"Results.ParentDisplayName\", type text}, {\"Results.Pass\", type logical}, {\"Results.Expected\", type any}, {\"Results.Actual\", type any}, {\"Results.Message\", type text}})",
+          "in",
+          "    #\"Changed Type\"",
+          "in",
+          "    Source"
+        ],
+        "kind": "m",
+        "lineageTag": "a0f3f061-121e-4c5c-8340-7c5024aef8aa",
+        "mAttributes": "[ FunctionQueryBinding = \"{\"\"exemplarFormulaName\"\":\"\"Transform Sample File\"\"}\" ]",
+        "queryGroup": "Transform File from TestRuns\\Helper Queries"
+      },
+      {
+        "name": "JsonReportsFolder",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Text"
+          }
+        ],
+        "expression": "\"C:\\TEMP\\VisOps\\JsonReports\" meta [IsParameterQuery=true, Type=\"Text\", IsParameterQueryRequired=true]",
+        "kind": "m",
+        "lineageTag": "fd5933d3-1800-4da1-9deb-29502f2db2c5"
+      }
+    ],
+    "queryGroups": [
+      {
+        "annotations": [
+          {
+            "name": "PBI_QueryGroupOrder",
+            "value": "0"
+          }
+        ],
+        "folder": "Transform File from TestRuns"
+      },
+      {
+        "annotations": [
+          {
+            "name": "PBI_QueryGroupOrder",
+            "value": "0"
+          }
+        ],
+        "folder": "Transform File from TestRuns\\Helper Queries"
+      }
+    ],
+    "relationships": [
+      {
+        "name": "8858d122-7948-4e52-bf12-c3d310437a9f",
+        "fromColumn": "Report Completion Date",
+        "fromTable": "Report",
+        "joinOnDateBehavior": "datePartOnly",
+        "toColumn": "Date",
+        "toTable": "LocalDateTable_3c6d7d40-ac96-49f4-b852-fb14a9ee96d7"
+      }
+    ],
+    "sourceQueryCulture": "en-GB",
+    "tables": [
+      {
+        "name": "Report",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "PBI File Path",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "ab73b62b-0540-46fb-a50e-34bb4b035f58",
+            "sourceColumn": "PBI File Path",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Rules File Path",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "05281764-c687-4d14-8256-d2f61f93cf3e",
+            "sourceColumn": "Rules File Path",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Rule Name",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "f5162f30-c290-4cbd-8586-fa5e29eb1648",
+            "sourceColumn": "Rule Name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Page Name",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "cba92dd2-4282-468f-96e5-77af96cb728e",
+            "sourceColumn": "Page Name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Page Display Name",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "8b2a23fe-2b3c-4570-aac9-f72e4c682254",
+            "sourceColumn": "Page Display Name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Visual Name",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "94b0490f-6de1-4707-8364-2472a3a911f1",
+            "sourceColumn": "Visual Name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Visual Type",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "021dcaab-929f-43ce-8890-c89dc5dc7daf",
+            "sourceColumn": "Visual Type",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Visual X Coord",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "e433bb1c-edd6-4f5c-b254-b4228b3cc15a",
+            "sourceColumn": "Visual X Coord",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Visual Y Coord",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "9421245d-53b6-4663-a407-2cab16aa4a84",
+            "sourceColumn": "Visual Y Coord",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Visual Width",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "23eafb81-4768-428b-99b4-faf2dd42d722",
+            "sourceColumn": "Visual Width",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Visual Height",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "8522c9ea-4516-4440-b1c3-353d58bc4266",
+            "sourceColumn": "Visual Height",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Visual Visibility",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "boolean",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\"",
+            "lineageTag": "962a0a7a-7d15-44b1-9904-f66996f6a782",
+            "sourceColumn": "Visual Visibility",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Visual Centre X Coord",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "17a5ba05-cd97-46b0-9df3-d2396dc631d6",
+            "sourceColumn": "Visual Centre X Coord",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Visual Centre Y Coord",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "c8f298a6-b967-4d7c-8170-c5b88b985b03",
+            "sourceColumn": "Visual Centre Y Coord",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Json Report Source File",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "d8b89adb-1e98-4499-b9c6-062877881847",
+            "sourceColumn": "Json Report Source File",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "PBI File Name",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "d9ac85b1-2db3-4776-89f7-f32e219661c1",
+            "sourceColumn": "PBI File Name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Rules File Name",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "26683551-50fe-4292-8264-f7c1b95e0669",
+            "sourceColumn": "Rules File Name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Report Completion Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Date",
+            "lineageTag": "f2a3cd89-2871-4bfc-bb78-297b4c73366a",
+            "sourceColumn": "Report Completion Date",
+            "summarizeBy": "none",
+            "variations": [
+              {
+                "name": "Variation",
+                "defaultHierarchy": {
+                  "hierarchy": "Date Hierarchy",
+                  "table": "LocalDateTable_3c6d7d40-ac96-49f4-b852-fb14a9ee96d7"
+                },
+                "isDefault": true,
+                "relationship": "8858d122-7948-4e52-bf12-c3d310437a9f"
+              }
+            ]
+          },
+          {
+            "name": "Report Completion Time",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Time"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Time",
+            "lineageTag": "87b8a820-8c6f-4f3a-9484-395b63e2c475",
+            "sourceColumn": "Report Completion Time",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "14c5ca52-4237-4937-9ec8-8dd7f7719368",
+        "measures": [
+          {
+            "name": "Visual Count",
+            "expression": "COUNTROWS('Report')",
+            "formatString": "0",
+            "lineageTag": "7b96a351-29e6-45a9-9995-e89a7e43dc3c"
+          },
+          {
+            "name": "Page Count",
+            "expression": "DISTINCTCOUNT(Report[Page Name])",
+            "formatString": "0",
+            "lineageTag": "1fb93aff-ce43-4e14-9f8c-fe3967c4c288"
+          },
+          {
+            "name": "PBI File Count",
+            "expression": "DISTINCTCOUNT(Report[PBI File Path])",
+            "formatString": "0",
+            "lineageTag": "0c620861-6384-4fa4-9388-fe4013749aa6"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Report",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Folder.Files(JsonReportsFolder),",
+                "    #\"Filtered Hidden Files1\" = Table.SelectRows(Source, each [Attributes]?[Hidden]? <> true),",
+                "    #\"Invoke Custom Function1\" = Table.AddColumn(#\"Filtered Hidden Files1\", \"Transform File\", each #\"Transform File\"([Content])),",
+                "    #\"Renamed Columns1\" = Table.RenameColumns(#\"Invoke Custom Function1\", {\"Name\", \"Source.Name\"}),",
+                "    #\"Removed Other Columns1\" = Table.SelectColumns(#\"Renamed Columns1\", {\"Source.Name\", \"Transform File\"}),",
+                "    #\"Expanded Table Column1\" = Table.ExpandTableColumn(#\"Removed Other Columns1\", \"Transform File\", Table.ColumnNames(#\"Transform File\"(#\"Sample File\"))),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Expanded Table Column1\",{{\"Source.Name\", type text}, {\"Id\", type text}, {\"TestedFilePath\", type text}, {\"RulesFilePath\", type text}, {\"CompletionTime\", type datetime}, {\"Verbose\", type logical}, {\"Results.Id\", type text}, {\"Results.RuleName\", type text}, {\"Results.RuleDescription\", type text}, {\"Results.LogType\", Int64.Type}, {\"Results.ParentName\", type text}, {\"Results.ParentDisplayName\", type text}, {\"Results.Pass\", type logical}, {\"Results.Expected\", type any}, {\"Results.Actual\", type any}, {\"Results.Message\", type text}}),",
+                "    #\"Expanded Results.Actual\" = Table.ExpandListColumn(#\"Changed Type\", \"Results.Actual\"),",
+                "    #\"Expanded Results.Actual1\" = Table.ExpandRecordColumn(#\"Expanded Results.Actual\", \"Results.Actual\", {\"name\", \"visualType\", \"x\", \"y\", \"width\", \"height\", \"visible\"}, {\"Results.Actual.name\", \"Results.Actual.visualType\", \"Results.Actual.x\", \"Results.Actual.y\", \"Results.Actual.width\", \"Results.Actual.height\", \"Results.Actual.visible\"}),",
+                "    #\"Removed Columns\" = Table.RemoveColumns(#\"Expanded Results.Actual1\",{\"Results.Pass\", \"Results.Expected\", \"Results.Message\"}),",
+                "    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Removed Columns\",{{\"Results.Actual.x\", type number}, {\"Results.Actual.y\", type number}, {\"Results.Actual.width\", type number}, {\"Results.Actual.height\", type number}}),",
+                "    #\"Removed Columns1\" = Table.RemoveColumns(#\"Changed Type1\",{\"Id\", \"Results.Id\", \"Verbose\", \"Results.RuleDescription\", \"Results.LogType\"}),",
+                "    #\"Added Custom\" = Table.AddColumn(#\"Removed Columns1\", \"VisualCentre.x\", each ([Results.Actual.x] + [Results.Actual.width])/2),",
+                "    #\"Changed Type2\" = Table.TransformColumnTypes(#\"Added Custom\",{{\"VisualCentre.x\", type number}}),",
+                "    #\"Added Custom1\" = Table.AddColumn(#\"Changed Type2\", \"VisualCentre.y\", each ([Results.Actual.y] + [Results.Actual.height])/2),",
+                "    #\"Changed Type3\" = Table.TransformColumnTypes(#\"Added Custom1\",{{\"VisualCentre.y\", type number}}),",
+                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Changed Type3\",{{\"Results.Actual.visualType\", \"Visual Type\"}, {\"Results.Actual.height\", \"Visual Height\"}, {\"Results.Actual.name\", \"Visual Name\"}, {\"Results.Actual.visible\", \"Visual Visibility\"}, {\"Results.Actual.width\", \"Visual Width\"}, {\"Results.Actual.x\", \"Visual X Coord\"}, {\"Results.Actual.y\", \"Visual Y Coord\"}, {\"Results.ParentDisplayName\", \"Page Display Name\"}, {\"Results.ParentName\", \"Page Name\"}, {\"Results.RuleName\", \"Rule Name\"}, {\"RulesFilePath\", \"Rules File Path\"}, {\"TestedFilePath\", \"Tested File Path\"}, {\"VisualCentre.x\", \"Visual Centre X Coord\"}, {\"VisualCentre.y\", \"Visual Centre Y Coord\"}}),",
+                "    #\"Duplicated Column\" = Table.DuplicateColumn(#\"Renamed Columns\", \"Tested File Path\", \"Tested File Path - Copy\"),",
+                "    #\"Extracted Text After Delimiter\" = Table.TransformColumns(#\"Duplicated Column\", {{\"Tested File Path - Copy\", each Text.AfterDelimiter(_, \"\\\", {0, RelativePosition.FromEnd}), type text}}),",
+                "    #\"Renamed Columns2\" = Table.RenameColumns(#\"Extracted Text After Delimiter\",{{\"Tested File Path - Copy\", \"Tested File Name\"}}),",
+                "    #\"Reordered Columns\" = Table.ReorderColumns(#\"Renamed Columns2\",{\"Source.Name\", \"Tested File Path\", \"Tested File Name\", \"Rules File Path\", \"CompletionTime\", \"Rule Name\", \"Page Name\", \"Page Display Name\", \"Visual Name\", \"Visual Type\", \"Visual X Coord\", \"Visual Y Coord\", \"Visual Width\", \"Visual Height\", \"Visual Visibility\", \"Visual Centre X Coord\", \"Visual Centre Y Coord\"}),",
+                "    #\"Duplicated Column1\" = Table.DuplicateColumn(#\"Reordered Columns\", \"Rules File Path\", \"Rules File Path - Copy\"),",
+                "    #\"Extracted Text After Delimiter1\" = Table.TransformColumns(#\"Duplicated Column1\", {{\"Rules File Path - Copy\", each Text.AfterDelimiter(_, \"\\\", {0, RelativePosition.FromEnd}), type text}}),",
+                "    #\"Renamed Columns3\" = Table.RenameColumns(#\"Extracted Text After Delimiter1\",{{\"Rules File Path - Copy\", \"Rules File Name\"}}),",
+                "    #\"Reordered Columns1\" = Table.ReorderColumns(#\"Renamed Columns3\",{\"Source.Name\", \"Tested File Path\", \"Tested File Name\", \"Rules File Path\", \"Rules File Name\", \"CompletionTime\", \"Rule Name\", \"Page Name\", \"Page Display Name\", \"Visual Name\", \"Visual Type\", \"Visual X Coord\", \"Visual Y Coord\", \"Visual Width\", \"Visual Height\", \"Visual Visibility\", \"Visual Centre X Coord\", \"Visual Centre Y Coord\"}),",
+                "    #\"Duplicated Column2\" = Table.DuplicateColumn(#\"Reordered Columns1\", \"CompletionTime\", \"CompletionTime - Copy\"),",
+                "    #\"Extracted Date\" = Table.TransformColumns(#\"Duplicated Column2\",{{\"CompletionTime - Copy\", DateTime.Date, type date}}),",
+                "    #\"Renamed Columns4\" = Table.RenameColumns(#\"Extracted Date\",{{\"CompletionTime - Copy\", \"Completion Date\"}}),",
+                "    #\"Reordered Columns2\" = Table.ReorderColumns(#\"Renamed Columns4\",{\"Source.Name\", \"Tested File Path\", \"Tested File Name\", \"Rules File Path\", \"Rules File Name\", \"CompletionTime\", \"Completion Date\", \"Rule Name\", \"Page Name\", \"Page Display Name\", \"Visual Name\", \"Visual Type\", \"Visual X Coord\", \"Visual Y Coord\", \"Visual Width\", \"Visual Height\", \"Visual Visibility\", \"Visual Centre X Coord\", \"Visual Centre Y Coord\"}),",
+                "    #\"Duplicated Column3\" = Table.DuplicateColumn(#\"Reordered Columns2\", \"CompletionTime\", \"CompletionTime - Copy\"),",
+                "    #\"Extracted Time\" = Table.TransformColumns(#\"Duplicated Column3\",{{\"CompletionTime - Copy\", DateTime.Time, type time}}),",
+                "    #\"Renamed Columns5\" = Table.RenameColumns(#\"Extracted Time\",{{\"CompletionTime - Copy\", \"Completion Time\"}}),",
+                "    #\"Reordered Columns3\" = Table.ReorderColumns(#\"Renamed Columns5\",{\"Source.Name\", \"Tested File Path\", \"Tested File Name\", \"Rules File Path\", \"Rules File Name\", \"CompletionTime\", \"Completion Date\", \"Completion Time\", \"Rule Name\", \"Page Name\", \"Page Display Name\", \"Visual Name\", \"Visual Type\", \"Visual X Coord\", \"Visual Y Coord\", \"Visual Width\", \"Visual Height\", \"Visual Visibility\", \"Visual Centre X Coord\", \"Visual Centre Y Coord\"}),",
+                "    #\"Removed Columns2\" = Table.RemoveColumns(#\"Reordered Columns3\",{\"CompletionTime\"}),",
+                "    #\"Renamed Columns6\" = Table.RenameColumns(#\"Removed Columns2\",{{\"Completion Date\", \"Report Completion Date\"}, {\"Completion Time\", \"Report Completion Time\"}, {\"Source.Name\", \"Json Report Source File\"}}),",
+                "    #\"Changed Type4\" = Table.TransformColumnTypes(#\"Renamed Columns6\",{{\"Visual Visibility\", type logical}, {\"Visual Type\", type text}, {\"Visual Name\", type text}}),",
+                "    #\"Renamed Columns7\" = Table.RenameColumns(#\"Changed Type4\",{{\"Tested File Name\", \"PBI File Name\"}, {\"Tested File Path\", \"PBI File Path\"}})",
+                "in",
+                "    #\"Renamed Columns7\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DateTableTemplate_704ae5e8-32d7-4c6e-8dab-800bc88aa27c",
+        "annotations": [
+          {
+            "name": "__PBI_TemplateDateTable",
+            "value": "true"
+          },
+          {
+            "name": "DefaultItem",
+            "value": "DateHierarchy"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              }
+            ],
+            "dataCategory": "PaddedDateTableDates",
+            "dataType": "dateTime",
+            "formatString": "General Date",
+            "isHidden": true,
+            "isNameInferred": true,
+            "lineageTag": "44c0ea81-5d03-4882-bfbd-c8674b3870d0",
+            "sourceColumn": "[Date]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Year",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Year"
+              }
+            ],
+            "dataCategory": "Years",
+            "dataType": "int64",
+            "expression": "YEAR([Date])",
+            "formatString": "0",
+            "isHidden": true,
+            "lineageTag": "2b87578e-9f25-40f3-989a-40bc290ae540",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "MonthNo",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "MonthNumber"
+              }
+            ],
+            "dataCategory": "MonthOfYear",
+            "dataType": "int64",
+            "expression": "MONTH([Date])",
+            "formatString": "0",
+            "isHidden": true,
+            "lineageTag": "a08fb457-0c38-40d8-89fa-0c8a23d3c955",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Month",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Month"
+              }
+            ],
+            "dataCategory": "Months",
+            "dataType": "string",
+            "expression": "FORMAT([Date], \"MMMM\")",
+            "isHidden": true,
+            "lineageTag": "b9d033d0-8767-48c2-bcf9-431f8f24e0e7",
+            "sortByColumn": "MonthNo",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "QuarterNo",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "QuarterNumber"
+              }
+            ],
+            "dataCategory": "QuarterOfYear",
+            "dataType": "int64",
+            "expression": "INT(([MonthNo] + 2) / 3)",
+            "formatString": "0",
+            "isHidden": true,
+            "lineageTag": "06966a3a-0d82-4a3f-ba8c-bbe68e440ba0",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Quarter",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Quarter"
+              }
+            ],
+            "dataCategory": "Quarters",
+            "dataType": "string",
+            "expression": "\"Qtr \" & [QuarterNo]",
+            "isHidden": true,
+            "lineageTag": "d4dda636-fb32-448a-98a2-df8769155e01",
+            "sortByColumn": "QuarterNo",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Day",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Day"
+              }
+            ],
+            "dataCategory": "DayOfMonth",
+            "dataType": "int64",
+            "expression": "DAY([Date])",
+            "formatString": "0",
+            "isHidden": true,
+            "lineageTag": "c05851b2-f30b-459c-902f-4ddebf080754",
+            "summarizeBy": "none",
+            "type": "calculated"
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Date Hierarchy",
+            "annotations": [
+              {
+                "name": "TemplateId",
+                "value": "DateHierarchy"
+              }
+            ],
+            "levels": [
+              {
+                "name": "Year",
+                "column": "Year",
+                "lineageTag": "eb7dc6fd-5a3f-427e-b34b-20621efba068",
+                "ordinal": 0
+              },
+              {
+                "name": "Quarter",
+                "column": "Quarter",
+                "lineageTag": "7fd9c208-0f6f-4e57-9887-462d015979f1",
+                "ordinal": 1
+              },
+              {
+                "name": "Month",
+                "column": "Month",
+                "lineageTag": "ccba358a-eb59-4c34-9634-bb72c40b75fd",
+                "ordinal": 2
+              },
+              {
+                "name": "Day",
+                "column": "Day",
+                "lineageTag": "045d2b28-5068-4814-8e9a-f269ec0ddace",
+                "ordinal": 3
+              }
+            ],
+            "lineageTag": "fae918f7-32d9-4023-b50e-7ff1eb76c58d"
+          }
+        ],
+        "isHidden": true,
+        "isPrivate": true,
+        "lineageTag": "2a971359-82bb-4a5b-aa5e-eca9b4a8e893",
+        "partitions": [
+          {
+            "name": "DateTableTemplate_704ae5e8-32d7-4c6e-8dab-800bc88aa27c",
+            "mode": "import",
+            "source": {
+              "expression": "Calendar(Date(2015,1,1), Date(2015,1,1))",
+              "type": "calculated"
+            }
+          }
+        ]
+      },
+      {
+        "name": "LocalDateTable_3c6d7d40-ac96-49f4-b852-fb14a9ee96d7",
+        "annotations": [
+          {
+            "name": "__PBI_LocalDateTable",
+            "value": "true"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              }
+            ],
+            "dataCategory": "PaddedDateTableDates",
+            "dataType": "dateTime",
+            "formatString": "General Date",
+            "isHidden": true,
+            "isNameInferred": true,
+            "lineageTag": "c7e354ce-7201-4f50-a323-670db10f0b0e",
+            "sourceColumn": "[Date]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Year",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Year"
+              }
+            ],
+            "dataCategory": "Years",
+            "dataType": "int64",
+            "expression": "YEAR([Date])",
+            "formatString": "0",
+            "isHidden": true,
+            "lineageTag": "8653bfd9-c9f6-484b-93d5-77ab306a23f5",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "MonthNo",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "MonthNumber"
+              }
+            ],
+            "dataCategory": "MonthOfYear",
+            "dataType": "int64",
+            "expression": "MONTH([Date])",
+            "formatString": "0",
+            "isHidden": true,
+            "lineageTag": "2ba36039-09ab-4aba-be38-51dd6c5db175",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Month",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Month"
+              }
+            ],
+            "dataCategory": "Months",
+            "dataType": "string",
+            "expression": "FORMAT([Date], \"MMMM\")",
+            "isHidden": true,
+            "lineageTag": "f3f91959-9da6-4069-a70b-bf98aceecb88",
+            "sortByColumn": "MonthNo",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "QuarterNo",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "QuarterNumber"
+              }
+            ],
+            "dataCategory": "QuarterOfYear",
+            "dataType": "int64",
+            "expression": "INT(([MonthNo] + 2) / 3)",
+            "formatString": "0",
+            "isHidden": true,
+            "lineageTag": "91ac5d3a-960b-4240-99ba-4389552723a8",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Quarter",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Quarter"
+              }
+            ],
+            "dataCategory": "Quarters",
+            "dataType": "string",
+            "expression": "\"Qtr \" & [QuarterNo]",
+            "isHidden": true,
+            "lineageTag": "decb49e5-a299-4895-b6d2-c1c01c7420d7",
+            "sortByColumn": "QuarterNo",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Day",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Day"
+              }
+            ],
+            "dataCategory": "DayOfMonth",
+            "dataType": "int64",
+            "expression": "DAY([Date])",
+            "formatString": "0",
+            "isHidden": true,
+            "lineageTag": "900f59a4-84f7-437f-97d0-f37397752d25",
+            "summarizeBy": "none",
+            "type": "calculated"
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Date Hierarchy",
+            "annotations": [
+              {
+                "name": "TemplateId",
+                "value": "DateHierarchy"
+              }
+            ],
+            "levels": [
+              {
+                "name": "Year",
+                "column": "Year",
+                "lineageTag": "1d2173c6-7bb9-4082-8ea0-158cf9898173",
+                "ordinal": 0
+              },
+              {
+                "name": "Quarter",
+                "column": "Quarter",
+                "lineageTag": "b7f1619b-794a-4ab6-8efd-d265caeda6a3",
+                "ordinal": 1
+              },
+              {
+                "name": "Month",
+                "column": "Month",
+                "lineageTag": "bffdfb67-c6c9-4509-a3de-ab771f97027a",
+                "ordinal": 2
+              },
+              {
+                "name": "Day",
+                "column": "Day",
+                "lineageTag": "c3b7e0a1-54d4-47d2-b406-1b0c2676bc22",
+                "ordinal": 3
+              }
+            ],
+            "lineageTag": "5498daa2-91ca-4c1f-8a26-7c48dd77ec44"
+          }
+        ],
+        "isHidden": true,
+        "lineageTag": "3183e04f-ea1e-47ba-832a-b91ad19d0deb",
+        "partitions": [
+          {
+            "name": "LocalDateTable_3c6d7d40-ac96-49f4-b852-fb14a9ee96d7",
+            "mode": "import",
+            "source": {
+              "expression": "Calendar(Date(Year(MIN('Report'[Report Completion Date])), 1, 1), Date(Year(MAX('Report'[Report Completion Date])), 12, 31))",
+              "type": "calculated"
+            }
+          }
+        ],
+        "showAsVariationsOnly": true
+      }
+    ]
+  }
+}

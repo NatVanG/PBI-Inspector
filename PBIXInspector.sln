@@ -19,7 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsImages", "DocsImages", 
 	ProjectSection(SolutionItems) = preProject
 		DocsImages\pbiinspector.png = DocsImages\pbiinspector.png
 		DocsImages\ReidSession.png = DocsImages\ReidSession.png
+		DocsImages\RunReportFromWinForm.png = DocsImages\RunReportFromWinForm.png
+		DocsImages\SampleReportOverReport.png = DocsImages\SampleReportOverReport.png
 		DocsImages\TooltipPageWithIncorrectAspectRatio.png = DocsImages\TooltipPageWithIncorrectAspectRatio.png
+		DocsImages\UpdateReportParameter.png = DocsImages\UpdateReportParameter.png
 		DocsImages\WinForm1.png = DocsImages\WinForm1.png
 		DocsImages\WireframeChartsWiderThanTall.png = DocsImages\WireframeChartsWiderThanTall.png
 		DocsImages\WireframeWithFailures.png = DocsImages\WireframeWithFailures.png
@@ -32,6 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PBIXInspectorWinForm", "PBI
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsExamples", "DocsExamples", "{0DABAA35-C96D-4D84-96ED-C088A39D5CA0}"
 	ProjectSection(SolutionItems) = preProject
+		DocsExamples\Example-ReportPageFieldMap.json = DocsExamples\Example-ReportPageFieldMap.json
 		DocsExamples\Example-rules.json = DocsExamples\Example-rules.json
 		DocsExamples\Reid-rules.json = DocsExamples\Reid-rules.json
 	EndProjectSection
@@ -39,6 +43,42 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rules", "Rules", "{BB86A63C-BBD5-48DA-9481-343165781823}"
 	ProjectSection(SolutionItems) = preProject
 		Rules\Base-rules.json = Rules\Base-rules.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReportExample", "ReportExample", "{3A0CE8CE-A7CB-4288-B9EF-06056779A0D1}"
+	ProjectSection(SolutionItems) = preProject
+		DocsExamples\ReportExample\PBI Inspector Reporting.pbip = DocsExamples\ReportExample\PBI Inspector Reporting.pbip
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PBI Inspector Reporting.Report", "PBI Inspector Reporting.Report", "{4692719B-AC01-4A09-8889-EBB4CC69D5C2}"
+	ProjectSection(SolutionItems) = preProject
+		DocsExamples\ReportExample\PBI Inspector Reporting.Report\definition.pbir = DocsExamples\ReportExample\PBI Inspector Reporting.Report\definition.pbir
+		DocsExamples\ReportExample\PBI Inspector Reporting.Report\item.config.json = DocsExamples\ReportExample\PBI Inspector Reporting.Report\item.config.json
+		DocsExamples\ReportExample\PBI Inspector Reporting.Report\item.metadata.json = DocsExamples\ReportExample\PBI Inspector Reporting.Report\item.metadata.json
+		DocsExamples\ReportExample\PBI Inspector Reporting.Report\report.json = DocsExamples\ReportExample\PBI Inspector Reporting.Report\report.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PBI Inspector Reporting.Dataset", "PBI Inspector Reporting.Dataset", "{F575C0AD-D7C5-4B54-A387-DBDC50C58225}"
+	ProjectSection(SolutionItems) = preProject
+		DocsExamples\ReportExample\PBI Inspector Reporting.Dataset\definition.pbidataset = DocsExamples\ReportExample\PBI Inspector Reporting.Dataset\definition.pbidataset
+		DocsExamples\ReportExample\PBI Inspector Reporting.Dataset\diagramLayout.json = DocsExamples\ReportExample\PBI Inspector Reporting.Dataset\diagramLayout.json
+		DocsExamples\ReportExample\PBI Inspector Reporting.Dataset\item.config.json = DocsExamples\ReportExample\PBI Inspector Reporting.Dataset\item.config.json
+		DocsExamples\ReportExample\PBI Inspector Reporting.Dataset\item.metadata.json = DocsExamples\ReportExample\PBI Inspector Reporting.Dataset\item.metadata.json
+		DocsExamples\ReportExample\PBI Inspector Reporting.Dataset\model.bim = DocsExamples\ReportExample\PBI Inspector Reporting.Dataset\model.bim
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StaticResources", "StaticResources", "{F8D8F5A8-2FAB-4D9A-A9A8-EB48369A75F0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RegisteredResources", "RegisteredResources", "{250ACB5C-52B3-494A-B3A9-EF734F348F43}"
+	ProjectSection(SolutionItems) = preProject
+		DocsExamples\ReportExample\PBI Inspector Reporting.Report\StaticResources\RegisteredResources\pbiinspector41285453691645757.png = DocsExamples\ReportExample\PBI Inspector Reporting.Report\StaticResources\RegisteredResources\pbiinspector41285453691645757.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedResources", "SharedResources", "{D1568C15-D0F3-439F-9EA1-D6353CEFB15C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BaseThemes", "BaseThemes", "{29D794BC-3EBD-4D04-92D5-F26B81AEE6D0}"
+	ProjectSection(SolutionItems) = preProject
+		DocsExamples\ReportExample\PBI Inspector Reporting.Report\StaticResources\SharedResources\BaseThemes\CY23SU11.json = DocsExamples\ReportExample\PBI Inspector Reporting.Report\StaticResources\SharedResources\BaseThemes\CY23SU11.json
 	EndProjectSection
 EndProject
 Global
@@ -74,6 +114,13 @@ Global
 		{AD4E6E10-AD07-4A1E-B6D4-258C5BCF261F} = {D842426E-4F0A-42E7-8574-3D8C739651F1}
 		{0DABAA35-C96D-4D84-96ED-C088A39D5CA0} = {D842426E-4F0A-42E7-8574-3D8C739651F1}
 		{BB86A63C-BBD5-48DA-9481-343165781823} = {D842426E-4F0A-42E7-8574-3D8C739651F1}
+		{3A0CE8CE-A7CB-4288-B9EF-06056779A0D1} = {0DABAA35-C96D-4D84-96ED-C088A39D5CA0}
+		{4692719B-AC01-4A09-8889-EBB4CC69D5C2} = {3A0CE8CE-A7CB-4288-B9EF-06056779A0D1}
+		{F575C0AD-D7C5-4B54-A387-DBDC50C58225} = {3A0CE8CE-A7CB-4288-B9EF-06056779A0D1}
+		{F8D8F5A8-2FAB-4D9A-A9A8-EB48369A75F0} = {4692719B-AC01-4A09-8889-EBB4CC69D5C2}
+		{250ACB5C-52B3-494A-B3A9-EF734F348F43} = {F8D8F5A8-2FAB-4D9A-A9A8-EB48369A75F0}
+		{D1568C15-D0F3-439F-9EA1-D6353CEFB15C} = {F8D8F5A8-2FAB-4D9A-A9A8-EB48369A75F0}
+		{29D794BC-3EBD-4D04-92D5-F26B81AEE6D0} = {D1568C15-D0F3-439F-9EA1-D6353CEFB15C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {937CBF58-BBEF-4642-AAD3-5156B6BF45CE}

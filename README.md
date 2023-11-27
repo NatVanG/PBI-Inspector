@@ -20,16 +20,17 @@ Please report issues [here](https://github.com/NatVanG/PBI-Inspector/issues).
 
 - [Intro](#intro)
 - [Base rules](#baserulesoverview)
-- [Graphical user interface](#gui)
-- [Command line](#cli)
-- [Azure DevOps integration](#ado)
+- [Run from the Graphical user interface](#gui)
+- [Run from the Command line](#cli)
 - [Interpreting results](#results)
-- [Known issues](#knownissues)
+- [Running reports on reports](#reporting)
+- [Azure DevOps integration](#ado)
+- [Fabric workspace integration](#fabric)
 - [Custom rules examples](#customrulesexamples)
 - [Custom rules guide](#customrulesguide)
 - [Contributing ideas and discussions](#contributing)
+- [Known issues](#knownissues)
 - [Report an issue](#reportanissue)
-
 
 ## <a id="intro"></a>Intro
 
@@ -40,7 +41,6 @@ With Microsoft Power BI, visuals are placed on a canvas and formatted as desired
 ### YouTube session with Reid Havens
 
 [![YouTube session with Reid Havens](DocsImages/ReidSession.png)](https://www.youtube.com/watch?v=Moxci_B7kv8)
-
 
 The rules files used in the session can be found at [Reid-rules.json](DocsExamples/Reid-rules.json). 
 
@@ -56,6 +56,9 @@ While PBI Inspector supports custom rules, it also includes the following base r
 6. Reduce number of pages per report (set ```paramMaxNumberOfPagesPerReport```)
 7. Avoid setting ‘Show items with no data’ on columns (no user parameters)
 8. Tooltip and Drillthrough pages should be hidden (no user parameters)
+9. Ensure charts use theme colours (no user parameters)
+10. Ensure pages do not scroll vertically (no user parameters)
+11. Ensure alternativeText has been defined for all visuals (disabled by default, no user parameters)
 
 To modify parameters, save a local copy of the Base-rules.json file at https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/Rules/Base-rules.json and point PBI Inspector to the new file.
 
@@ -80,7 +83,7 @@ Running ```PBIXInspectorWinForm.exe``` presents the user with the following inte
 6. Select "Run". The test run log messages are displayed at the bottom of the window. If "Use temp files" is selected (or the Output directory field is left blank) along with the HTML output check box, then the browser will open to display the HTML results.
 7. Any test run information, warnings or errors are displayed in the console output textbox.
 
-## <a id="cli"></a>Run from the command line  
+## <a id="cli"></a>Run from the command line interface (CLI)
 
 ***Binaries***: The command line interface application is available at: https://github.com/NatVanG/PBI-Inspector/releases/latest
 (.NET 6.0 dependency not included).
@@ -120,10 +123,6 @@ All command line parameters are as follows:
 
 ``` PBIXInspectorCLI.exe -pbipreport "C:\Files\Sales.Report" -rules ".\Files\Base-rules.json"  -formats "ADO"```
 
-## <a id="ado"></a>Azure DevOps integration
-
-For an example on how to run PBI Inspector as part of an Azure DevOps pipeline job (alongside Tabular Editor's BPA rules), see Rui Romano's repo at https://github.com/RuiRomano/powerbi-devmode-pipelines and this YAML file in particular: https://github.com/RuiRomano/powerbi-devmode-pipelines/blob/main/azure-pipelines-build.yml.
-
 ## <a id="results"></a>Interpreting results
 
  If a verbose output was requested, then results for both test passes and failures will be reported. The JSON output is intended to be consumed by a subsequent process, for example a Power BI report may be created that uses the JSON file as a data source and visualises the PBI Inspector test results. The HTML page is a more readable format for humans which also includes report page wireframe images when tests are at the report page level. These images are intended to help the user identify visuals that have failed the test such as the example image below. The PBI Inspector logo is also displayed at the centre of each failing visuals as an additional identification aid when the wireframe is busy. 
@@ -134,21 +133,35 @@ Visuals with a dotted border are visuals hidden by default as the following exam
 
 ![Wireframe with hidden visual](DocsImages/WireframeWithHiddenVisual.png)
 
-## <a id="knownissues"></a>Known issues
+## <a id="reporting"></a>Running reports on reports
 
--  Currently page wireframes are only created in a 16:9 aspect ratio so custom report page sizes including tooltip pages may not render as expected as shown in the following tooltip page example. See tooltip page example below:
- 
- ![Tooltip page with incorrect aspect ratio](DocsImages/TooltipPageWithIncorrectAspectRatio.png)
+As an added benefit, PBI Inspector can be used to run reports on reports. For example, a rules file may be created that returns an array of JSON records, for example listing properties of visuals on each report page. For an example of such a rules file, see: [Example-ReportPageFieldMap.json](DocsExamples/Example-ReportPageFieldMap.json) which for each report page returns an array of visual name, type, x and y coordinates, width, height and visibility.
 
- - Currently page wireframes do not faithfully represents the report page layout when visual groups are present.
- 
- All issues should be logged at https://github.com/NatVanG/PBI-Inspector/issues.
+To run a report on a single report, the PBI Inspector application may be used as follows (take note of the output directory path you specified and only select the JSON output format):
+
+![PBI Inspector Windows Form selections](DocsImages/RunReportFromWinForm.png)
+
+Power BI Desktop may then be used to create a report that uses the JSON file(s) parent folder as a data source. The following example report is included in the project's repository at https://github.com/NatVanG/PBI-Inspector/blob/main/DocsExamples/ReportExample/.
+
+![PBI Inspector report](DocsImages/SampleReportOverReport.png)
+
+To update this report with your own visuals data, open the report in Power BI Desktop and update the "JsonReportFolder" parameter with the path of the output directory path used in the PBI Inspector application above:
+
+![Update PBI Inspector report parameter](DocsImages/UpdateReportParameter.png)
+
+## <a id="ado"></a>Azure DevOps integration
+
+For a tutorial on how to run PBI Inspector as part of an Azure DevOps pipeline job (alongside Tabular Editor's BPA rules), see https://learn.microsoft.com/en-us/power-bi/developer/projects/projects-build-pipelines. The tutorial references Rui Romano's repository at https://github.com/RuiRomano/powerbi-devmode-pipelines and this YAML file in particular: https://github.com/RuiRomano/powerbi-devmode-pipelines/blob/main/azure-pipelines-build.yml.
+
+## <a id="fabric"></a>Fabric workspace integration
+
+Thanks to the ability to programmatically export Report definitions from Microsoft Fabric workspaces via the REST API (see https://learn.microsoft.com/en-us/rest/api/fabric/articles/item-management/definitions/report-definition), PBI Inspector rules can also be run against reports published to Fabric workspaces. For a useful "Export-FabricItems" Fabric PowerShell cmdlet and example, consider cloning or downloading the project at https://github.com/RuiRomano/fabricps-pbip and running the "Test-ExportForBPA.ps1" PowerShell script. This script exports the specified Fabric workspaces' contents to PBIP files and then run both Tabular Editor BPA rules and PBI Inspector rules against each PBIP file and output the console output to files. A subsequent documentation update will show how to run a report on PBI Inspector test results that are returned as JSON files.
 
 ## <a id="customrulesexamples"></a>Custom Rules Examples
 
 *Please note that this section is not a guide to creating custom rules, just a very high-level overview and some examples. I'm currently writing a guide to rule creation in the project's wiki, see **[Anatomy of a rules file](https://github.com/NatVanG/PBI-Inspector/wiki/Anatomy-of-a-rules-file)**.*
 
-A PBI Inspector test is written in json and is in in three parts:
+A PBI Inspector test is written in json and is in three parts:
 1. The [JSONLogic](https://json-everything.net/json-logic) rule
 2. Some data mapping logic
 3. The expected result
@@ -666,6 +679,16 @@ I've started writing this guide to rule creation in the project's wiki: **[Anato
 ## <a id="contributing"></a>Contributing ideas and discussions
 
 Please contribute to ideas (for example ideas for new rules) and discussions at https://github.com/NatVanG/PBI-Inspector/discussions.
+
+## <a id="knownissues"></a>Known issues
+
+-  Currently page wireframes are only created in a 16:9 aspect ratio so custom report page sizes including tooltip pages may not render as expected as shown in the following tooltip page example. See tooltip page example below:
+ 
+ ![Tooltip page with incorrect aspect ratio](DocsImages/TooltipPageWithIncorrectAspectRatio.png)
+
+ - Currently page wireframes do not faithfully represents the report page layout when visual groups are present.
+ 
+ All issues should be logged at https://github.com/NatVanG/PBI-Inspector/issues.
 
 ## <a id="reportanissue"></a>Report an issue
 
