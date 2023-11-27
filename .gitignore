@@ -371,3 +371,5 @@ FodyWeavers.xsd
 /PBIXInspectorWinLibrary/Files/pbip/Inventory sample - fails.Report/.pbi/localSettings.json
 /PBIXInspectorWinForm/Files/pbip/Inventory sample - fails.Dataset/.pbi
 /PBIXInspectorWinForm/Files/pbip/Inventory sample - fails.Report/.pbi
+/DocsExamples/ReportExample/PBI Inspector Reporting.Dataset/.pbi
+/DocsExamples/ReportExample/PBI Inspector Reporting.Report/.pbi
