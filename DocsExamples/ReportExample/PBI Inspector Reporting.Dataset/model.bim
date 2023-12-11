@@ -68,10 +68,6 @@
           {
             "name": "PBI_ResultType",
             "value": "Binary"
-          },
-          {
-            "name": "PBI_NavigationStepName",
-            "value": "Navigation"
           }
         ],
         "expression": "#\"Sample File\" meta [IsParameterQuery=true, BinaryIdentifier=#\"Sample File\", Type=\"Binary\", IsParameterQueryRequired=true]",
@@ -130,10 +126,6 @@
       {
         "name": "JsonReportsFolder",
         "annotations": [
-          {
-            "name": "PBI_NavigationStepName",
-            "value": "Navigation"
-          },
           {
             "name": "PBI_ResultType",
             "value": "Text"
@@ -481,6 +473,34 @@
             "lineageTag": "87b8a820-8c6f-4f3a-9484-395b63e2c475",
             "sourceColumn": "Report Completion Time",
             "summarizeBy": "none"
+          },
+          {
+            "name": "Alt Text Defined",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "boolean",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\"",
+            "lineageTag": "82c7011a-b153-4722-b639-de73a12e3841",
+            "sourceColumn": "Alt Text Defined",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Count of Objects",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "d9963dcd-fa15-400a-8ebf-4ff4c2ff9113",
+            "sourceColumn": "Count of Objects",
+            "summarizeBy": "sum"
           }
         ],
         "lineageTag": "14c5ca52-4237-4937-9ec8-8dd7f7719368",
@@ -519,7 +539,7 @@
                 "    #\"Expanded Table Column1\" = Table.ExpandTableColumn(#\"Removed Other Columns1\", \"Transform File\", Table.ColumnNames(#\"Transform File\"(#\"Sample File\"))),",
                 "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Expanded Table Column1\",{{\"Source.Name\", type text}, {\"Id\", type text}, {\"TestedFilePath\", type text}, {\"RulesFilePath\", type text}, {\"CompletionTime\", type datetime}, {\"Verbose\", type logical}, {\"Results.Id\", type text}, {\"Results.RuleName\", type text}, {\"Results.RuleDescription\", type text}, {\"Results.LogType\", Int64.Type}, {\"Results.ParentName\", type text}, {\"Results.ParentDisplayName\", type text}, {\"Results.Pass\", type logical}, {\"Results.Expected\", type any}, {\"Results.Actual\", type any}, {\"Results.Message\", type text}}),",
                 "    #\"Expanded Results.Actual\" = Table.ExpandListColumn(#\"Changed Type\", \"Results.Actual\"),",
-                "    #\"Expanded Results.Actual1\" = Table.ExpandRecordColumn(#\"Expanded Results.Actual\", \"Results.Actual\", {\"name\", \"visualType\", \"x\", \"y\", \"width\", \"height\", \"visible\"}, {\"Results.Actual.name\", \"Results.Actual.visualType\", \"Results.Actual.x\", \"Results.Actual.y\", \"Results.Actual.width\", \"Results.Actual.height\", \"Results.Actual.visible\"}),",
+                "    #\"Expanded Results.Actual1\" = Table.ExpandRecordColumn(#\"Expanded Results.Actual\", \"Results.Actual\", {\"name\", \"visualType\", \"x\", \"y\", \"width\", \"height\", \"visible\", \"altTextDefined\", \"countOfObjects\"}, {\"Results.Actual.name\", \"Results.Actual.visualType\", \"Results.Actual.x\", \"Results.Actual.y\", \"Results.Actual.width\", \"Results.Actual.height\", \"Results.Actual.visible\", \"Results.Actual.altTextDefined\", \"Results.Actual.countOfObjects\"}),",
                 "    #\"Removed Columns\" = Table.RemoveColumns(#\"Expanded Results.Actual1\",{\"Results.Pass\", \"Results.Expected\", \"Results.Message\"}),",
                 "    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Removed Columns\",{{\"Results.Actual.x\", type number}, {\"Results.Actual.y\", type number}, {\"Results.Actual.width\", type number}, {\"Results.Actual.height\", type number}}),",
                 "    #\"Removed Columns1\" = Table.RemoveColumns(#\"Changed Type1\",{\"Id\", \"Results.Id\", \"Verbose\", \"Results.RuleDescription\", \"Results.LogType\"}),",
@@ -547,9 +567,11 @@
                 "    #\"Removed Columns2\" = Table.RemoveColumns(#\"Reordered Columns3\",{\"CompletionTime\"}),",
                 "    #\"Renamed Columns6\" = Table.RenameColumns(#\"Removed Columns2\",{{\"Completion Date\", \"Report Completion Date\"}, {\"Completion Time\", \"Report Completion Time\"}, {\"Source.Name\", \"Json Report Source File\"}}),",
                 "    #\"Changed Type4\" = Table.TransformColumnTypes(#\"Renamed Columns6\",{{\"Visual Visibility\", type logical}, {\"Visual Type\", type text}, {\"Visual Name\", type text}}),",
-                "    #\"Renamed Columns7\" = Table.RenameColumns(#\"Changed Type4\",{{\"Tested File Name\", \"PBI File Name\"}, {\"Tested File Path\", \"PBI File Path\"}})",
+                "    #\"Renamed Columns7\" = Table.RenameColumns(#\"Changed Type4\",{{\"Tested File Name\", \"PBI File Name\"}, {\"Tested File Path\", \"PBI File Path\"}}),",
+                "    #\"Changed Type5\" = Table.TransformColumnTypes(#\"Renamed Columns7\",{{\"Results.Actual.altTextDefined\", type logical}, {\"Results.Actual.countOfObjects\", Int64.Type}}),",
+                "    #\"Renamed Columns8\" = Table.RenameColumns(#\"Changed Type5\",{{\"Results.Actual.altTextDefined\", \"Alt Text Defined\"}, {\"Results.Actual.countOfObjects\", \"Count of Objects\"}})",
                 "in",
-                "    #\"Renamed Columns7\""
+                "    #\"Renamed Columns8\""
               ],
               "type": "m"
             }

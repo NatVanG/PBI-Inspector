@@ -177,6 +177,8 @@ Besides the base rules defined at https://raw.githubusercontent.com/NatVanG/PBI-
 - [Check other local report settings](#checkotherlocalreportsettings)
 - [Check that the ratio of visuals across the report using custom colours does not exceed 10%](#checkthattheratioofvisualsacrossthereportusingcustomcoloursdoesnotexceed10)
 - [Check report theme properties](#checkreportthemeproperties)
+- [Check that visible visuals do not overlap or have a defined margin between them](#checkthatvisualshavea5pxmargin)
+- [Check that no report-level measures are defined](#checkthatnoreportlevelmeasuresaredefined)
 
 ### <a id="checkthatvisualsarewiderthantheyaretall"></a>Check that visuals are wider than they are tall (for fun or seriously):
 
@@ -668,6 +670,178 @@ Example wireframe output highlighting two visuals that failed the test because t
               "fontsize": "/textClasses/title/fontSize"
             },
             true
+          ]
+        }
+```
+
+### <a id="checkthatvisualshavea5pxmargin"></a>Check that visible visuals do not overlap or have a defined margin between them:
+
+```
+{
+          "name": "Check for visuals overlap with a 5px margin",
+          "description": "Returns names of visuals that overlap while inflating visuals rectangle area by 5px left, right, top and bottom. Currently this does not check for overlap with the sides of report page itself. This rule does not currently work with visual groups.",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "rectoverlap": [
+                {
+                  "map": [
+                    {
+                      "filter": [
+                        {
+                          "var": "v"
+                        },
+                        {
+                          "and": [
+                            { "!!": [ { "var": "name" } ] },
+                            {
+                              "!": [
+                                {
+                                  "in": [
+                                    {
+                                      "var": "singleVisual.visualType"
+                                    },
+                                    [
+                                      "card",
+                                      "slicer",
+                                      "actionButton"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              ">=": [
+                                { "var": "layouts.0.position.x" },
+                                0
+                              ]
+                            },
+                            {
+                              ">=": [
+                                { "var": "layouts.0.position.y" },
+                                0
+                              ]
+                            },
+                            {
+                              ">=": [
+                                { "var": "layouts.0.position.width" },
+                                0
+                              ]
+                            },
+                            {
+                              ">=": [
+                                { "var": "layouts.0.position.height" },
+                                0
+                              ]
+                            },
+                            {
+                              "!=": [
+                                {
+                                  "var": "singleVisual.display.mode"
+                                },
+                                "hidden"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "torecord": [
+                        "name",
+                        {
+                          "var": "name"
+                        },
+                        "x",
+                        {
+                          "var": "layouts.0.position.x"
+                        },
+                        "y",
+                        {
+                          "var": "layouts.0.position.y"
+                        },
+                        "width",
+                        {
+                          "var": "layouts.0.position.width"
+                        },
+                        "height",
+                        {
+                          "var": "layouts.0.position.height"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                5
+              ]
+            },
+            {
+              "v": "."
+            },
+            []
+          ]
+        }
+```
+
+### <a id="checkthatnoreportlevelmeasuresaredefined"></a>Check that no report-level measures are defined:
+
+Returns the modelExtensions array item in the report's config json node with the extension name set to "extension" and an entities array with at least one measure defined.
+
+```
+{
+          "name": "Check for locally defined measures",
+          "description": "Returns an array of report-level measure definitions",
+          "path": "$.config",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "filter": [
+                {
+                  "var": "modelExt"
+                },
+                {
+                  "and": [
+                    {
+                      "==": [
+                        {
+                          "var": "name"
+                        },
+                        "extension"
+                      ]
+                    },
+                    {
+                      "some": [
+                        {
+                          "var": "entities"
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "var": "measures"
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "modelExt": "/modelExtensions"
+            },
+            []
           ]
         }
 ```
