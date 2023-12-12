@@ -535,7 +535,7 @@
         {
           "name": "Check Deneb charts properties - work in progress",
           "description": "Checks that the drillvar custom rule can read deneb custom visual nested jsonspec properties. This is an example in progress that demonstrates the use of the drillvar custom rule but doesn't yet do anything useful.",
-          "disabled": false,
+          "disabled": true,
           "logType": "warning",
           "path": "$.sections[*]",
           "pathErrorWhenNoMatch": true,
@@ -686,6 +686,56 @@
             },
             {
               "v": "."
+            },
+            []
+          ]
+        },
+        {
+          "name": "Check for locally defined measures",
+          "description": "Returns an array of report-level measure definitions",
+          "path": "$.config",
+          "pathErrorWhenNoMatch": true,
+          "test": [
+            {
+              "filter": [
+                {
+                  "var": "modelExt"
+                },
+                {
+                  "and": [
+                    {
+                      "==": [
+                        {
+                          "var": "name"
+                        },
+                        "extension"
+                      ]
+                    },
+                    {
+                      "some": [
+                        {
+                          "var": "entities"
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "var": "measures"
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "modelExt": "/modelExtensions"
             },
             []
           ]

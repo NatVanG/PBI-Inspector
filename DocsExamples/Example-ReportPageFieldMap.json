@@ -27,10 +27,30 @@
                       "and": [
                         { "!!": [ { "var": "name" } ] },
                         { "!!": [ { "var": "singleVisual.visualType" } ] },
-                        { ">=": [ { "var": "layouts.0.position.x" }, 0 ] },
-                        { ">=": [ { "var": "layouts.0.position.y" }, 0 ] },
-                        { ">=": [ { "var": "layouts.0.position.width" }, 0 ] },
-                        { ">=": [ { "var": "layouts.0.position.height" }, 0 ] }
+                        {
+                          ">=": [
+                            { "var": "layouts.0.position.x" },
+                            0
+                          ]
+                        },
+                        {
+                          ">=": [
+                            { "var": "layouts.0.position.y" },
+                            0
+                          ]
+                        },
+                        {
+                          ">=": [
+                            { "var": "layouts.0.position.width" },
+                            0
+                          ]
+                        },
+                        {
+                          ">=": [
+                            { "var": "layouts.0.position.height" },
+                            0
+                          ]
+                        }
                       ]
                     }
                   ]
@@ -68,6 +88,35 @@
                           "var": "singleVisual.display.mode"
                         },
                         "hidden"
+                      ]
+                    },
+                    "altTextDefined",
+                    {
+                      "some": [
+                        {
+                          "var": "singleVisual.vcObjects.general"
+                        },
+                        {
+                          "or": [
+                            {
+                              "!!": [ { "var": "properties.altText.expr.Aggregation" } ]
+                            },
+                            {
+                              "!=": [
+                                { "var": "properties.altText.expr.Literal.Value" },
+                                "''"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "countOfObjects",
+                    {
+                      "count": [
+                        {
+                          "var": "singleVisual.prototypeQuery.Select"
+                        }
                       ]
                     }
                   ]
