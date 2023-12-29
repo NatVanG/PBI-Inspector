@@ -6,6 +6,8 @@ namespace PBIXInspectorLibrary.Output
     {
         public Guid Id { get; private set; }
 
+        public string? RuleId { get; set; }
+
         public string RuleName { get; set; }
 
         public string? RuleDescription { get; set; }

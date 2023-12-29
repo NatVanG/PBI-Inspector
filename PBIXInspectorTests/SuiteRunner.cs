@@ -117,13 +117,13 @@ public class SuiteRunner
     private void RunBaseFail(TestResult testResult)
     {
         string expected = "[]";
-        switch (testResult.RuleName)
+        switch (testResult.RuleId)
         {
-            case "Remove custom visuals which are not used in the report.":
+            case "REMOVE_UNUSED_CUSTOM_VISUALS":
                 expected = "[\"Aquarium1442671919391\"]";
                 JsonAssert.AreEquivalent(testResult.Actual, JsonNode.Parse(expected));
                 break;
-            case "Reduce the number of visible visuals on the page":
+            case "REDUCE_VISUALS_ON_PAGE":
                 if (testResult.ParentName == "ReportSectionfb0835fa991786b43a3f")
                 {
                     Assert.False(testResult.Pass, testResult.Message);
@@ -133,7 +133,7 @@ public class SuiteRunner
                     Assert.True(testResult.Pass, testResult.Message);
                 }
                 break;
-            case "Reduce the number of objects within visuals":
+            case "REDUCE_OBJECTS_WITHIN_VISUALS":
                 if (testResult.ParentName == "ReportSection4602098ba1ff5a3805a9")
                 {
                     Assert.False(testResult.Pass, testResult.Message);
@@ -143,7 +143,7 @@ public class SuiteRunner
                     Assert.True(testResult.Pass, testResult.Message);
                 }
                 break;
-            case "Reduce usage of TopN filtering visuals by page":
+            case "REDUCE_TOPN_FILTERS":
                 if (testResult.ParentName == "ReportSection3440cc1dc4ec63ca3d06")
                 {
                     Assert.False(testResult.Pass, testResult.Message);
@@ -153,7 +153,7 @@ public class SuiteRunner
                     Assert.True(testResult.Pass, testResult.Message);
                 }
                 break;
-            case "Reduce usage of Advanced filtering visuals by page":
+            case "REDUCE_ADVANCED_FILTERS":
                 if (testResult.ParentName == "ReportSectiond7d52b137add50d28b88")
                 {
                     Assert.False(testResult.Pass, testResult.Message);
@@ -163,10 +163,10 @@ public class SuiteRunner
                     Assert.True(testResult.Pass, testResult.Message);
                 }
                 break;
-            case "Reduce number of pages per report":
+            case "REDUCE_PAGES":
                 Assert.True(testResult.Pass, testResult.Message);
                 break;
-            case "Avoid setting ‘Show items with no data’ on columns":
+            case "AVOID_SHOW_ITEMS_WITH_NO_DATA":
                 expected = "[\"797168e1f1e7658ceae6\",\"97ad01a2b8fbfca3220c\"]";
                 if (testResult.ParentName == "ReportSection5f326c8a8185db501ad9")
                 {
@@ -177,7 +177,7 @@ public class SuiteRunner
                     Assert.True(testResult.Pass, testResult.Message);
                 }
                 break;
-            case "Tooltip and Drillthrough pages should be hidden":
+            case "HIDE_TOOLTIP_DRILLTROUGH_PAGES":
                 if (testResult.ParentName == "ReportSectionadc267c0d12e40458799"
                         || testResult.ParentName == "ReportSection8952e5fd70dcea579d3b")
                 {
@@ -188,7 +188,7 @@ public class SuiteRunner
                     Assert.True(testResult.Pass, testResult.Message);
                 }
                 break;
-            case "Ensure charts use theme colours":
+            case "ENSURE_THEME_COLOURS":
                 if (testResult.ParentName == "ReportSection6c3c3f97279fafdeeb57")
                 {
                     expected = "[\"1a67964cf02b6170c3b8\"]";
@@ -199,11 +199,11 @@ public class SuiteRunner
                     Assert.True(testResult.Pass, testResult.Message);
                 }
                 break;
-            case "Ensure pages do not scroll vertically":
+            case "ENSURE_PAGES_DO_NOT_SCROLL_VERTICALLY":
                 expected = "[\"Scrolling page\"]";
                 JsonAssert.AreEquivalent(testResult.Actual, JsonNode.Parse(expected));
                 break;
-            case "Ensure alternativeText has been defined for all visuals":
+            case "ENSURE_ALTTEXT":
                 Assert.False(testResult.Pass, testResult.Message);
                 break;
             default:
