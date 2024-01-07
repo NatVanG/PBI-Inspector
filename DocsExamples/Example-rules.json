@@ -8,6 +8,7 @@
       "codepage": 1200,
       "rules": [
         {
+          "id":  "CHARTS_WIDER_THAN_TALL",
           "name": "Charts wider than tall",
           "description": "Want to check that your charts are wider than tall?",
           "disabled": false,
@@ -49,6 +50,7 @@
           ]
         },
         {
+          "id": "DISABLE_SLOW_DATASOURCE_SETTINGS",
           "name": "Disable local slow datasource settings",
           "description": "Check that report slow data source settings are all disabled.",
           "disabled": false,
@@ -91,6 +93,7 @@
           ]
         },
         {
+          "id": "LOCAL_REPORT_SETTINGS",
           "name": "Local report settings",
           "disabled": false,
           "logType": "warning",
@@ -213,7 +216,8 @@
           ]
         },
         {
-          "name": "Show visual axes title",
+          "id": "SHOW_AXES_TITLES",
+          "name": "Show visual axes titles",
           "description": "Check that certain charts have both axes title showing.",
           "disabled": false,
           "logType": "warning",
@@ -282,6 +286,7 @@
           ]
         },
         {
+          "id": "PERCENTAGE_OF_CHARTS_USING_CUSTOM_COLOURS",
           "name": "Percentage of charts across the report using custom colours is not greater than 10%",
           "description": "Check that charts avoid custom colours and use theme colours instead.",
           "disabled": false,
@@ -372,6 +377,7 @@
           ]
         },
         {
+          "id": "ENSURE_ALT_TEXT_DEFINED_FOR_VISUALS",
           "name": "Ensure alt-text has been defined for visuals",
           "description": "Alt-text is required for screen readers.",
           "disabled": true,
@@ -441,6 +447,7 @@
           ]
         },
         {
+          "id":  "DISABLE_DROP_SHADOWS_ON_VISUALS",
           "name": "Disable drop shadows on visuals",
           "description": "Drop shadows are not suitable for everyone, this rule returns an array of visuals with drop shadows enabled.",
           "disabled": false,
@@ -485,6 +492,7 @@
           ]
         },
         {
+          "id":  "GIVE_VISIBLE_PAGES_MEANINGFUL_NAMES",
           "name": "Give visible pages meaningful names",
           "description": "Returns an array of visible page names with a default 'Page x' display name.",
           "disabled": false,
@@ -533,6 +541,7 @@
           ]
         },
         {
+          "id":  "DENEB_CHARTS_PROPERTIES",
           "name": "Check Deneb charts properties - work in progress",
           "description": "Checks that the drillvar custom rule can read deneb custom visual nested jsonspec properties. This is an example in progress that demonstrates the use of the drillvar custom rule but doesn't yet do anything useful.",
           "disabled": true,
@@ -581,6 +590,7 @@
           ]
         },
         {
+          "id":  "CHECK_FOR_VISUALS_OVERLAP",
           "name": "Check for visuals overlap with a 5px margin",
           "description": "Returns names of visuals that overlap while inflating visuals rectangle area by 5px left, right, top and bottom. Currently this does not check for overlap with the sides of report page itself. This rule does not currently work with visual groups.",
           "disabled": false,
@@ -691,6 +701,7 @@
           ]
         },
         {
+          "id":  "CHECK_FOR_LOCAL_MEASURES",
           "name": "Check for locally defined measures",
           "description": "Returns an array of report-level measure definitions",
           "path": "$.config",
@@ -751,6 +762,7 @@
       "codepage": 65001,
       "rules": [
         {
+          "id": "REPORT_THEME_NAME",
           "name": "Report theme name",
           "description": "Check Report theme name",
           "disabled": false,
@@ -771,6 +783,7 @@
           ]
         },
         {
+          "id": "REPORT_THEME_TITLE_FONT",
           "name": "Report theme title font properties",
           "description": "Checks theme's' title foreground, fontface and fontsize",
           "disabled": false,

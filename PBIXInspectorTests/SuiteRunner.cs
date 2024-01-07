@@ -69,7 +69,7 @@ public class SuiteRunner
     #region BasePassSuite
     public static IEnumerable<TestCaseData> BasePassPBIXSuite()
     {
-        string PBIXFilePath = @"Files\Inventory sample - passes.pbix";
+        string PBIXFilePath = @"Files\Base-rules-passes.pbix";
         string RulesFilePath = @"Files\Base-rules.json";
 
         Console.WriteLine("Running base pass PBIX suite...");
@@ -86,7 +86,7 @@ public class SuiteRunner
     #region BaseFailSuite 
     public static IEnumerable<TestCaseData> BaseFailPBIXSuite()
     {
-        string PBIXFilePath = @"Files\Inventory sample - fails.pbix";
+        string PBIXFilePath = @"Files\Base-rules-fails.pbix";
         string RulesFilePath = @"Files\Base-rules.json";
 
         Console.WriteLine("Running base fail PBIX suite...");
@@ -204,6 +204,128 @@ public class SuiteRunner
                 JsonAssert.AreEquivalent(testResult.Actual, JsonNode.Parse(expected));
                 break;
             case "ENSURE_ALTTEXT":
+                Assert.False(testResult.Pass, testResult.Message);
+                break;
+            default:
+                Assert.True(testResult.Pass, testResult.Message);
+                break;
+        }
+    }
+    #endregion
+
+    #region ExampleFailSuite
+
+    public static IEnumerable<TestCaseData> ExampleFailPBIXSuite()
+    {
+        string PBIXFilePath = @"Files\Example-rules-fails.pbix";
+        string RulesFilePath = @"Files\Example-rules.json";
+
+        Console.WriteLine("Running example fail PBIX suite...");
+        return Suite(PBIXFilePath, RulesFilePath);
+    }
+
+    [TestCaseSource(nameof(ExampleFailPBIXSuite))]
+    public void RunExampleFailPBIX(TestResult testResult)
+    {
+        RunExampleFail(testResult);
+    }
+
+    private void RunExampleFail(TestResult testResult)
+    {
+        string expected = "[]";
+        switch (testResult.RuleId)
+        {
+            case "CHARTS_WIDER_THAN_TALL":
+                if (testResult.ParentDisplayName == testResult.RuleId)
+                {
+                    expected = "[\"3f7d302598c1e81e7e78\", \"5094f3ff553da63e610e\"]";
+                    JsonAssert.AreEquivalent(JsonNode.Parse(expected), testResult.Actual);
+                    Assert.False(testResult.Pass, testResult.Message);
+                }
+                else
+                {
+                    Assert.True(testResult.Pass, testResult.Message);
+                }
+                break;
+            case "DISABLE_SLOW_DATASOURCE_SETTINGS":
+                Assert.False(testResult.Pass, testResult.Message);
+                break;
+            case "LOCAL_REPORT_SETTINGS":
+                Assert.False(testResult.Pass, testResult.Message);
+                break;
+            case "SHOW_AXES_TITLES":
+                if (testResult.ParentDisplayName == testResult.RuleId)
+                {
+                    expected = "[\"a9243890e8b7ec111322\", \"d65c53d5b679c4cacba0\", \"8a0d8392a2400e899bcc\"]";
+                    JsonAssert.AreEquivalent(JsonNode.Parse(expected), testResult.Actual);
+                    Assert.False(testResult.Pass, testResult.Message);
+                }
+                else
+                {
+                    Assert.True(testResult.Pass, testResult.Message);
+                }
+                break;
+            case "PERCENTAGE_OF_CHARTS_USING_CUSTOM_COLOURS":
+                //if (testResult.ParentName == "ReportSectiond7d52b137add50d28b88")
+                //{
+                //    Assert.False(testResult.Pass, testResult.Message);
+                //}
+                //else
+                //{
+                //    Assert.True(testResult.Pass, testResult.Message);
+                //}
+                break;
+            case "ENSURE_ALT_TEXT_DEFINED_FOR_VISUALS":
+                expected = "[\"9032ab70a7e060d08574\",\"eca6ff83ecb390801c3a\"]";
+                if (testResult.ParentDisplayName == testResult.RuleId)
+                {
+                    JsonAssert.AreEquivalent(JsonNode.Parse(expected), testResult.Actual);
+                    Assert.False(testResult.Pass, testResult.Message);
+                }
+
+                break;
+            case "DISABLE_DROP_SHADOWS_ON_VISUALS":
+                expected = "[\"bdb3c2666ac0e67947aa\",\"5d4868734a72096e0ada\"]";
+                if (testResult.ParentDisplayName == testResult.RuleId)
+                {
+                    JsonAssert.AreEquivalent(JsonNode.Parse(expected), testResult.Actual);
+                    Assert.False(testResult.Pass, testResult.Message);
+                }
+                else
+                {
+                    Assert.True(testResult.Pass, testResult.Message);
+                }
+                break;
+            case "GIVE_VISIBLE_PAGES_MEANINGFUL_NAMES":
+                if (testResult.ParentDisplayName == "Page 1")
+                {
+                    Assert.False(testResult.Pass, testResult.Message);
+                }
+                else
+                {
+                    Assert.False(testResult.Pass, testResult.Message);
+                }
+                break;
+            case "DENEB_CHARTS_PROPERTIES":
+                //TODO: complete this test
+                //Assert.False(testResult.Pass, testResult.Message);
+                break;
+            case "CHECK_FOR_VISUALS_OVERLAP":
+                expected = "[\"2beb787442a6d0432b4d\",\"11f540db1a90abb52cda\",\"93e80741178005eb0ab4\",\"dead16c359819062e164\"]";
+                if (testResult.ParentDisplayName == testResult.RuleId)
+                {
+                    JsonAssert.AreEquivalent(JsonNode.Parse(expected), testResult.Actual);
+                    Assert.False(testResult.Pass, testResult.Message);
+                }
+                break;
+            case "CHECK_FOR_LOCAL_MEASURES":
+                //TODO: complete this test
+                //Assert.False(testResult.Pass, testResult.Message);
+                break;
+            case "REPORT_THEME_NAME":
+                Assert.False(testResult.Pass, testResult.Message);
+                break;
+            case "REPORT_THEME_TITLE_FONT":
                 Assert.False(testResult.Pass, testResult.Message);
                 break;
             default:
