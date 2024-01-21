@@ -45,11 +45,18 @@ namespace PBIXInspectorWinLibrary.Drawing
                         var width = (int)Math.Round(f["width"].GetValue<decimal>());
                         var visible = f["visible"].GetValue<bool>();
 
-                        var pass = !(testResult.Actual != null && testResult.Actual is JsonArray
+                        //If a visual name is returned in the test actual array then highlight it as a test failure in the page wireframe
+                        //A visual name can be returned either as a JsonValue or a named JsonObject (i.e. {"name": "VisualName"}) hence the "or else" operator below (i.e. "||")
+                        var visualNameInTestActualArray = (testResult.Actual != null && testResult.Actual is JsonArray
                                                                 && testResult.Actual.AsArray().Any(_ => _ != null
-                                                                    && _ is JsonValue && _.AsValue().ToString().Equals(name)));
+                                                                    && _ is JsonValue && _.AsValue().ToString().Equals(name)))
+                                                          || (testResult.Actual != null && testResult.Actual is JsonArray 
+                                                        && testResult.Actual.AsArray().Any(_ => _ != null && _ is JsonObject && _ is not JsonValue
+                                                            && _["name"] != null && _["name"] is JsonValue && _["name"].AsValue().ToString().Equals(name)));
+                        
 
-                        visuals.Add(new ReportPage.VisualContainer { Name = name.ToString(), VisualType = visualType.ToString(), X = x, Y = y, Height = height, Width = width, Pass = pass, Visible = visible });
+                        bool visualPass = !visualNameInTestActualArray;
+                        visuals.Add(new ReportPage.VisualContainer { Name = name.ToString(), VisualType = visualType.ToString(), X = x, Y = y, Height = height, Width = width, Pass = visualPass, Visible = visible });
                     }
 
                     var rp = new ReportPage(pageName, pageDisplayName, pageSize, visuals);

@@ -705,7 +705,7 @@
           "name": "Check for locally defined measures",
           "description": "Returns an array of report-level measure definitions",
           "path": "$.config",
-          "pathErrorWhenNoMatch": true,
+          "pathErrorWhenNoMatch": false,
           "test": [
             {
               "filter": [

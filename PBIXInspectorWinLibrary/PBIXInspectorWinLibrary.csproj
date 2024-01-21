@@ -4,9 +4,9 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>1.9.4.0</AssemblyVersion>
-    <FileVersion>1.9.4.0</FileVersion>
-    <VersionPrefix>1.9.4</VersionPrefix>
+    <AssemblyVersion>1.9.5.0</AssemblyVersion>
+    <FileVersion>1.9.5.0</FileVersion>
+    <VersionPrefix>1.9.5</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
