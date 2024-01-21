@@ -73,22 +73,7 @@ namespace PBIXInspectorLibrary
             AddCustomRulesToRegistry();
         }
 
-        private PbiFile InitPbiFile(string pbiFilePath)
-        {
-            switch (PbiFile.PBIFileType(pbiFilePath))
-            {
-                case PbiFile.PBIFileTypeEnum.PBIX:
-                    return new PbixFile(pbiFilePath);
-                    break;
-                case PbiFile.PBIFileTypeEnum.PBIP:
-                    return new PbipFile(pbiFilePath);
-                    break;
-                case PbiFile.PBIFileTypeEnum.PBIPReport:
-                    return new PbipReportFile(pbiFilePath);
-                default:
-                    throw new PBIXInspectorException(string.Format("Could not determine the extension of PBI file with path \"{0}\".", pbiFilePath));
-            }
-        }
+       
 
         private void AddCustomRulesToRegistry()
         {
@@ -124,7 +109,7 @@ namespace PBIXInspectorLibrary
         {
             var testResults = new List<TestResult>();
 
-            using (var pbiFile = InitPbiFile(_pbiFilePath))
+            using (var pbiFile = PbiFileUtils.InitPbiFile(_pbiFilePath))
             {
                 foreach (var entry in this._inspectionRules.PbiEntries)
                 {

@@ -113,6 +113,17 @@
                             "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Verbose" }, { "text": "${Verbose}" }]
                         }
                     ]
+                },
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "p",
+                            "class": "pb-3 mb-0 small lh-sm",
+                            "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Results stats" }, { "text": function () { if (this.Results != null) { return "Results count: " + this.Results.length } else { return "No results were found."} } }]
+                        }
+                    ]
                 }
             ]
         };
