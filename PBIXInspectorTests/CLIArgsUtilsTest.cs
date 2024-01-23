@@ -218,6 +218,24 @@ namespace PBIXInspectorTests
         }
 
         [Test]
+        public void TestCLIArgsUtilsResolvePbipFilePathThrows()
+        {
+            string inputPath = @"C:\TEMP\VisOps\Sales - custom colours.pbip";
+
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+            () => ArgsUtils.ResolvePbiFilePathInput(inputPath));
+        }
+
+        [Test]
+        public void TestCLIArgsUtilsResolvePbirFilePathThrows()
+        {
+            string inputPath = @"C:\TEMP\VisOps\Sales - custom colours.Report\definition.pbir";
+            
+            ArgumentException ex = Assert.Throws<ArgumentException>(
+            () => ArgsUtils.ResolvePbiFilePathInput(inputPath));
+        }
+
+        [Test]
         public void TestCLIArgsUtilsSuccess_FormatsOption()
         {
             string[] args = "-pbipreport pbipPath -rules rulesPath -formats CONSOLE,HTML,PNG,JSON -verbose true".Split(" ");

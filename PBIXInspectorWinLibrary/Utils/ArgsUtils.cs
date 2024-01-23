@@ -46,10 +46,20 @@ namespace PBIXInspectorWinLibrary.Utils
 
         public static string? ResolvePbiFilePathInput(string pbiFilePath)
         {
-            var resolvedPath = !string.IsNullOrEmpty(pbiFilePath) && pbiFilePath.ToLower().EndsWith(Constants.PBIPReportJsonFileName)
-                               ? Path.GetDirectoryName(pbiFilePath)
-                               : pbiFilePath;
+            var resolvedPath = pbiFilePath;
 
+            if (!string.IsNullOrEmpty(pbiFilePath) && (pbiFilePath.ToLower().EndsWith(Constants.PBIPReportJsonFileName)))
+            {
+                resolvedPath = Path.GetDirectoryName(pbiFilePath);
+            }
+
+            //TODO: support PBIP file path. Need to parse the json and retrieve the report folder path.
+            if (!string.IsNullOrEmpty(pbiFilePath) && (pbiFilePath.ToLower().EndsWith(Constants.PBIPFileExtension) 
+                                                    || pbiFilePath.ToLower().EndsWith(Constants.PBIRFileExtension)))
+            {
+                throw new ArgumentException(string.Format("PBIP and PBIR file types are not yet supported. Please specify a report.json file path instead."));
+            }
+            
             return resolvedPath;
         }
     }

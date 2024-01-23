@@ -8,6 +8,8 @@ namespace PBIXInspectorWinLibrary
         public const string SampleRulesFilePath = @"Files\Base-rules.json";
         public const string ReportPageFieldMapFilePath = @"Files\ReportPageFieldMap.json";
         public const string PBIPReportJsonFileName = "report.json";
+        public const string PBIPFileExtension = ".pbip";
+        public const string PBIRFileExtension = ".pbir";
         public const string TestRunHTMLTemplate = @"Files\html\TestRunTemplate.html";
         public const string PBIInspectorPNG = @"Files\icon\pbiinspector.png";
         public const string TestRunHTMLFileName = "TestRun.html";

@@ -5,8 +5,7 @@ namespace PBIXInspectorWinForm
 {
     public partial class MainForm : Form
     {
-        private static Args _args;
-
+        
         public MainForm()
         {
             InitializeComponent();
@@ -112,17 +111,19 @@ namespace PBIXInspectorWinForm
         private void btnRun_Click(object sender, EventArgs e)
         {
             Clear();
+
             btnRun.Enabled = false;
-            var pbiFilePath = ArgsUtils.ResolvePbiFilePathInput(this.txtPBIDesktopFile.Text);
+
+            var pbiFilePath = this.txtPBIDesktopFile.Text;
             var rulesFilePath = this.txtRulesFilePath.Text;
             var outputPath = this.txtOutputDirPath.Text;
-            var verboseString = this.chckVerbose.Checked.ToString();
-            var formatsString = string.Concat(this.chckJsonOutput.Checked ? "JSON" : string.Empty, ",", this.chckHTMLOutput.Checked ? "HTML" : string.Empty);
-            _args = new Args { PBIFilePath = pbiFilePath, RulesFilePath = rulesFilePath, OutputPath = outputPath, FormatsString = formatsString, VerboseString = verboseString };
+            var verbose = this.chckVerbose.Checked;
+            var jsonOutput = this.chckJsonOutput.Checked;
+            var htmlOutput = this.chckHTMLOutput.Checked;
 
-            Main.Run(_args);
+            Main.Run(pbiFilePath, rulesFilePath, outputPath, verbose, jsonOutput, htmlOutput);
+
             btnRun.Enabled = true;
-
         }
 
         internal void Clear()

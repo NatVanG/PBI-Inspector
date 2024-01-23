@@ -73,22 +73,7 @@ namespace PBIXInspectorLibrary
             AddCustomRulesToRegistry();
         }
 
-        private PbiFile InitPbiFile(string pbiFilePath)
-        {
-            switch (PbiFile.PBIFileType(pbiFilePath))
-            {
-                case PbiFile.PBIFileTypeEnum.PBIX:
-                    return new PbixFile(pbiFilePath);
-                    break;
-                case PbiFile.PBIFileTypeEnum.PBIP:
-                    return new PbipFile(pbiFilePath);
-                    break;
-                case PbiFile.PBIFileTypeEnum.PBIPReport:
-                    return new PbipReportFile(pbiFilePath);
-                default:
-                    throw new PBIXInspectorException(string.Format("Could not determine the extension of PBI file with path \"{0}\".", pbiFilePath));
-            }
-        }
+       
 
         private void AddCustomRulesToRegistry()
         {
@@ -124,7 +109,7 @@ namespace PBIXInspectorLibrary
         {
             var testResults = new List<TestResult>();
 
-            using (var pbiFile = InitPbiFile(_pbiFilePath))
+            using (var pbiFile = PbiFileUtils.InitPbiFile(_pbiFilePath))
             {
                 foreach (var entry in this._inspectionRules.PbiEntries)
                 {
@@ -228,11 +213,11 @@ namespace PBIXInspectorLibrary
                                                     string resultString = string.Concat("\"", strForEachDisplayName, "\" - ", string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty));
 
                                                     //yield return new TestResult { RuleName = rule.Name, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult};
-                                                    testResults.Add(new TestResult { RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
+                                                    testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
                                                 }
                                                 catch (PBIXInspectorException e)
                                                 {
-                                                    testResults.Add(new TestResult { RuleName = rule.Name, LogType = MessageTypeEnum.Error, RuleDescription = rule.Description, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
+                                                    testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = MessageTypeEnum.Error, RuleDescription = rule.Description, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
                                                     continue;
                                                 }
                                             }
@@ -260,11 +245,11 @@ namespace PBIXInspectorLibrary
                                                 string resultString = string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty);
 
                                                 //yield return new TestResult { RuleName = rule.Name, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult };
-                                                testResults.Add(new TestResult { RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
+                                                testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
                                             }
                                             catch (PBIXInspectorException e)
                                             {
-                                                testResults.Add(new TestResult { RuleName = rule.Name, LogType = MessageTypeEnum.Error, RuleDescription = rule.Description, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
+                                                testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = MessageTypeEnum.Error, RuleDescription = rule.Description, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
                                                 continue;
                                             }
                                         }

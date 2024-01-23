@@ -1,0 +1,1038 @@
+{
+  "pbiEntries": [
+    {
+      "name": "reportLayout",
+      "pbixEntryPath": "Report/Layout",
+      "pbipEntryPath": "report.json",
+      "contentType": "json",
+      "codepage": 1200,
+      "rules": [
+        {
+          "id": "GENERAL_PROPERTIES_PRESENT",
+          "name": "Consider using a theme file to define general properties.",
+          "description": "",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "filter": [
+                                    {
+                                      "var": "singleVisual.vcObjects.general"
+                                    },
+                                    { "!": { "var": "properties.altText" } }
+                                  ]
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "generalProperties",
+                    {
+                      "filter": [
+                        {
+                          "var": "singleVisual.vcObjects.general"
+                        },
+                        { "!": { "var": "properties.altText" } }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "id": "BORDER_PROPERTIES_PRESENT",
+          "name": "Consider using a theme file to define border properties.",
+          "description": "",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual types here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "name"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual names here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "var": "singleVisual.vcObjects.border"
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "borderProperties",
+                    {
+                      "var": "singleVisual.vcObjects.border"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "id": "VISUALHEADER_PROPERTIES_PRESENT",
+          "name": "Consider using a theme file to define visualHeader properties.",
+          "description": "",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual types here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "name"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual names here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "var": "singleVisual.vcObjects.visualHeader"
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "visualHeaderProperties",
+                    {
+                      "var": "singleVisual.vcObjects.visualHeader"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "id": "VISUALTOOLTIP_PROPERTIES_PRESENT",
+          "name": "Consider using a theme file to define visualTooltip properties.",
+          "description": "",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual types here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "name"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual names here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "var": "singleVisual.vcObjects.visualTooltip"
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "visualTooltipProperties",
+                    {
+                      "var": "singleVisual.vcObjects.visualTooltip"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "id": "PADDING_PROPERTIES_PRESENT",
+          "name": "Consider using a theme file to define padding properties.",
+          "description": "",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual types here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "name"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual names here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "var": "singleVisual.vcObjects.padding"
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "paddingProperties",
+                    {
+                      "var": "singleVisual.vcObjects.padding"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "id": "BACKGROUND_PROPERTIES_PRESENT",
+          "name": "Consider using a theme file to define background properties.",
+          "description": "",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual types here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "name"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual names here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "var": "singleVisual.vcObjects.background"
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "backgroundProperties",
+                    {
+                      "var": "singleVisual.vcObjects.background"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "id": "DROPSHADOW_PROPERTIES_PRESENT",
+          "name": "Consider using a theme file to define dropShadow properties.",
+          "description": "",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual types here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "name"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual names here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "var": "singleVisual.vcObjects.dropShadow"
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "dropShadowProperties",
+                    {
+                      "var": "singleVisual.vcObjects.dropShadow"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "id": "TITLE_PROPERTIES_PRESENT",
+          "name": "Consider using a theme file to define title properties.",
+          "description": "",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual types here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "name"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual names here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "filter": [
+                                    {
+                                      "var": "singleVisual.vcObjects.title"
+                                    },
+                                    { "!": { "var": "properties.text" } }
+                                  ]
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "titleProperties",
+                    {
+                      "filter": [
+                        {
+                          "var": "singleVisual.vcObjects.title"
+                        },
+                        { "!": { "var": "properties.text" } }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "id": "SUBTITLE_PROPERTIES_PRESENT",
+          "name": "Consider using a theme file to define subtitle properties.",
+          "description": "",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual types here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "name"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual names here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "var": "singleVisual.vcObjects.subtitle"
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "subtitleProperties",
+                    {
+                      "var": "singleVisual.vcObjects.subtitle"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "id": "SPACING_PROPERTIES_PRESENT",
+          "name": "Consider using a theme file to define spacing properties.",
+          "description": "",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual types here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "name"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual names here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "var": "singleVisual.vcObjects.spacing"
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "spacingProperties",
+                    {
+                      "var": "singleVisual.vcObjects.spacing"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "id": "DIVIDER_PROPERTIES_PRESENT",
+          "name": "Consider using a theme file to define divider properties.",
+          "description": "",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual types here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "name"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual names here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "var": "singleVisual.vcObjects.divider"
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "dividerProperties",
+                    {
+                      "var": "singleVisual.vcObjects.divider"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        },
+        {
+          "id": "STYLEPRESET_PROPERTIES_PRESENT",
+          "name": "Consider using a theme file to define stylePreset properties.",
+          "description": "",
+          "disabled": false,
+          "logType": "warning",
+          "forEachPath": "$.sections[*]",
+          "forEachPathName": "$.name",
+          "forEachPathDisplayName": "$.displayName",
+          "path": "$.visualContainers[*].config",
+          "pathErrorWhenNoMatch": false,
+          "test": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "var": "visualsConfigArray"
+                    },
+                    {
+                      "and": [
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "singleVisual.visualType"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual types here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "name"
+                                },
+                                [
+                                  "specify comma separated list of excluded visual names here"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">": [
+                            {
+                              "count": [
+                                {
+                                  "var": "singleVisual.vcObjects.stylePreset"
+                                }
+                              ]
+                            },
+                            0
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "stylePresetProperties",
+                    {
+                      "var": "singleVisual.vcObjects.stylePreset"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "visualsConfigArray": "."
+            },
+            []
+          ]
+        }
+      ]
+    }
+  ]
+}

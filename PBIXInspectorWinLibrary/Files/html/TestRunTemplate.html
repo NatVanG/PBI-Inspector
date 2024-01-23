@@ -113,6 +113,17 @@
                             "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Verbose" }, { "text": "${Verbose}" }]
                         }
                     ]
+                },
+                {
+                    "<>": "div",
+                    "class": "d-flex text-body-secondary pt-3",
+                    "html": [
+                        {
+                            "<>": "p",
+                            "class": "pb-3 mb-0 small lh-sm",
+                            "html": [{ "<>": "strong", "class": "d-block text-gray-dark", "text": "Results stats" }, { "text": function () { if (this.Results != null) { return "Results count: " + this.Results.length } else { return "No results were found."} } }]
+                        }
+                    ]
                 }
             ]
         };
@@ -227,7 +238,7 @@
                                                     ]
                                                 }
                                             ]
-                                        }, { "<>": "img", "src": function () { if (this.ParentName != null) { return "PBIInspectorPNG\\" + this.Id + ".png" } else { return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAAAxJREFUGFdj+P//PwAF/gL+pzWBhAAAAABJRU5ErkJggg==" } }, "alt": "Page wireframe", "width": function () { if (this.ParentName != null) { return "65%" } else { return "1%" } }, "height": "auto" }
+                                }, { "<>": "img", "src": function () { if (this.ParentName != null) { return "PBIInspectorPNG\\" + this.Id + ".png" } else { return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAAAxJREFUGFdj+P//PwAF/gL+pzWBhAAAAABJRU5ErkJggg==" } }, "alt": "Page wireframe", "width": function () { if (this.ParentName != null) { return "65%" } else { return "1%" } }, "height": function () { if (this.ParentName != null) { return "65%" } else { return "1%" } } }
                                     ]
                                 }
                             ]
