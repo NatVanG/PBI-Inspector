@@ -1,27 +1,37 @@
-
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+using PBIXInspectorLibrary;
+using PBIXInspectorLibrary.Output;
+using System.Text.Json;
 
 namespace PBIXInspectorAzureFunctions
 {
-    public class Inspect
+    public static class Inspect
     {
-        private readonly ILogger<Inspect> _logger;
-
-        public Inspect(ILogger<Inspect> logger)
-        {
-            _logger = logger;
-        }
-
         [Function(nameof(Inspect))]
-        public async Task Run([BlobTrigger("report-definitions/{name}", Connection = "BlobStorageSetting")] Stream stream, string name)
+        [BlobOutput("pbi-inspector-output/{name}")]
+        public static string Run(
+            [BlobTrigger("report-definitions/{name}")] string reportDefinitionTrigger,
+            [BlobInput("rules-input/Base-rules.json")] string rulesInput,
+            FunctionContext context)
         {
-            using var blobStreamReader = new StreamReader(stream);
-            var content = await blobStreamReader.ReadToEndAsync();
-            _logger.LogInformation($"C# Blob trigger function Processed blob\n Name: {name}");
-            //_logger.LogInformation($"C# Blob trigger function Processed blob\n Name: {name} \n Data: {content}");
+            var logger = context.GetLogger("Inspect");
+            //logger.LogInformation("Triggered Item = {reportDefinitionTrigger}", reportDefinitionTrigger);
+
+            var inspector = new Inspector();
+            inspector.MessageIssued += (sender, e) => logger.LogInformation(e.Message);
+
+            var jt = JToken.Parse(reportDefinitionTrigger);
+            var inspectionRules = Inspector.DeserialiseRulesFromString<InspectionRules>(rulesInput);
+            var inspectionResults = inspector.Inspect(jt, inspectionRules);
+
+            var testRun = new TestRun() { CompletionTime = DateTime.Now, TestedFilePath = "", RulesFilePath = "", Verbose = false, Results = inspectionResults };
+
+            var jsonTestRun = JsonSerializer.Serialize(testRun);
+
+            // Blob Output
+            return jsonTestRun;
         }
     }
 }
