@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "PBIXInspectorAzureFunctions": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7020"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "httpPort": 32631,
+      "useSSL": false
+    }
+  }
+}
