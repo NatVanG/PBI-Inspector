@@ -9,16 +9,22 @@ namespace PBIXInspectorAzureFunctions
 {
     public static class Inspect
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reportDefinitionTrigger"></param>
+        /// <param name="rulesInput"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         [Function(nameof(Inspect))]
         [BlobOutput("pbi-inspector-output/{name}")]
         public static string Run(
-            [BlobTrigger("report-definitions/{name}")] string reportDefinitionTrigger,
-            [BlobInput("rules-input/Base-rules.json")] string rulesInput,
+            [BlobTrigger("pbi-report-definitions/{name}")] string reportDefinitionTrigger,
+            [BlobInput("pbi-inspector-rules/Base-rules.json")] string rulesInput,
             FunctionContext context)
         {
+            //TODO: Add support for multiple rules files
             var logger = context.GetLogger("Inspect");
-            //logger.LogInformation("Triggered Item = {reportDefinitionTrigger}", reportDefinitionTrigger);
-
             var inspector = new Inspector();
             inspector.MessageIssued += (sender, e) => logger.LogInformation(e.Message);
 
