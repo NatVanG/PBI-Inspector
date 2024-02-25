@@ -21,10 +21,15 @@ namespace PBIXInspectorLibrary
         private const string CONTEXTARRAY = ".";
         internal const char DRILLCHAR = '>';
 
-        private string _pbiFilePath, _rulesFilePath;
+        private string? _pbiFilePath, _rulesFilePath;
         private InspectionRules? _inspectionRules;
 
         public event EventHandler<MessageIssuedEventArgs>? MessageIssued;
+
+        public Inspector() : base()
+        {
+            AddCustomRulesToRegistry();
+        }
 
         /// <summary>
         /// 
@@ -41,7 +46,7 @@ namespace PBIXInspectorLibrary
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="pbiFilePath">Local PBIX file path</param>
+        /// <param name="pbiFilePath">Local PBI file path</param>
         /// <param name="rulesFilePath">Local rules json file path</param>
         public Inspector(string pbiFilePath, string rulesFilePath) : base(pbiFilePath, rulesFilePath)
         {
@@ -50,7 +55,7 @@ namespace PBIXInspectorLibrary
 
             try
             {
-                var inspectionRules = this.DeserialiseRules<InspectionRules>(rulesFilePath);
+                var inspectionRules = this.DeserialiseRulesFromFilePath<InspectionRules>(rulesFilePath);
 
                 if (inspectionRules == null || inspectionRules.PbiEntries == null || inspectionRules.PbiEntries.Count == 0)
                 {
@@ -73,40 +78,14 @@ namespace PBIXInspectorLibrary
             AddCustomRulesToRegistry();
         }
 
-       
-
-        private void AddCustomRulesToRegistry()
-        {
-            //TODO: Use reflection to add rules
-            /*
-            System.Reflection.Assembly assembly = Assembly.GetExecutingAssembly();
-            string nspace = "PBIXInspectorLibrary.CustomRules";
-
-            var q = from t in Assembly.GetExecutingAssembly().GetTypes()
-                    where t.IsClass && t.Namespace == nspace
-                    select t;
-            q.ToList().ForEach(t1 => Json.Logic.RuleRegistry.AddRule<t1>());
-            */
-
-            Json.Logic.RuleRegistry.AddRule<CustomRules.IsNullOrEmptyRule>();
-            Json.Logic.RuleRegistry.AddRule<CustomRules.CountRule>();
-            Json.Logic.RuleRegistry.AddRule<CustomRules.StringContains>();
-            Json.Logic.RuleRegistry.AddRule<CustomRules.ToString>();
-            Json.Logic.RuleRegistry.AddRule<CustomRules.ToRecordRule>();
-            Json.Logic.RuleRegistry.AddRule<CustomRules.DrillVariableRule>();
-            Json.Logic.RuleRegistry.AddRule<CustomRules.RectOverlapRule>();
-            Json.Logic.RuleRegistry.AddRule<CustomRules.SetIntersectionRule>();
-            Json.Logic.RuleRegistry.AddRule<CustomRules.SetUnionRule>();
-            Json.Logic.RuleRegistry.AddRule<CustomRules.SetDifferenceRule>();
-            Json.Logic.RuleRegistry.AddRule<CustomRules.SetSymmetricDifferenceRule>();
-            Json.Logic.RuleRegistry.AddRule<CustomRules.SetEqualRule>();
-        }
-
         /// <summary>
-        /// Core method
+        /// Runs the inspection rules against the PBI file defined in the Inspector constructor
         /// </summary>
         public IEnumerable<TestResult> Inspect()
         {
+            if (string.IsNullOrEmpty(_pbiFilePath)) throw new ArgumentNullException(nameof(_pbiFilePath));
+            if (_inspectionRules == null) throw new ArgumentNullException(nameof(_inspectionRules));
+
             var testResults = new List<TestResult>();
 
             using (var pbiFile = PbiFileUtils.InitPbiFile(_pbiFilePath))
@@ -163,97 +142,8 @@ namespace PBIXInspectorLibrary
                                     var jo = JToken.ReadFrom(reader);
 
                                     OnMessageIssued(MessageTypeEnum.Information, string.Format("Running rules for PBI entry \"{0}\"...", entry.Name));
-                                    foreach (var rule in entry.EnabledRules)
-                                    {
-                                        OnMessageIssued(MessageTypeEnum.Information, string.Format("Running Rule \"{0}\".", rule.Name));
-                                        Json.Logic.Rule? jrule = null;
+                                    testResults.AddRange(Inspect(jo, entry));
 
-                                        try
-                                        {
-                                            jrule = System.Text.Json.JsonSerializer.Deserialize<Json.Logic.Rule>(rule.Test.Logic);
-                                        }
-                                        catch (System.Text.Json.JsonException e)
-                                        {
-                                            OnMessageIssued(MessageTypeEnum.Error, string.Format("Parsing of logic for rule \"{0}\" failed, resuming to next rule.", rule.Name));
-                                            continue;
-                                        }
-
-                                        //Check if there's a foreach iterator
-                                        if (rule != null && !string.IsNullOrEmpty(rule.ForEachPath))
-                                        {
-                                            var forEachTokens = ExecuteTokensPath(jo, rule.Name, rule.ForEachPath, rule.PathErrorWhenNoMatch);
-
-                                            foreach (var forEachToken in forEachTokens)
-                                            {
-
-                                                var forEachName = !string.IsNullOrEmpty(rule.ForEachPathName) ? ExecuteTokensPath((JObject?)forEachToken, rule.Name, rule.ForEachPathName, rule.PathErrorWhenNoMatch) : null;
-                                                var strForEachName = forEachName != null ? forEachName[0].ToString() : string.Empty;
-
-                                                var forEachDisplayName = !string.IsNullOrEmpty(rule.ForEachPathDisplayName) ? ExecuteTokensPath((JObject?)forEachToken, rule.Name, rule.ForEachPathDisplayName, rule.PathErrorWhenNoMatch) : null;
-                                                var strForEachDisplayName = forEachDisplayName != null ? forEachDisplayName[0].ToString() : string.Empty;
-
-                                                try
-                                                {
-                                                    var tokens = ExecuteTokensPath(forEachToken, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
-
-                                                    //HACK
-                                                    var contextNodeArray = ConvertToJsonArray(tokens);
-
-                                                    bool result = false;
-
-                                                    //HACK: checking if the rule's intention is to return an array or a single object 
-                                                    var node = rule.Path.Contains("*") || rule.Path.Contains("?") ? contextNodeArray : (contextNodeArray != null ? contextNodeArray.FirstOrDefault() : null);
-                                                    var newdata = MapRuleDataPointersToValues(node, rule, contextNodeArray);
-
-                                                    //TODO: the following commented line does not work with the variableRule implementation with context array passed in.
-                                                    //var jruleresult = jrule.Apply(newdata, contextNodeArray);
-                                                    var jruleresult = jrule.Apply(newdata);
-                                                    result = rule.Test.Expected.IsEquivalentTo(jruleresult);
-                                                    var ruleLogType = ConvertRuleLogType(rule.LogType);
-                                                    string resultString = string.Concat("\"", strForEachDisplayName, "\" - ", string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty));
-
-                                                    //yield return new TestResult { RuleName = rule.Name, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult};
-                                                    testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
-                                                }
-                                                catch (PBIXInspectorException e)
-                                                {
-                                                    testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = MessageTypeEnum.Error, RuleDescription = rule.Description, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
-                                                    continue;
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {   //TODO: refactor else branch to reuse code from true branch
-                                            var tokens = ExecuteTokensPath(jo, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
-
-                                            //HACK
-                                            var contextNodeArray = ConvertToJsonArray(tokens);
-
-                                            bool result = false;
-
-                                            try
-                                            {
-                                                //HACK: checking if the rule's intention is to return an array or a single object 
-                                                var node = rule.Path.Contains("*") || rule.Path.Contains("?") ? contextNodeArray : (contextNodeArray != null ? contextNodeArray.FirstOrDefault() : null);
-                                                var newdata = MapRuleDataPointersToValues(node, rule, contextNodeArray);
-
-                                                //TODO: the following commented line does not work with the variableRule implementation with context array passed in.
-                                                //var jruleresult = jrule.Apply(newdata, contextNodeArray);
-                                                var jruleresult = jrule.Apply(newdata);
-                                                result = rule.Test.Expected.IsEquivalentTo(jruleresult);
-                                                var ruleLogType = ConvertRuleLogType(rule.LogType);
-                                                string resultString = string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty);
-
-                                                //yield return new TestResult { RuleName = rule.Name, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult };
-                                                testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
-                                            }
-                                            catch (PBIXInspectorException e)
-                                            {
-                                                testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = MessageTypeEnum.Error, RuleDescription = rule.Description, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
-                                                continue;
-                                            }
-                                        }
-                                    }
                                     break;
                                 }
                             case EntryContentTypeEnum.text:
@@ -274,27 +164,247 @@ namespace PBIXInspectorLibrary
             return testResults;
         }
 
-        private MessageTypeEnum ConvertRuleLogType(string ruleLogType)
+
+        /// <summary>
+        /// Runs inspection rules against a PBI file. Only a PBIP report.json stream is currently supported as PBI file input.
+        /// </summary>
+        /// <param name="pbiInputStream"></param>
+        /// <param name="rulesStream"></param>
+        /// <param name="pbiInputFileType"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="PBIXInspectorException"></exception>
+        public IEnumerable<TestResult> Inspect(Stream pbiInputStream, Stream rulesStream, PbiFile.PBIFileTypeEnum pbiInputFileType = PbiFile.PBIFileTypeEnum.PBIPReport)
         {
-            if (string.IsNullOrEmpty(ruleLogType)) return MessageTypeEnum.Warning;
+            if (pbiInputFileType != PbiFile.PBIFileTypeEnum.PBIPReport) throw new NotImplementedException("Only PBIPReport file type is currently supported by this method.");
+            if (pbiInputStream == null) throw new ArgumentNullException(nameof(pbiInputStream));
+            if (rulesStream == null) throw new ArgumentNullException(nameof(rulesStream));
 
-            MessageTypeEnum logType;
+            IEnumerable<TestResult> inspectionResults;
 
-            switch (ruleLogType.ToLower().Trim())
+            using (var reader = new StreamReader(pbiInputStream))
+            using (var jsonReader = new JsonTextReader(reader))
             {
-                case "error":
-                    logType = MessageTypeEnum.Error;
-                    break;
-                case "warning":
-                    logType = MessageTypeEnum.Warning;
-                    break;
-                default:
-                    logType = MessageTypeEnum.Warning;
-                    break;
+                var jt = JToken.Load(jsonReader);
+
+                try
+                {
+                    var inspectionRules = Inspector.DeserialiseRules<InspectionRules>(rulesStream);
+                    inspectionResults = this.Inspect(jt, inspectionRules);
+                }
+                catch (System.Text.Json.JsonException ex)
+                {
+                    throw new PBIXInspectorException("An error occurred during inspection", ex);
+
+                }
+                return inspectionResults;
+            }
+        }
+
+        protected void OnMessageIssued(MessageTypeEnum messageType, string message)
+        {
+            var args = new MessageIssuedEventArgs(message, messageType);
+            OnMessageIssued(args);
+        }
+
+        protected virtual void OnMessageIssued(MessageIssuedEventArgs e)
+        {
+            EventHandler<MessageIssuedEventArgs>? handler = MessageIssued;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        #region private methods
+
+        private void AddCustomRulesToRegistry()
+        {
+            //TODO: Use reflection to add rules
+            /*
+            System.Reflection.Assembly assembly = Assembly.GetExecutingAssembly();
+            string nspace = "PBIXInspectorLibrary.CustomRules";
+
+            var q = from t in Assembly.GetExecutingAssembly().GetTypes()
+                    where t.IsClass && t.Namespace == nspace
+                    select t;
+            q.ToList().ForEach(t1 => Json.Logic.RuleRegistry.AddRule<t1>());
+            */
+
+            Json.Logic.RuleRegistry.AddRule<CustomRules.IsNullOrEmptyRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.CountRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.StringContains>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.ToString>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.ToRecordRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.DrillVariableRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.RectOverlapRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.SetIntersectionRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.SetUnionRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.SetDifferenceRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.SetSymmetricDifferenceRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.SetEqualRule>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="jo"></param>
+        /// <param name="rules"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        private IEnumerable<TestResult> Inspect(JToken? jo, InspectionRules? rules)
+        {
+            if (jo == null) throw new ArgumentNullException(nameof(jo));
+            if (rules == null) throw new ArgumentNullException(nameof(rules));
+
+            var testResults = new List<TestResult>();
+
+            foreach (var entry in rules.PbiEntries)
+            {
+                testResults.AddRange(Inspect(jo, entry));
             }
 
-            return logType;
+            return testResults;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="jo"></param>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        private IEnumerable<TestResult> Inspect(JToken? jo, PbiEntry? entry)
+        {
+            if (jo == null) throw new ArgumentNullException(nameof(jo));
+            if (entry == null) throw new ArgumentNullException(nameof(entry));
+
+            var testResults = new List<TestResult>();
+
+            if (entry.ContentType.ToLower() != "json")
+            {
+                OnMessageIssued(MessageTypeEnum.Error, string.Format("PBI entry \"{0}\" with content type \"{1}\" is not supported, resuming to next entry.", entry.Name, entry.ContentType));
+                return testResults;
+            }
+
+            OnMessageIssued(MessageTypeEnum.Information, string.Format("Running rules for PBI entry \"{0}\"...", entry.Name));
+            foreach (var rule in entry.EnabledRules)
+            {
+                OnMessageIssued(MessageTypeEnum.Information, string.Format("Running Rule \"{0}\".", rule.Name));
+                Json.Logic.Rule? jrule = null;
+
+                try
+                {
+                    jrule = System.Text.Json.JsonSerializer.Deserialize<Json.Logic.Rule>(rule.Test.Logic);
+                }
+                catch (System.Text.Json.JsonException e)
+                {
+                    OnMessageIssued(MessageTypeEnum.Error, string.Format("Parsing of logic for rule \"{0}\" failed, resuming to next rule.", rule.Name));
+                    continue;
+                }
+
+                //Check if there's a foreach iterator
+                if (rule != null && !string.IsNullOrEmpty(rule.ForEachPath))
+                {
+                    var forEachTokens = ExecuteTokensPath(jo, rule.Name, rule.ForEachPath, rule.PathErrorWhenNoMatch);
+
+                    foreach (var forEachToken in forEachTokens)
+                    {
+
+                        var forEachName = !string.IsNullOrEmpty(rule.ForEachPathName) ? ExecuteTokensPath((JObject?)forEachToken, rule.Name, rule.ForEachPathName, rule.PathErrorWhenNoMatch) : null;
+                        var strForEachName = forEachName != null ? forEachName[0].ToString() : string.Empty;
+
+                        var forEachDisplayName = !string.IsNullOrEmpty(rule.ForEachPathDisplayName) ? ExecuteTokensPath((JObject?)forEachToken, rule.Name, rule.ForEachPathDisplayName, rule.PathErrorWhenNoMatch) : null;
+                        var strForEachDisplayName = forEachDisplayName != null ? forEachDisplayName[0].ToString() : string.Empty;
+
+                        try
+                        {
+                            var tokens = ExecuteTokensPath(forEachToken, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
+
+                            //HACK
+                            var contextNodeArray = ConvertToJsonArray(tokens);
+
+                            bool result = false;
+
+                            //HACK: checking if the rule's intention is to return an array or a single object 
+                            var node = rule.Path.Contains("*") || rule.Path.Contains("?") ? contextNodeArray : (contextNodeArray != null ? contextNodeArray.FirstOrDefault() : null);
+                            var newdata = MapRuleDataPointersToValues(node, rule, contextNodeArray);
+
+                            //TODO: the following commented line does not work with the variableRule implementation with context array passed in.
+                            //var jruleresult = jrule.Apply(newdata, contextNodeArray);
+                            var jruleresult = jrule.Apply(newdata);
+                            result = rule.Test.Expected.IsEquivalentTo(jruleresult);
+                            var ruleLogType = ConvertRuleLogType(rule.LogType);
+                            string resultString = string.Concat("\"", strForEachDisplayName, "\" - ", string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty));
+
+                            //yield return new TestResult { RuleName = rule.Name, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult};
+                            testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
+                        }
+                        catch (PBIXInspectorException e)
+                        {
+                            testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = MessageTypeEnum.Error, RuleDescription = rule.Description, ParentName = strForEachName, ParentDisplayName = strForEachDisplayName, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
+                            continue;
+                        }
+                    }
+                }
+                else
+                {   //TODO: refactor else branch to reuse code from true branch
+                    var tokens = ExecuteTokensPath(jo, rule.Name, rule.Path, rule.PathErrorWhenNoMatch);
+
+                    //HACK
+                    var contextNodeArray = ConvertToJsonArray(tokens);
+
+                    bool result = false;
+
+                    try
+                    {
+                        //HACK: checking if the rule's intention is to return an array or a single object 
+                        var node = rule.Path.Contains("*") || rule.Path.Contains("?") ? contextNodeArray : (contextNodeArray != null ? contextNodeArray.FirstOrDefault() : null);
+                        var newdata = MapRuleDataPointersToValues(node, rule, contextNodeArray);
+
+                        //TODO: the following commented line does not work with the variableRule implementation with context array passed in.
+                        //var jruleresult = jrule.Apply(newdata, contextNodeArray);
+                        var jruleresult = jrule.Apply(newdata);
+                        result = rule.Test.Expected.IsEquivalentTo(jruleresult);
+                        var ruleLogType = ConvertRuleLogType(rule.LogType);
+                        string resultString = string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty);
+
+                        //yield return new TestResult { RuleName = rule.Name, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult };
+                        testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
+                    }
+                    catch (PBIXInspectorException e)
+                    {
+                        testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = MessageTypeEnum.Error, RuleDescription = rule.Description, Pass = false, Message = e.Message, Expected = rule.Test.Expected, Actual = null });
+                        continue;
+                    }
+                }
+            }
+
+            return testResults;
+        }
+
+        private MessageTypeEnum ConvertRuleLogType(string ruleLogType)
+                {
+                    if (string.IsNullOrEmpty(ruleLogType)) return MessageTypeEnum.Warning;
+
+                    MessageTypeEnum logType;
+
+                    switch (ruleLogType.ToLower().Trim())
+                    {
+                        case "error":
+                            logType = MessageTypeEnum.Error;
+                            break;
+                        case "warning":
+                            logType = MessageTypeEnum.Warning;
+                            break;
+                        default:
+                            logType = MessageTypeEnum.Warning;
+                            break;
+                    }
+
+                    return logType;
+                }
 
         private JsonArray ConvertToJsonArray(List<JToken>? tokens)
         {
@@ -497,7 +607,7 @@ namespace PBIXInspectorLibrary
             return newdata;
         }
 
-        internal bool EvalPath(string pathString, JsonNode? data, out JsonNode? result)
+        private bool EvalPath(string pathString, JsonNode? data, out JsonNode? result)
         {
             if (pathString.Contains(DRILLCHAR))
             {
@@ -546,7 +656,6 @@ namespace PBIXInspectorLibrary
             return false;
         }
 
-
         private Encoding GetEncodingFromCodePage(int codePage)
         {
             var enc = Encoding.Unicode;
@@ -563,19 +672,6 @@ namespace PBIXInspectorLibrary
             return enc;
         }
 
-        protected void OnMessageIssued(MessageTypeEnum messageType, string message)
-        {
-            var args = new MessageIssuedEventArgs(message, messageType);
-            OnMessageIssued(args);
-        }
-
-        protected virtual void OnMessageIssued(MessageIssuedEventArgs e)
-        {
-            EventHandler<MessageIssuedEventArgs>? handler = MessageIssued;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
+        #endregion
     }
 }

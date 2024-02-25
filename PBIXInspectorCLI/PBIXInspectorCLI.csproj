@@ -2,15 +2,15 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <StartupObject>Program</StartupObject>
     <SignAssembly>False</SignAssembly>
     <IsPublishable>True</IsPublishable>
-    <FileVersion>1.9.5.0</FileVersion>
-    <AssemblyVersion>1.9.5</AssemblyVersion>
-    <VersionPrefix>1.9.5</VersionPrefix>
+    <FileVersion>1.9.6.0</FileVersion>
+    <AssemblyVersion>1.9.6</AssemblyVersion>
+    <VersionPrefix>1.9.6</VersionPrefix>
     <Version>$(VersionPrefix)</Version>
     <Product>$(AssembblyName)</Product>
     <ApplicationIcon>pbiinspector.ico</ApplicationIcon>

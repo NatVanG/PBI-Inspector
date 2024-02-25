@@ -1,6 +1,6 @@
 ﻿namespace PBIXInspectorLibrary
 {
-    internal abstract class PbiFile : IDisposable
+    public abstract class PbiFile : IDisposable
     {
         private string _filePath = null;
         private FileInfo _fileInfo = null;
