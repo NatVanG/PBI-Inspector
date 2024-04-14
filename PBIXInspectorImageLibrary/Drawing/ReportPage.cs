@@ -57,13 +57,14 @@ namespace PBIXInspectorImageLibrary.Drawing
 
             var iconBitmap = SKBitmap.Decode(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Constants.PBIInspectorICO));
 
-            var font = new SKFont(SKTypeface.FromFamilyName(FONT));
+            var font = new SKFont(SKTypeface.FromFamilyName(FONT), FONTSIZE);
 
             foreach (var vc in _visualContainers.OrderBy(_ => !_.Pass))
             {
+                var color = vc.Pass ? white : fail;
                 var paint = new SKPaint()
                 {
-                    Color = vc.Pass ? white : fail,
+                    Color = color,
                     PathEffect = !vc.Visible ? SKPathEffect.CreateDash([2.5f, 2.5f], 20) : null,
                     Style = SKPaintStyle.Stroke,
                     StrokeWidth = 2
@@ -82,8 +83,8 @@ namespace PBIXInspectorImageLibrary.Drawing
                     _canvas.DrawImage(ico, rect.Left + VISOFFSET + (rect.Width - iconSize) / 2, rect.Top + VISOFFSET + (rect.Height - iconSize) / 2);
                 };
 
-                _canvas.DrawText(string.Concat(vc.VisualType), vc.X + VISOFFSET + 2, vc.Y + VISOFFSET - 2, font, new SKPaint() { Color = white });
-                _canvas.DrawText(string.Concat(vc.Name), vc.X + VISOFFSET + 2, vc.Y + VISOFFSET + 10, font, new SKPaint() { Color = white });
+                _canvas.DrawText(string.Concat(vc.VisualType), vc.X + VISOFFSET + 2, vc.Y + VISOFFSET + 12, font, new SKPaint() { Color = color });
+                _canvas.DrawText(string.Concat(vc.Name), vc.X + VISOFFSET + 2, vc.Y + VISOFFSET + 24, font, new SKPaint() { Color = color });
             }
 
         }
