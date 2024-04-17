@@ -49,12 +49,12 @@ namespace PBIXInspectorImageLibrary.Drawing
 
                         //If a visual name is returned in the test actual array then highlight it as a test failure in the page wireframe
                         //A visual name can be returned either as a JsonValue or a named JsonObject (i.e. {"name": "VisualName"}) hence the "or else" operator below (i.e. "||")
-                        var visualNameInTestActualArray = testResult.Actual != null && testResult.Actual is JsonArray
+                        var visualNameInTestActualArray = (testResult.Actual != null && testResult.Actual is JsonArray
                                                                 && testResult.Actual.AsArray().Any(_ => _ != null
-                                                                    && _ is JsonValue && _.AsValue().ToString().Equals(name))
-                                                          || testResult.Actual != null && testResult.Actual is JsonArray
+                                                                    && _ is JsonValue && _.AsValue().ToString().Equals(name)))
+                                                          || (testResult.Actual != null && testResult.Actual is JsonArray
                                                         && testResult.Actual.AsArray().Any(_ => _ != null && _ is JsonObject && _ is not JsonValue
-                                                            && _["name"] != null && _["name"] is JsonValue && _["name"].AsValue().ToString().Equals(name));
+                                                            && _["name"] != null && _["name"] is JsonValue && _["name"].AsValue().ToString().Equals(name)));
 
 
                         bool visualPass = !visualNameInTestActualArray;

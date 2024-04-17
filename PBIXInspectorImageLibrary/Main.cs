@@ -74,15 +74,15 @@ namespace PBIXInspectorImageLibrary
 
             try
             {
-                _insp = new Inspector(_args.PBIFilePath, _args.RulesFilePath);
+                _insp = new Inspector(Main._args.PBIFilePath, Main._args.RulesFilePath);
 
                 _insp.MessageIssued += Insp_MessageIssued;
 
                 var inspectResult = _insp.Inspect();
-                _testResults = inspectResult.Where(_ => !_args.Verbose && _?.Pass == false || _args.Verbose);
+                _testResults = inspectResult.Where(_ => !Main._args.Verbose && _?.Pass == false || Main._args.Verbose);
 
 
-                if (_args.CONSOLEOutput || _args.ADOOutput)
+                if (Main._args.CONSOLEOutput || Main._args.ADOOutput)
                 {
                     foreach (var result in _testResults)
                     {
@@ -93,43 +93,43 @@ namespace PBIXInspectorImageLibrary
                 }
 
                 //Ensure output dir exists
-                if (!_args.ADOOutput && (_args.JSONOutput || _args.HTMLOutput || _args.PNGOutput))
+                if (!Main._args.ADOOutput && (Main._args.JSONOutput || Main._args.HTMLOutput || Main._args.PNGOutput))
                 {
-                    if (!Directory.Exists(_args.OutputDirPath))
+                    if (!Directory.Exists(Main._args.OutputDirPath))
                     {
-                        Directory.CreateDirectory(_args.OutputDirPath);
+                        Directory.CreateDirectory(Main._args.OutputDirPath);
                     }
                 }
 
-                if (!_args.ADOOutput && (_args.JSONOutput || _args.HTMLOutput))
+                if (!Main._args.ADOOutput && (Main._args.JSONOutput || Main._args.HTMLOutput))
                 {
                     var outputFilePath = string.Empty;
-                    var pbiFileNameWOextension = Path.GetFileNameWithoutExtension(_args.PBIFilePath);
+                    var pbiFileNameWOextension = Path.GetFileNameWithoutExtension(Main._args.PBIFilePath);
 
-                    if (!string.IsNullOrEmpty(_args.OutputDirPath))
+                    if (!string.IsNullOrEmpty(Main._args.OutputDirPath))
                     {
-                        outputFilePath = Path.Combine(_args.OutputDirPath, string.Concat("TestRun_", pbiFileNameWOextension, ".json"));
+                        outputFilePath = Path.Combine(Main._args.OutputDirPath, string.Concat("TestRun_", pbiFileNameWOextension, ".json"));
                     }
                     else
                     {
-                        throw new ArgumentException("Directory with path \"{0}\" does not exist", _args.OutputDirPath);
+                        throw new ArgumentException("Directory with path \"{0}\" does not exist", Main._args.OutputDirPath);
                     }
 
-                    var testRun = new TestRun() { CompletionTime = DateTime.Now, TestedFilePath = _args.PBIFilePath, RulesFilePath = _args.RulesFilePath, Verbose = _args.Verbose, Results = _testResults };
+                    var testRun = new TestRun() { CompletionTime = DateTime.Now, TestedFilePath = Main._args.PBIFilePath, RulesFilePath = Main._args.RulesFilePath, Verbose = Main._args.Verbose, Results = _testResults };
                     _jsonTestRun = JsonSerializer.Serialize(testRun);
-                    if (_args.JSONOutput)
+                    if (Main._args.JSONOutput)
                     {
                         OnMessageIssued(MessageTypeEnum.Information, string.Format("Writing JSON output to file at \"{0}\".", outputFilePath));
                         File.WriteAllText(outputFilePath, _jsonTestRun, System.Text.Encoding.UTF8);
                     }
                 }
 
-                if (!_args.ADOOutput && (_args.PNGOutput || _args.HTMLOutput))
+                if (!Main._args.ADOOutput && (Main._args.PNGOutput || Main._args.HTMLOutput))
                 {
-                    _fieldMapInsp = new Inspector(_args.PBIFilePath, Constants.ReportPageFieldMapFilePath);
+                    _fieldMapInsp = new Inspector(Main._args.PBIFilePath, Constants.ReportPageFieldMapFilePath);
                     _fieldMapResults = _fieldMapInsp.Inspect();
 
-                    var outputPNGDirPath = Path.Combine(_args.OutputDirPath, Constants.PNGOutputDir);
+                    var outputPNGDirPath = Path.Combine(Main._args.OutputDirPath, Constants.PNGOutputDir);
 
                     if (Directory.Exists(outputPNGDirPath))
                     {
@@ -145,7 +145,7 @@ namespace PBIXInspectorImageLibrary
                     ImageUtils.DrawReportPages(_fieldMapResults, _testResults, outputPNGDirPath);
                 }
 
-                if (!_args.ADOOutput && _args.HTMLOutput)
+                if (!Main._args.ADOOutput && Main._args.HTMLOutput)
                 {
                     string pbiinspectorlogobase64 = string.Concat(Constants.Base64ImgPrefix, ImageUtils.ConvertBitmapToBase64(Constants.PBIInspectorPNG));
 
@@ -154,13 +154,13 @@ namespace PBIXInspectorImageLibrary
                     html = html.Replace(Constants.VersionPlaceholder, AppUtils.About(), StringComparison.OrdinalIgnoreCase);
                     html = html.Replace(Constants.JsonPlaceholder, _jsonTestRun, StringComparison.OrdinalIgnoreCase);
 
-                    var outputHTMLFilePath = Path.Combine(_args.OutputDirPath, Constants.TestRunHTMLFileName);
+                    var outputHTMLFilePath = Path.Combine(Main._args.OutputDirPath, Constants.TestRunHTMLFileName);
 
                     OnMessageIssued(MessageTypeEnum.Information, string.Format("Writing HTML output to file at \"{0}\".", outputHTMLFilePath));
                     File.WriteAllText(outputHTMLFilePath, html);
 
                     //Results have been written to a temporary directory so show output to user automatically.
-                    if (_args.DeleteOutputDirOnExit)
+                    if (Main._args.DeleteOutputDirOnExit)
                     {
                         AppUtils.WinOpen(outputHTMLFilePath);
                     }
@@ -191,9 +191,9 @@ namespace PBIXInspectorImageLibrary
                 _insp.MessageIssued -= Insp_MessageIssued;
             }
 
-            if (_args != null && _args.DeleteOutputDirOnExit && Directory.Exists(_args.OutputDirPath))
+            if (Main._args != null && Main._args.DeleteOutputDirOnExit && Directory.Exists(Main._args.OutputDirPath))
             {
-                Directory.Delete(_args.OutputDirPath, true);
+                Directory.Delete(Main._args.OutputDirPath, true);
             }
         }
 
@@ -217,7 +217,7 @@ namespace PBIXInspectorImageLibrary
 
         private static void MessageIssued(MessageIssuedEventArgs e)
         {
-            if (_args != null && _args.ADOOutput)
+            if (Main._args != null && Main._args.ADOOutput)
             {
                 if (e.MessageType == MessageTypeEnum.Error) ErrorCount++;
                 if (e.MessageType == MessageTypeEnum.Warning) WarningCount++;

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using PBIXInspectorLibrary.CustomRules;
+using System.Text.Json;
 
 namespace PBIXInspectorLibrary
 {
