@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using PBIXInspectorImageLibrary.Drawing.Palette;
+using SkiaSharp;
 
 namespace PBIXInspectorImageLibrary.Drawing
 {
@@ -30,13 +31,10 @@ namespace PBIXInspectorImageLibrary.Drawing
         {
             const int PAGEMARGIN = 10;
             const int VISOFFSET = 5;
+            const int TEXTPADDINGX = VISOFFSET + 2;
+            const int TEXTPADDINGY = VISOFFSET + 12;
             const string FONT = "Arial";
             const int FONTSIZE = 12;
-
-            var white = new SKColor(255, 255, 255);
-            var fail = new SKColor(237, 19, 93);
-            var black = new SKColor(0, 0, 0);
-
 
             int[] iconSizes = [32, 64, 128];
 
@@ -48,11 +46,11 @@ namespace PBIXInspectorImageLibrary.Drawing
 
             //bitmap canvas
             var canvas = new SKRect() { Left = 0, Top = 0, Size = new SKSize(_bitmap.Width, _bitmap.Height) };
-            _canvas.DrawRect(canvas, new SKPaint() { Color = black, Style = SKPaintStyle.StrokeAndFill, StrokeWidth = 2 });
+            _canvas.DrawRect(canvas, PaintPalette.BlackFillStroke);
 
             //page outline
             var pageOutline = new SKRect() { Left = 0 + VISOFFSET, Top = 0 + VISOFFSET, Size = new SKSize(_pageSize.Width, _pageSize.Height) };
-            _canvas.DrawRect(pageOutline, new SKPaint() { Color = white, Style = SKPaintStyle.Stroke, StrokeWidth = 2 });
+            _canvas.DrawRect(pageOutline, PaintPalette.WhiteStroke);
 
 
             var iconBitmap = SKBitmap.Decode(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Constants.PBIInspectorICO));
@@ -61,15 +59,10 @@ namespace PBIXInspectorImageLibrary.Drawing
 
             foreach (var vc in _visualContainers.OrderBy(_ => !_.Pass))
             {
-                var color = vc.Pass ? white : fail;
-                var paint = new SKPaint()
-                {
-                    Color = color,
-                    PathEffect = !vc.Visible ? SKPathEffect.CreateDash([2.5f, 2.5f], 20) : null,
-                    Style = SKPaintStyle.Stroke,
-                    StrokeWidth = 2
-                };
 
+                var paint = vc.Pass ? PaintPalette.WhiteStroke : PaintPalette.FailStroke;
+                var textPaint = vc.Pass ? PaintPalette.WhiteFill : PaintPalette.FailFill;
+                if (!vc.Visible) paint = paint.AddDash();
 
                 var rect = new SKRect() { Left = vc.X + VISOFFSET, Top = vc.Y + VISOFFSET, Size = new SKSize(vc.Width, vc.Height) };
                 _canvas.DrawRect(rect, paint);
@@ -83,8 +76,8 @@ namespace PBIXInspectorImageLibrary.Drawing
                     _canvas.DrawImage(ico, rect.Left + VISOFFSET + (rect.Width - iconSize) / 2, rect.Top + VISOFFSET + (rect.Height - iconSize) / 2);
                 };
 
-                _canvas.DrawText(string.Concat(vc.VisualType), vc.X + VISOFFSET + 2, vc.Y + VISOFFSET + 12, font, new SKPaint() { Color = color });
-                _canvas.DrawText(string.Concat(vc.Name), vc.X + VISOFFSET + 2, vc.Y + VISOFFSET + 24, font, new SKPaint() { Color = color });
+                _canvas.DrawText(string.Concat(vc.VisualType), vc.X + TEXTPADDINGX, vc.Y + TEXTPADDINGY, font, textPaint);
+                _canvas.DrawText(string.Concat(vc.Name), vc.X + TEXTPADDINGX, vc.Y + TEXTPADDINGY + FONTSIZE, font, textPaint);
             }
 
         }
