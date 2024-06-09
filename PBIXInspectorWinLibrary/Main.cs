@@ -46,16 +46,7 @@ namespace PBIXInspectorWinLibrary
 
             string resolvedPbiFilePath = string.Empty;
 
-            try
-            {
-                resolvedPbiFilePath = ArgsUtils.ResolvePbiFilePathInput(pbiFilePath);
-            }
-            catch (ArgumentException e)
-            {
-                OnMessageIssued(MessageTypeEnum.Error, e.Message);
-            }
-
-            var args = new Args { PBIFilePath = resolvedPbiFilePath, RulesFilePath = rulesFilePath, OutputPath = outputPath, FormatsString = formatsString, VerboseString = verboseString };
+            var args = new Args { PBIFilePath = pbiFilePath, RulesFilePath = rulesFilePath, OutputPath = outputPath, FormatsString = formatsString, VerboseString = verboseString };
 
             Run(args); 
         }
@@ -77,8 +68,11 @@ namespace PBIXInspectorWinLibrary
                 _insp = new Inspector(Main._args.PBIFilePath, Main._args.RulesFilePath);
                 _insp.MessageIssued += Insp_MessageIssued;
 
+#if DEBUG
                 _testResults = _insp.Inspect().Where(_ => (!Main._args.Verbose && !_.Pass) || (Main._args.Verbose));
-
+#else
+                _testResults = _insp.Inspect().Where(_ => (!Main._args.Verbose && !_.Pass) || (Main._args.Verbose));
+#endif
                 if (Main._args.CONSOLEOutput || Main._args.ADOOutput)
                 {
                     foreach (var result in _testResults)
@@ -124,8 +118,11 @@ namespace PBIXInspectorWinLibrary
                 if (!Main._args.ADOOutput && (Main._args.PNGOutput || Main._args.HTMLOutput))
                 {
                     _fieldMapInsp = new Inspector(Main._args.PBIFilePath, Constants.ReportPageFieldMapFilePath);
+#if DEBUG                    
                     _fieldMapResults = _fieldMapInsp.Inspect();
-
+#else
+                    _fieldMapResults = _fieldMapInsp.Inspect();
+#endif
                     var outputPNGDirPath = Path.Combine(Main._args.OutputDirPath, Constants.PNGOutputDir);
 
                     if (Directory.Exists(outputPNGDirPath))

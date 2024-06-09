@@ -5,31 +5,7 @@
     /// </summary>
     public class InspectionRules : IInspectionRules
     {
-        public List<PbiEntry> PbiEntries { get; set; }
-    }
-
-    public class PbiEntry
-    {
-        public string Name { get; set; }
-
-        public string PbixEntryPath { get; set; }
-
-        public string PbipEntryPath { get; set; }
-
-        //TODO: use string enum converter deserialiser
-        public string ContentType { get; set; }
-
-        public int CodePage { get; set; }
-
-        public IEnumerable<Rule> Rules { get; set; }
-
-        public IEnumerable<Rule> EnabledRules
-        {
-            get
-            {
-                return Rules.Where(_ => !_.Disabled);
-            }
-        }
+        public List<Rule> Rules { get; set; }
     }
 
     public class Rule
@@ -44,11 +20,7 @@
 
         public string LogType { get; set; }
 
-        public string ForEachPath { get; set; }
-
-        public string ForEachPathName { get; set; }
-
-        public string ForEachPathDisplayName { get; set; }
+        public string Part { get; set; }
 
         public string Path { get; set; }
 

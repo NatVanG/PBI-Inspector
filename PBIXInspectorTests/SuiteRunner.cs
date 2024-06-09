@@ -368,7 +368,7 @@ public class SuiteRunner
             var testSuite = JsonSerializer.Deserialize<JsonLogicTestSuite>(content);
             var inspectionRules = new InspectionRules();
             var rules = testSuite!.Tests.Select(t => new PBIXInspectorLibrary.Rule() { Name = t.Logic, Path = "$", PathErrorWhenNoMatch = false, Test = new PBIXInspectorLibrary.Test() { Logic = t.Logic!, Data = t.Data!, Expected = t.Expected! } });
-            inspectionRules.PbiEntries = new List<PbiEntry> { new PbiEntry() { Name = "stub", PbixEntryPath = "Report/Layout", ContentType = "json", CodePage = 1200, Rules = rules } };
+            inspectionRules.Rules = rules.ToList();
 
             return Suite(PBIXFilePath, inspectionRules);
         }).Result;

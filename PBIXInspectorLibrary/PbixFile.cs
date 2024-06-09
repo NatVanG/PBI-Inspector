@@ -10,6 +10,7 @@ namespace PBIXInspectorLibrary
 
         public PbixFile(string pbiFilePath) : base(pbiFilePath)
         {
+            
         }
 
         private ZipArchive Archive
@@ -32,6 +33,18 @@ namespace PBIXInspectorLibrary
 
             }
         }
+
+        public ZipArchiveEntry GetZipArchiveEntry(string entryPath)
+        {
+            ZipArchiveEntry zae = null;
+            if (_za != null)
+            {
+                zae = this.Archive.GetEntry(entryPath);
+            }
+
+            return zae;
+        }
+
 
         public override Stream GetEntryStream(string entryPath)
         {

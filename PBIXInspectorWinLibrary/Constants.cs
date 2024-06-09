@@ -6,7 +6,7 @@ namespace PBIXInspectorWinLibrary
         public const string SamplePBIPReportFolderPath = @"Files\pbip\Inventory sample - fails.Report";
         public const string SamplePBIPReportFilePath = @"Files\pbip\Inventory sample - fails.Report\report.json";
         public const string SampleRulesFilePath = @"Files\Base-rules.json";
-        public const string ReportPageFieldMapFilePath = @"Files\ReportPageFieldMap.json";
+        public const string ReportPageFieldMapFilePath = @"Files\ReportPageFieldMapV2.json";
         public const string PBIPReportJsonFileName = "report.json";
         public const string PBIPFileExtension = ".pbip";
         public const string PBIRFileExtension = ".pbir";

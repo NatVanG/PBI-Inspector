@@ -6,9 +6,9 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <FileVersion>1.9.6.0</FileVersion>
-    <AssemblyVersion>1.9.6</AssemblyVersion>
-    <VersionPrefix>1.9.6</VersionPrefix>
+    <FileVersion>2.0.0.0</FileVersion>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <VersionPrefix>2.0.0</VersionPrefix>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>pbiinspector.png</PackageIcon>
     <PackageProjectUrl>https://github.com/NatVanG/PBIXInspector</PackageProjectUrl>
@@ -23,6 +23,9 @@
 
   <ItemGroup>
     <Content Include="..\Rules\Base-rules.json" Link="Files\Base-rules.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Rules\Base-rulesV2.json" Link="Files\Base-rulesV2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

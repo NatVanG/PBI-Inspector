@@ -28,39 +28,18 @@ namespace PBIXInspectorWinLibrary.Utils
                 }
             }
 
-            if (dic.ContainsKey(PBIP)) { throw new ArgumentException(string.Format("-pbip argument is deprecated, please use -pbipreport instead.")); }
-
-            if (!dic.ContainsKey(PBIPREPORT) && !dic.ContainsKey(PBIX)) { throw new ArgumentNullException("-pbipreport or -pbix must be defined."); }
+            if (dic.ContainsKey(PBIX)) { throw new ArgumentNullException("-pbix option is not currently supported use -pbip instead.");  }
+            if (!dic.ContainsKey(PBIPREPORT) && !dic.ContainsKey(PBIP)) { throw new ArgumentNullException("-pbipreport or -pbip must be defined."); }
 
             if (!dic.ContainsKey(RULES)) { throw new ArgumentNullException("-rules must be defined"); }
 
-            var pbiFilePath = dic.ContainsKey(PBIPREPORT) ? dic[PBIPREPORT] : dic[PBIX];
-            pbiFilePath = ResolvePbiFilePathInput(pbiFilePath);
+            var pbiFilePath = dic.ContainsKey(PBIPREPORT) ? dic[PBIPREPORT] : dic[PBIP];
             var rulesPath = dic[RULES];
             var outputPath = dic.ContainsKey(OUTPUT) ? dic[OUTPUT] : string.Empty;
             var verboseString = dic.ContainsKey(VERBOSE) ? dic[VERBOSE] : FALSE;
             var formatsString = dic.ContainsKey(FORMATS) ? dic[FORMATS] : string.Empty;
 
             return new Args { PBIFilePath = pbiFilePath, RulesFilePath = rulesPath, OutputPath = outputPath, FormatsString = formatsString, VerboseString = verboseString };
-        }
-
-        public static string? ResolvePbiFilePathInput(string pbiFilePath)
-        {
-            var resolvedPath = pbiFilePath;
-
-            if (!string.IsNullOrEmpty(pbiFilePath) && (pbiFilePath.ToLower().EndsWith(Constants.PBIPReportJsonFileName)))
-            {
-                resolvedPath = Path.GetDirectoryName(pbiFilePath);
-            }
-
-            //TODO: support PBIP file path. Need to parse the json and retrieve the report folder path.
-            if (!string.IsNullOrEmpty(pbiFilePath) && (pbiFilePath.ToLower().EndsWith(Constants.PBIPFileExtension) 
-                                                    || pbiFilePath.ToLower().EndsWith(Constants.PBIRFileExtension)))
-            {
-                throw new ArgumentException(string.Format("PBIP and PBIR file types are not yet supported. Please specify a report.json file path instead."));
-            }
-            
-            return resolvedPath;
         }
     }
 }

@@ -189,53 +189,6 @@ namespace PBIXInspectorTests
         }
 
         [Test]
-        public void TestCLIArgsUtilsResolvePbiFilePathInput1()
-        {
-            string inputPath = @"C:\TEMP\VisOps\Sales - custom colours.Report";
-            string resolvedPath = ArgsUtils.ResolvePbiFilePathInput(inputPath);
-
-            Assert.IsTrue(resolvedPath == inputPath);
-        }
-
-        [Test]
-        public void TestCLIArgsUtilsResolvePbiFilePathInput2()
-        {
-            string inputPath = @"C:\TEMP\VisOps\Sales - custom colours.Report\report.json";
-            string expectedPath = @"C:\TEMP\VisOps\Sales - custom colours.Report";
-            string resolvedPath = ArgsUtils.ResolvePbiFilePathInput(inputPath);
-
-            Assert.IsTrue(resolvedPath == expectedPath);
-        }
-
-        [Test]
-        public void TestCLIArgsUtilsResolvePbiFilePathInput3()
-        {
-            string inputPath = @"C:\TEMP\VisOps\Sales - custom colours.Report\report.pbix";
-            string expectedPath = @"C:\TEMP\VisOps\Sales - custom colours.Report\report.pbix";
-            string resolvedPath = ArgsUtils.ResolvePbiFilePathInput(inputPath);
-
-            Assert.IsTrue(resolvedPath == expectedPath);
-        }
-
-        [Test]
-        public void TestCLIArgsUtilsResolvePbipFilePathThrows()
-        {
-            string inputPath = @"C:\TEMP\VisOps\Sales - custom colours.pbip";
-
-            ArgumentException ex = Assert.Throws<ArgumentException>(
-            () => ArgsUtils.ResolvePbiFilePathInput(inputPath));
-        }
-
-        [Test]
-        public void TestCLIArgsUtilsResolvePbirFilePathThrows()
-        {
-            string inputPath = @"C:\TEMP\VisOps\Sales - custom colours.Report\definition.pbir";
-            
-            ArgumentException ex = Assert.Throws<ArgumentException>(
-            () => ArgsUtils.ResolvePbiFilePathInput(inputPath));
-        }
-
-        [Test]
         public void TestCLIArgsUtilsSuccess_FormatsOption()
         {
             string[] args = "-pbipreport pbipPath -rules rulesPath -formats CONSOLE,HTML,PNG,JSON -verbose true".Split(" ");

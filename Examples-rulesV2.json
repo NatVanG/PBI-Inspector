@@ -1,0 +1,221 @@
+{
+  "rules": [
+    {
+      "id": "CHARTS_WIDER_THAN_TALL_v2",
+      "name": "Charts wider than tall",
+      "description": "Want to check that your charts are wider than tall?",
+      "disabled": true,
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "<": [
+                    {
+                      "var": "position.width"
+                    },
+                    {
+                      "var": "position.height"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "var": "name"
+            }
+          ]
+        },
+        {
+        },
+        []
+      ]
+    },
+    {
+      "id": "DISABLE_SLOW_DATASOURCE_SETTINGS_v2",
+      "name": "Disable local slow datasource settings",
+      "description": "Check that report slow data source settings are all disabled.",
+      "disabled": true,
+      "part": "Report",
+      "test": [
+        {
+          "!": [
+            {
+              "or": [
+                {
+                  "var": "isCrossHighlightingDisabled"
+                },
+                {
+                  "var": "isSlicerSelectionsButtonEnabled"
+                },
+                {
+                  "var": "isFilterSelectionsButtonEnabled"
+                },
+                {
+                  "var": "isFieldWellButtonEnabled"
+                },
+                {
+                  "var": "isApplyAllButtonEnabled"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "isCrossHighlightingDisabled": "/slowDataSourceSettings/isCrossHighlightingDisabled",
+          "isSlicerSelectionsButtonEnabled": "/slowDataSourceSettings/isSlicerSelectionsButtonEnabled",
+          "isFilterSelectionsButtonEnabled": "/slowDataSourceSettings/isFilterSelectionsButtonEnabled",
+          "isFieldWellButtonEnabled": "/slowDataSourceSettings/isFieldWellButtonEnabled",
+          "isApplyAllButtonEnabled": "/slowDataSourceSettings/isApplyAllButtonEnabled"
+        },
+        true
+      ]
+    },
+    {
+      "id": "UNIQUE_PART",
+      "name": "",
+      "description": "",
+      "disabled": true,
+      "part": "Bookmarkb82c990a9a1720ce9d73.bookmark.json",
+      "test": [
+        {
+          "var": "bookmarkName"
+        },
+        {
+          "bookmarkName": "/name"
+        },
+        "Bookmarkb82c990a9a1720ce9d73"
+      ]
+    },
+    {
+      "id": "CUSTOM_MAP",
+      "name": "Custom map",
+      "description": "",
+      "disabled": true,
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            { "part": "Visuals" },
+            {
+              "cat": [
+                { "var": "pageName" },
+                ".visualContainers.",
+                { "var": "name" }
+              ]
+            }
+          ]
+        },
+        {
+          "pageName": "/name"
+        },
+        []
+      ]
+    },
+    {
+      "id": "ORPHANED_VISUALS",
+      "name": "Orphaned visuals",
+      "description": "",
+      "disabled": true,
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            { "part": "AllBookmarks" },
+            {
+              "missing": [
+                {
+                  "map": [
+                    { "part": "Visuals" },
+                    {
+                      "cat": [
+                        { "var": "pageName" },
+                        ".visualContainers.",
+                        { "var": "name" }
+                      ]
+                    }
+                  ]
+                },
+                { "var": "explorationState.sections" }
+              ]
+            }
+          ]
+        },
+        {
+          "pageName": "/name"
+        },
+        []
+      ]
+    },
+    {
+      "id": "ORPHANED_VISUALS",
+      "name": "Orphaned visuals",
+      "description": "",
+      "disabled": true,
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            { "part": "AllBookmarks" },
+
+            { "var": "explorationState.sections" }
+          ]
+        },
+        {
+          "pageName": "/name"
+        },
+        []
+      ]
+    },
+    {
+      "id": "ORPHANED_VISUALS",
+      "name": "Orphaned visuals",
+      "description": "",
+      "disabled": true,
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                { "part": "AllBookmarks" },
+                {
+                  "==": [
+                    { "var": "name" },
+                    "Bookmark7c19b7211ada7de10c30"
+                  ]
+                }
+              ]
+            },
+            {
+              "missing": [
+                {
+                  "map": [
+                    { "part": "Visuals" },
+                    {
+                      "cat": [
+                        { "var": "pageName" },
+                        ".visualContainers.",
+                        { "var": "name" }
+                      ]
+                    }
+                  ]
+                },
+                { "var": "explorationState.sections" }
+              ]
+            }
+          ]
+        },
+        {
+          "pageName": "/name"
+        },
+        []
+      ]
+    }
+  ]
+}

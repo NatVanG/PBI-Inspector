@@ -35,7 +35,10 @@ namespace PBIXInspectorAzureFunctions
 
             try
             {
-                var inspectionResults = inspector.Inspect(reportDefinitionTriggerClient.OpenRead(), rulesInputStream);
+                //TODO: reinstate correct inspect call.
+                //var inspectionResults = inspector.Inspect(reportDefinitionTriggerClient.OpenRead(), rulesInputStream);
+                var inspectionResults = inspector.Inspect();
+                
 
                 var testRun = new TestRun() { CompletionTime = DateTime.Now, TestedFilePath = reportDefinitionTriggerClient.Uri.ToString(), RulesFilePath = "pbi-inspector-rules/Rules.json", Verbose = true, Results = inspectionResults };
 

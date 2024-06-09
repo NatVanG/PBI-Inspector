@@ -1,0 +1,91 @@
+{
+  "rules": [
+    {
+      "name": "Return visual properties",
+      "description": "Returns an array of visual names",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    { "!!": [ { "var": "name" } ] },
+                    { "!!": [ { "var": "visual.visualType" } ] },
+                    {
+                      ">=": [
+                        { "var": "position.x" },
+                        0
+                      ]
+                    },
+                    {
+                      ">=": [
+                        { "var": "position.y" },
+                        0
+                      ]
+                    },
+                    {
+                      ">=": [
+                        { "var": "position.width" },
+                        0
+                      ]
+                    },
+                    {
+                      ">=": [
+                        { "var": "position.height" },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "visualType",
+                {
+                  "var": "visual.visualType"
+                },
+                "x",
+                {
+                  "var": "position.x"
+                },
+                "y",
+                {
+                  "var": "position.y"
+                },
+                "width",
+                {
+                  "var": "position.width"
+                },
+                "height",
+                {
+                  "var": "position.height"
+                },
+                "visible",
+                {
+                  "!": [
+                    {
+                      "var": "isHidden"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+        },
+        []
+      ]
+    }
+  ]
+}

@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsExamples", "DocsExample
 	ProjectSection(SolutionItems) = preProject
 		DocsExamples\Example-ReportPageFieldMap.json = DocsExamples\Example-ReportPageFieldMap.json
 		DocsExamples\Example-rules.json = DocsExamples\Example-rules.json
+		Examples-rulesV2.json = Examples-rulesV2.json
 		DocsExamples\Reid-rules.json = DocsExamples\Reid-rules.json
 		DocsExamples\Themeable-properties-rules.json = DocsExamples\Themeable-properties-rules.json
 	EndProjectSection
@@ -48,6 +49,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rules", "Rules", "{BB86A63C-BBD5-48DA-9481-343165781823}"
 	ProjectSection(SolutionItems) = preProject
 		Rules\Base-rules.json = Rules\Base-rules.json
+		Rules\Base-rulesV2.json = Rules\Base-rulesV2.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReportExample", "ReportExample", "{3A0CE8CE-A7CB-4288-B9EF-06056779A0D1}"
@@ -86,7 +88,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BaseThemes", "BaseThemes", 
 		DocsExamples\ReportExample\PBI Inspector Reporting.Report\StaticResources\SharedResources\BaseThemes\CY23SU11.json = DocsExamples\ReportExample\PBI Inspector Reporting.Report\StaticResources\SharedResources\BaseThemes\CY23SU11.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBIXInspectorAzureFunctions", "PBIXInspectorAzureFunctions\PBIXInspectorAzureFunctions.csproj", "{B6F334C7-0E39-487E-83D9-76430CCA80B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PBIXInspectorAzureFunctions", "PBIXInspectorAzureFunctions\PBIXInspectorAzureFunctions.csproj", "{B6F334C7-0E39-487E-83D9-76430CCA80B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
