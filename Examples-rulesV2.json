@@ -1,10 +1,9 @@
 {
   "rules": [
     {
-      "id": "CHARTS_WIDER_THAN_TALL_v2",
+      "id": "CHARTS_WIDER_THAN_TALL",
       "name": "Charts wider than tall",
       "description": "Want to check that your charts are wider than tall?",
-      "disabled": true,
       "part": "Pages",
       "test": [
         {
@@ -37,10 +36,44 @@
       ]
     },
     {
-      "id": "DISABLE_SLOW_DATASOURCE_SETTINGS_v2",
+      "id": "CHARTS_WIDER_THAN_TALL",
+      "name": "Charts wider than tall",
+      "description": "Want to check that your charts are wider than tall?",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "MobileVisuals"
+                },
+                {
+                  "<": [
+                    {
+                      "var": "position.width"
+                    },
+                    {
+                      "var": "position.height"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "var": "name"
+            }
+          ]
+        },
+        {
+        },
+        []
+      ]
+    },
+    {
+      "id": "DISABLE_SLOW_DATASOURCE_SETTINGS",
       "name": "Disable local slow datasource settings",
       "description": "Check that report slow data source settings are all disabled.",
-      "disabled": true,
       "part": "Report",
       "test": [
         {
@@ -77,6 +110,525 @@
       ]
     },
     {
+      "id": "LOCAL_REPORT_SETTINGS",
+      "name": "Local report settings",
+      "description": "Check local report settings other than slow data source settings. This rule creates a json record of current local setting values and compares to a json record of expected values. Currently, if this rules fails, I recommend comparing both output json records formatted in Visual Studio code to easily identify the failed setting values.",
+      "part": "Report",
+      "test": [
+        {
+          "torecord": [
+            "activePageIndex",
+            {
+              "var": "activePageIndex"
+            },
+            "defaultDrillFilterOtherVisuals",
+            {
+              "var": "defaultDrillFilterOtherVisuals"
+            },
+            "isPersistentUserStateDisabled",
+            {
+              "var": "isPersistentUserStateDisabled"
+            },
+            "hideVisualContainerHeader",
+            {
+              "var": "hideVisualContainerHeader"
+            },
+            "useStylableVisualContainerHeader",
+            {
+              "var": "useStylableVisualContainerHeader"
+            },
+            "exportDataMode",
+            {
+              "var": "exportDataMode"
+            },
+            "useNewFilterPaneExperience",
+            {
+              "var": "useNewFilterPaneExperience"
+            },
+            "optOutNewFilterPaneExperience",
+            {
+              "var": "optOutNewFilterPaneExperience"
+            },
+            "defaultFilterActionIsDataFilter",
+            {
+              "var": "defaultFilterActionIsDataFilter"
+            },
+            "useCrossReportDrillthrough",
+            {
+              "var": "useCrossReportDrillthrough"
+            },
+            "allowChangeFilterTypes",
+            {
+              "var": "allowChangeFilterTypes"
+            },
+            "allowInlineExploration",
+            {
+              "var": "allowInlineExploration"
+            },
+            "disableFilterPaneSearch",
+            {
+              "var": "disableFilterPaneSearch"
+            },
+            "enableDeveloperMode",
+            {
+              "if": [
+                {
+                  "!!": [ { "var": "enableDeveloperMode" } ]
+                },
+                {
+                  "var": "enableDeveloperMode"
+                },
+                false
+              ]
+            },
+            "useEnhancedTooltips",
+            {
+              "var": "useEnhancedTooltips"
+            },
+            "useDefaultAggregateDisplayName",
+            {
+              "var": "useDefaultAggregateDisplayName"
+            }
+          ]
+        },
+        {
+          "activePageIndex": "/activeSectionIndex",
+          "defaultDrillFilterOtherVisuals": "/defaultDrillFilterOtherVisuals",
+          "isPersistentUserStateDisabled": "/settings/isPersistentUserStateDisabled",
+          "hideVisualContainerHeader": "/settings/hideVisualContainerHeader",
+          "useStylableVisualContainerHeader": "/settings/useStylableVisualContainerHeader",
+          "exportDataMode": "/settings/exportDataMode",
+          "useNewFilterPaneExperience": "/settings/useNewFilterPaneExperience",
+          "optOutNewFilterPaneExperience": "/settings/optOutNewFilterPaneExperience",
+          "defaultFilterActionIsDataFilter": "/settings/defaultFilterActionIsDataFilter",
+          "useCrossReportDrillthrough": "/settings/useCrossReportDrillthrough",
+          "allowChangeFilterTypes": "/settings/allowChangeFilterTypes",
+          "allowInlineExploration": "/settings/allowInlineExploration",
+          "disableFilterPaneSearch": "/settings/disableFilterPaneSearch",
+          "enableDeveloperMode": "/settings/enableDeveloperMode",
+          "useEnhancedTooltips": "/settings/useEnhancedTooltips",
+          "useDefaultAggregateDisplayName": "/settings/useDefaultAggregateDisplayName"
+        },
+        {
+          "activePageIndex": 0,
+          "defaultDrillFilterOtherVisuals": true,
+          "isPersistentUserStateDisabled": true,
+          "hideVisualContainerHeader": false,
+          "useStylableVisualContainerHeader": true,
+          "exportDataMode": 1,
+          "useNewFilterPaneExperience": true,
+          "optOutNewFilterPaneExperience": false,
+          "defaultFilterActionIsDataFilter": true,
+          "useCrossReportDrillthrough": false,
+          "allowChangeFilterTypes": true,
+          "allowInlineExploration": false,
+          "disableFilterPaneSearch": false,
+          "enableDeveloperMode": false,
+          "useEnhancedTooltips": true,
+          "useDefaultAggregateDisplayName": true
+        }
+      ]
+    },
+    {
+      "id": "SHOW_AXES_TITLES",
+      "name": "Show visual axes titles",
+      "description": "Check that certain charts have both axes title showing.",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "in": [
+                        {
+                          "var": "visual.visualType"
+                        },
+                        [
+                          "lineChart",
+                          "barChart",
+                          "columnChart",
+                          "clusteredBarChart",
+                          "stackedBarChart"
+                        ]
+                      ]
+                    },
+                    {
+                      "or": [
+                        {
+                          "==": [
+                            {
+                              "var": "visual.objects.categoryAxis.0.properties.showAxisTitle.expr.Literal.Value"
+                            },
+                            "false"
+                          ]
+                        },
+                        {
+                          "==": [
+                            {
+                              "var": "visual.objects.valueAxis.0.properties.showAxisTitle.expr.Literal.Value"
+                            },
+                            "false"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "var": "name"
+            }
+          ]
+        },
+        {
+        },
+        []
+      ]
+    },
+    {
+      "id": "PERCENTAGE_OF_CHARTS_USING_CUSTOM_COLOURS",
+      "name": "Percentage of charts across the report using custom colours is not greater than 10%",
+      "description": "Check that charts avoid custom colours and use theme colours instead.",
+      "test": [
+        {
+          "<=": [
+            {
+              "/": [
+                {
+                  "count": [
+                    {
+                      "filter": [
+                        {
+                          "part": "AllVisuals"
+                        },
+                        {
+                          "and": [
+                            {
+                              "!": [
+                                {
+                                  "in": [
+                                    {
+                                      "var": "visual.visualType"
+                                    },
+                                    [
+                                      "textbox"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "strcontains": [
+                                {
+                                  "tostring": [
+                                    {
+                                      "var": ""
+                                    }
+                                  ]
+                                },
+                                "#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "count": [
+                    {
+                      "filter": [
+                        {
+                          "part": "AllVisuals"
+                        },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "visual.visualType"
+                                },
+                                [
+                                  "textbox"
+                                ]
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            { "var": "paramMaxAllowedRatio" }
+          ]
+        },
+        {
+          "visualConfigArray": ".",
+          "paramMaxAllowedRatio": 0.1
+        },
+        true
+      ]
+    },
+    {
+      "id": "ENSURE_ALT_TEXT_DEFINED_FOR_VISUALS",
+      "name": "Ensure alt-text has been defined for visuals",
+      "description": "Alt-text is required for screen readers.",
+      "part": "Pages",
+      "disabled": true,
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "visual.visualType"
+                            },
+                            [
+                              "shape"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "none": [
+                        {
+                          "var": "visual.visualContainerObjects.general"
+                        },
+                        {
+                          "or": [
+                            {
+                              "!!": [ { "var": "properties.altText.expr.Aggregation" } ]
+                            },
+                            {
+                              "!=": [
+                                { "var": "properties.altText.expr.Literal.Value" },
+                                "''"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "var": "name"
+            }
+          ]
+        },
+        {
+          "visualsConfigArray": "."
+        },
+        []
+      ]
+    },
+    {
+      "id": "DISABLE_DROP_SHADOWS_ON_VISUALS",
+      "name": "Disable drop shadows on visuals",
+      "description": "Drop shadows are not suitable for everyone, this rule returns an array of visuals with drop shadows enabled.",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "some": [
+                    {
+                      "var": "visual.visualContainerObjects.dropShadow"
+                    },
+                    {
+                      "==": [
+                        { "var": "properties.show.expr.Literal.Value" },
+                        "true"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "var": "name"
+            }
+          ]
+        },
+        {
+          "visualsConfigArray": "."
+        },
+        []
+      ]
+    },
+    {
+      "id": "GIVE_VISIBLE_PAGES_MEANINGFUL_NAMES",
+      "name": "Give visible pages meaningful names",
+      "description": "Returns an array of visible page names with a default 'Page x' display name.",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Pages"
+                },
+                {
+                  "and": [
+                    {
+                      "strcontains": [
+                        {
+                          "var": "displayName"
+                        },
+                        "^Page [1-9]+$"
+                      ]
+                    },
+                    {
+                      "!=": [
+                        {
+                          "var": "visibility"
+                        },
+                        "HiddenInViewMode"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "var": "displayName"
+            }
+          ]
+        },
+        {},
+        []
+      ]
+    },
+    {
+      "id": "CHECK_FOR_VISUALS_OVERLAP",
+      "name": "Check for visuals overlap with a 5px margin",
+      "description": "Returns names of visuals that overlap while inflating visuals rectangle area by 5px left, right, top and bottom. Currently this does not check for overlap with the sides of report page itself. This rule does not currently work with visual groups.",
+      "part": "Pages",
+      "test": [
+        {
+          "rectoverlap": [
+            {
+              "map": [
+                {
+                  "filter": [
+                    {
+                      "part": "Visuals"
+                    },
+                    {
+                      "and": [
+                        { "!!": [ { "var": "name" } ] },
+                        {
+                          "!": [
+                            {
+                              "in": [
+                                {
+                                  "var": "visual.visualType"
+                                },
+                                [
+                                  "card",
+                                  "slicer",
+                                  "actionButton"
+                                ]
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          ">=": [
+                            { "var": "position.x" },
+                            0
+                          ]
+                        },
+                        {
+                          ">=": [
+                            { "var": "position.y" },
+                            0
+                          ]
+                        },
+                        {
+                          ">=": [
+                            { "var": "position.width" },
+                            0
+                          ]
+                        },
+                        {
+                          ">=": [
+                            { "var": "position.height" },
+                            0
+                          ]
+                        },
+                        {
+                          "!": [
+                            {
+                              "var": "isHidden"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "torecord": [
+                    "name",
+                    {
+                      "var": "name"
+                    },
+                    "x",
+                    {
+                      "var": "position.x"
+                    },
+                    "y",
+                    {
+                      "var": "position.y"
+                    },
+                    "width",
+                    {
+                      "var": "position.width"
+                    },
+                    "height",
+                    {
+                      "var": "position.height"
+                    }
+                  ]
+                }
+              ]
+            },
+            5
+          ]
+        },
+        {},
+        []
+      ]
+    },
+    {
       "id": "UNIQUE_PART",
       "name": "",
       "description": "",
@@ -93,126 +645,32 @@
       ]
     },
     {
-      "id": "CUSTOM_MAP",
-      "name": "Custom map",
-      "description": "",
-      "disabled": true,
-      "part": "Pages",
+      "id": "CHECK_FOR_LOCAL_MEASURES",
+      "name": "Check for locally defined measures",
+      "description": "Returns an array of report-level measure definitions",
+      "part": "ReportExtensions",
       "test": [
         {
-          "map": [
-            { "part": "Visuals" },
+          "filter": [
             {
-              "cat": [
-                { "var": "pageName" },
-                ".visualContainers.",
-                { "var": "name" }
-              ]
-            }
-          ]
-        },
-        {
-          "pageName": "/name"
-        },
-        []
-      ]
-    },
-    {
-      "id": "ORPHANED_VISUALS",
-      "name": "Orphaned visuals",
-      "description": "",
-      "disabled": true,
-      "part": "Pages",
-      "test": [
-        {
-          "map": [
-            { "part": "AllBookmarks" },
-            {
-              "missing": [
-                {
-                  "map": [
-                    { "part": "Visuals" },
-                    {
-                      "cat": [
-                        { "var": "pageName" },
-                        ".visualContainers.",
-                        { "var": "name" }
-                      ]
-                    }
-                  ]
-                },
-                { "var": "explorationState.sections" }
-              ]
-            }
-          ]
-        },
-        {
-          "pageName": "/name"
-        },
-        []
-      ]
-    },
-    {
-      "id": "ORPHANED_VISUALS",
-      "name": "Orphaned visuals",
-      "description": "",
-      "disabled": true,
-      "part": "Pages",
-      "test": [
-        {
-          "map": [
-            { "part": "AllBookmarks" },
-
-            { "var": "explorationState.sections" }
-          ]
-        },
-        {
-          "pageName": "/name"
-        },
-        []
-      ]
-    },
-    {
-      "id": "ORPHANED_VISUALS",
-      "name": "Orphaned visuals",
-      "description": "",
-      "disabled": true,
-      "part": "Pages",
-      "test": [
-        {
-          "map": [
-            {
-              "filter": [
-                { "part": "AllBookmarks" },
-                {
-                  "==": [
-                    { "var": "name" },
-                    "Bookmark7c19b7211ada7de10c30"
-                  ]
-                }
-              ]
+              "var": "entities"
             },
             {
-              "missing": [
+              ">": [
                 {
-                  "map": [
-                    { "part": "Visuals" },
+                  "count": [
                     {
-                      "cat": [
-                        { "var": "pageName" },
-                        ".visualContainers.",
-                        { "var": "name" }
-                      ]
+                      "var": "measures"
                     }
                   ]
                 },
-                { "var": "explorationState.sections" }
+                0
               ]
             }
           ]
         },
         {
-          "pageName": "/name"
+          "entities": "/entities"
         },
         []
       ]

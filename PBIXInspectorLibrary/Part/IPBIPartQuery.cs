@@ -20,6 +20,8 @@ namespace PBIXInspectorLibrary.Part
         
         public abstract Part Report(Part context);
 
+        public abstract Part ReportExtensions(Part context);
+
         public abstract Part Version(Part context);
 
         public abstract Part PagesHeader(Part context);

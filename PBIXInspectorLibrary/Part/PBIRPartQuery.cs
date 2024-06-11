@@ -83,6 +83,16 @@ namespace PBIXInspectorLibrary.Part
             return q.Single();
         }
 
+
+        public Part ReportExtensions(Part context)
+        {
+            IEnumerable<Part> q = from p in Part.Flatten(TopParent(context))
+                                  where PartType(p) == PartTypeEnum.File && p.Name.EndsWith("reportExtensions.json")
+                                  select p;
+
+            return q.Single();
+        }
+
         public Part Version(Part context)
         {
             IEnumerable<Part> q = from p in Part.Flatten(TopParent(context))

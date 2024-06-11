@@ -57,9 +57,6 @@ namespace PBIXInspectorLibrary.Part
             return TopParent(part.Parent);
         }
 
-
-
-
         protected static string TryGetJsonNodeStringValue(JsonNode node, string query)
         {
             JsonPointer pt = JsonPointer.Parse(query);
