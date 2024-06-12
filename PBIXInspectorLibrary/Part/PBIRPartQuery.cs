@@ -23,12 +23,14 @@ namespace PBIXInspectorLibrary.Part
         //TODO: harden logic to extract path value here.
         private const string REPORTFOLDERPOINTER = "/artifacts/0/report/path";
         private const string PBIPEXT = ".pbip";
+        private const string PBIXEXT = ".pbix";
 
         public PBIRPartQuery(string path) : base(path)
         {
             if (path == null || path.Length == 0) throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path) && path.EndsWith(PBIPEXT)) throw new ArgumentException($"PBI Desktop file {path} does not exist");
-            if (File.Exists(path) && !path.EndsWith(PBIPEXT)) throw new ArgumentException($"PBI Desktop file {path} must have .pbip extension");
+            if (path.ToLower().EndsWith(PBIXEXT)) throw new ArgumentException($"PBIX files are not currently supported, please specify a PBIP");
+            if (File.Exists(path) && !path.ToLower().EndsWith(PBIPEXT)) throw new ArgumentException($"PBI Desktop file {path} must have .pbip extension");
             if (!File.Exists(path) && !Directory.Exists(path)) throw new ArgumentException($"{path} does not exist");
 
             string? reportFolderPath = null;

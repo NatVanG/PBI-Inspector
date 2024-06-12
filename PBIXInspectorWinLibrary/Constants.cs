@@ -5,7 +5,7 @@ namespace PBIXInspectorWinLibrary
     {
         public const string SamplePBIPReportFolderPath = @"Files\pbip\Inventory sample - fails.Report";
         public const string SamplePBIPReportFilePath = @"Files\pbip\Inventory sample - fails.Report\report.json";
-        public const string SampleRulesFilePath = @"Files\Base-rules.json";
+        public const string SampleRulesFilePath = @"Files\Base-rulesV2.json";
         public const string ReportPageFieldMapFilePath = @"Files\ReportPageFieldMapV2.json";
         public const string PBIPReportJsonFileName = "report.json";
         public const string PBIPFileExtension = ".pbip";
@@ -22,9 +22,9 @@ namespace PBIXInspectorWinLibrary
         public const string ADOLogIssueTemplate = "##vso[task.logissue type={0};]"; //warning|error
         public const string ADOCompleteTemplate = "##vso[task.complete result={0};]DONE";//Failed|SucceededWithIssues|Succeeded
         public const string GitHubMsgTemplate = "::{0}::";
-        public const string ReadmePageUrl = "https://github.com/NatVanG/PBIXInspector/blob/main/README.md";
+        public const string ReadmePageUrl = "https://github.com/NatVanG/PBI-Inspector/blob/part-concept/README.md";
         public const string LatestReleasePageUrl = "https://github.com/NatVanG/PBI-Inspector/releases";
-        public const string LicensePageUrl = "https://github.com/NatVanG/PBIXInspector/blob/main/LICENSE";
+        public const string LicensePageUrl = "https://github.com/NatVanG/PBI-Inspector/blob/part-concept/LICENSE";
         public const string IssuesPageUrl = "https://github.com/NatVanG/PBI-Inspector/issues";
     }
 }

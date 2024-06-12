@@ -140,6 +140,7 @@
             chckUseSamplePBIFile.TabIndex = 3;
             chckUseSamplePBIFile.Text = "Use sample";
             chckUseSamplePBIFile.UseVisualStyleBackColor = true;
+            chckUseSamplePBIFile.Visible = false;
             chckUseSamplePBIFile.CheckedChanged += chckUseSamplePBIFile_CheckedChanged;
             // 
             // txtRulesFilePath
@@ -278,7 +279,7 @@
             // 
             // openPBIDesktopFileDialog
             // 
-            openPBIDesktopFileDialog.Filter = "Power BI Project Report file (report.json)|report.json|Power BI Desktop file (*.pbix)|*.pbix|All Files (*.*)|*.*";
+            openPBIDesktopFileDialog.Filter = "Power BI Project Report file (*.pbip)|*.pbip|All Files (*.*)|*.*";
             openPBIDesktopFileDialog.FileOk += openPBIDesktopFileDialog_FileOk;
             // 
             // openRulesFileDialog
