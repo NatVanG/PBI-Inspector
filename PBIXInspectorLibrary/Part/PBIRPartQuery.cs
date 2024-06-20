@@ -62,16 +62,34 @@ namespace PBIXInspectorLibrary.Part
 
         public string PartName(Part context)
         {
-            var node = ToJsonNode(context);
-            var val = TryGetJsonNodeStringValue(node, NAMEPOINTER);
+            string val = string.Empty;
+
+            //if (PartType(context) == PartTypeEnum.File && context.Name.EndsWith(".json"))
+            //{
+                var node = ToJsonNode(context);
+                val = TryGetJsonNodeStringValue(node, NAMEPOINTER);
+            //}
+            //else
+            //{
+            //    val = context.Name;
+            //}
 
             return val;
         }
 
         public string PartDisplayName(Part context)
         {
-            var node = ToJsonNode(context);
-            var val = TryGetJsonNodeStringValue(node, DISPLAYNAMEPOINTER);
+            string val = string.Empty;
+
+            //if (PartType(context) == PartTypeEnum.File && context.Name.EndsWith(".json"))
+            //{
+                var node = ToJsonNode(context);
+                val = TryGetJsonNodeStringValue(node, DISPLAYNAMEPOINTER);
+            //}
+            //else
+            //{
+            //    val = context.Name;
+            //}
 
             return val;
         }
@@ -86,13 +104,13 @@ namespace PBIXInspectorLibrary.Part
         }
 
 
-        public Part ReportExtensions(Part context)
+        public Part? ReportExtensions(Part context)
         {
             IEnumerable<Part> q = from p in Part.Flatten(TopParent(context))
                                   where PartType(p) == PartTypeEnum.File && p.Name.EndsWith("reportExtensions.json")
                                   select p;
 
-            return q.Single();
+            return q.SingleOrDefault();
         }
 
         public Part Version(Part context)
@@ -174,13 +192,13 @@ namespace PBIXInspectorLibrary.Part
             return q.ToList();
         }
 
-        public Part UniquePart(string query, Part context)
+        public Part? UniquePart(string query, Part context)
         {
             IEnumerable<Part> q = from p in Part.Flatten(TopParent(context))
                                             where p.Name.EndsWith(query, StringComparison.InvariantCultureIgnoreCase)
                                             select p;
 
-            return q.Single();
+            return q.SingleOrDefault();
         }
 
         public JsonNode ToJsonNode(object? value)

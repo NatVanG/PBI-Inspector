@@ -1,0 +1,669 @@
+{
+    "pbiEntries": [
+        {
+            "name": "reportLayout",
+            "pbixEntryPath": "Report/Layout",
+            "pbipEntryPath": "report.json",
+            "contentType": "json",
+            "codepage": 1200,
+            "rules": [
+                {
+                    "name": "Simple",
+                    "description": "Checks that one is equal to one.",
+                    "disabled": true,
+                    "logType": "warning",
+                    "path": "$",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "==": [
+                                1,
+                                1
+                            ]
+                        },
+                        {},
+                        true
+                    ]
+                },
+                {
+                    "name": "Nested operators",
+                    "description": "JSONLogic operators can be nested.",
+                    "disabled": true,
+                    "logType": "warning",
+                    "path": "$",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "and": [
+                                {
+                                    ">": [
+                                        3,
+                                        1
+                                    ]
+                                },
+                                {
+                                    "<": [
+                                        1,
+                                        3
+                                    ]
+                                }
+                            ]
+                        },
+                        {},
+                        true
+                    ]
+                },
+                {
+                    "name": "Data mappings",
+                    "description": "Checks that one is equal to one.",
+                    "disabled": true,
+                    "logType": "warning",
+                    "path": "$",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "==": [
+                                {
+                                    "var": "param1"
+                                },
+                                {
+                                    "var": "param2"
+                                }
+                            ]
+                        },
+                        {
+                            "param1": 1,
+                            "param2": 1
+                        },
+                        true
+                    ]
+                },
+                {
+                    "name": "Data mappings 2",
+                    "description": "Checks that a value is in an array.",
+                    "disabled": true,
+                    "logType": "warning",
+                    "path": "$",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "in": [
+                                {
+                                    "var": "param1"
+                                },
+                                {
+                                    "var": "param2"
+                                }
+                            ]
+                        },
+                        {
+                            "param1": "a",
+                            "param2": [ "a", "b", "c" ]
+                        },
+                        true
+                    ]
+                },
+                {
+                    "name": "Disable local slow datasource settings",
+                    "description": "Check that report slow data source settings are all disabled.",
+                    "disabled": true,
+                    "logType": "warning",
+                    "path": "$.config",
+                    "pathErrorWhenNoMatch": true,
+                    "test": [
+                        {
+                            "!": [
+                                {
+                                    "or": [
+                                        {
+                                            "var": "isCrossHighlightingDisabled"
+                                        },
+                                        {
+                                            "var": "isSlicerSelectionsButtonEnabled"
+                                        },
+                                        {
+                                            "var": "isFilterSelectionsButtonEnabled"
+                                        },
+                                        {
+                                            "var": "isFieldWellButtonEnabled"
+                                        },
+                                        {
+                                            "var": "isApplyAllButtonEnabled"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "isCrossHighlightingDisabled": "/slowDataSourceSettings/isCrossHighlightingDisabled",
+                            "isSlicerSelectionsButtonEnabled": "/slowDataSourceSettings/isSlicerSelectionsButtonEnabled",
+                            "isFilterSelectionsButtonEnabled": "/slowDataSourceSettings/isFilterSelectionsButtonEnabled",
+                            "isFieldWellButtonEnabled": "/slowDataSourceSettings/isFieldWellButtonEnabled",
+                            "isApplyAllButtonEnabled": "/slowDataSourceSettings/isApplyAllButtonEnabled"
+                        },
+                        true
+                    ]
+                },
+                {
+                    "name": "Charts wider than tall",
+                    "description": "Want to check that your charts are wider than tall?",
+                    "disabled": true,
+                    "logType": "warning",
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*].config",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "all": [
+                                {
+                                    "var": "visualsConfigArray"
+                                },
+                                {
+                                    ">=": [
+                                        {
+                                            "var": "layouts.0.position.width"
+                                        },
+                                        {
+                                            "var": "layouts.0.position.height"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "visualsConfigArray": "."
+                        },
+                        true
+                    ]
+                },
+                {
+                    "name": "Charts wider than tall 2",
+                    "description": "Want to check that your charts are wider than tall?",
+                    "disabled": true,
+                    "logType": "warning",
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*].config",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                            "var": "visualsConfigArray"
+                                        },
+                                        {
+                                            "<": [
+                                                {
+                                                    "var": "layouts.0.position.width"
+                                                },
+                                                {
+                                                    "var": "layouts.0.position.height"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "var": "name"
+                                }
+                            ]
+                        },
+                        {
+                            "visualsConfigArray": "."
+                        },
+                        []
+                    ]
+                },
+                {
+                    "name": "Show visual axes title",
+                    "description": "Check that certain charts have both axes title showing.",
+                    "disabled": true,
+                    "logType": "warning",
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*].config",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                            "var": "visualsConfigArray"
+                                        },
+                                        {
+                                            "and": [
+                                                {
+                                                    "in": [
+                                                        {
+                                                            "var": "singleVisual.visualType"
+                                                        },
+                                                        [
+                                                            "lineChart",
+                                                            "barChart",
+                                                            "columnChart",
+                                                            "clusteredBarChart",
+                                                            "stackedBarChart"
+                                                        ]
+                                                    ]
+                                                },
+                                                {
+                                                    "or": [
+                                                        {
+                                                            "==": [
+                                                                {
+                                                                    "var": "singleVisual.objects.categoryAxis.0.properties.showAxisTitle.expr.Literal.Value"
+                                                                },
+                                                                "false"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "==": [
+                                                                {
+                                                                    "var": "singleVisual.objects.valueAxis.0.properties.showAxisTitle.expr.Literal.Value"
+                                                                },
+                                                                "false"
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "var": "name"
+                                }
+                            ]
+                        },
+                        {
+                            "visualsConfigArray": "."
+                        },
+                        []
+                    ]
+                },
+                {
+                    "name": "Interactions test",
+                    "description": "Find any image visual that are the target of an interaction.",
+                    "disabled": true,
+                    "logType": "warning",
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "intersection": [
+                                {
+                                    "map": [
+                                        {
+                                            "filter": [
+                                                {
+                                                    "var": "visuals"
+                                                },
+                                                {
+                                                    "in": [
+                                                        {
+                                                            "drillvar": "config>singleVisual.visualType"
+                                                        },
+                                                        [
+                                                            "image"
+                                                        ]
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "drillvar": "config>name"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "map": [
+                                        {
+                                            "filter": [
+                                                {
+                                                    "var": "interactions"
+                                                },
+                                                {
+                                                    "!=": [
+                                                        {
+                                                            "var": "type"
+                                                        },
+                                                        3
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "var": "target"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "interactions": "/config>/relationships",
+                            "visuals": "/visualContainers"
+                        },
+                        []
+                    ]
+                },
+                {
+                    "name": "Ensure alt-text has been defined for visuals",
+                    "description": "Alt-text is required for screen readers.",
+                    "disabled": true,
+                    "logType": "warning",
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*].config",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                            "var": "visualsConfigArray"
+                                        },
+                                        {
+                                            "and": [
+                                                {
+                                                    "!": [
+                                                        {
+                                                            "in": [
+                                                                {
+                                                                    "var": "singleVisual.visualType"
+                                                                },
+                                                                [
+                                                                    "shape"
+                                                                ]
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "none": [
+                                                        {
+                                                            "var": "singleVisual.vcObjects.general"
+                                                        },
+                                                        {
+                                                            "or": [
+                                                                {
+                                                                    "!!": [
+                                                                        {
+                                                                            "var": "properties.altText.expr.Aggregation"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "!=": [
+                                                                        {
+                                                                            "var": "properties.altText.expr.Literal.Value"
+                                                                        },
+                                                                        "''"
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "var": "name"
+                                }
+                            ]
+                        },
+                        {
+                            "visualsConfigArray": "."
+                        },
+                        []
+                    ]
+                },
+                {
+                    "name": "Ensure charts use theme colours",
+                    "description": "Check that charts (excluding textboxes) avoid custom colours and use theme colours instead. To disable this rule, mark it as disabled in the base rules file.",
+                    "disabled": true,
+                    "logType": "error",
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*].config",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                            "var": "visualsConfigArray"
+                                        },
+                                        {
+                                            "and": [
+                                                {
+                                                    "!": [
+                                                        {
+                                                            "in": [
+                                                                {
+                                                                    "var": "singleVisual.visualType"
+                                                                },
+                                                                [
+                                                                    "textbox"
+                                                                ]
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "strcontains": [
+                                                        {
+                                                            "tostring": [
+                                                                {
+                                                                    "var": ""
+                                                                }
+                                                            ]
+                                                        },
+                                                        "#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "var": "name"
+                                }
+                            ]
+                        },
+                        {
+                            "visualsConfigArray": "."
+                        },
+                        []
+                    ]
+                },
+                {
+                    "name": "Check Deneb charts properties",
+                    "description": "Checks that marks' tooltips are enabled for Deneb charts",
+                    "disabled": true,
+                    "logType": "warning",
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*].config",
+                    "pathErrorWhenNoMatch": true,
+                    "test": [
+                        {
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                            "var": "visualsConfigArray"
+                                        },
+                                        {
+                                            "and": [
+                                                {
+                                                    "strcontains": [
+                                                        {
+                                                            "var": "singleVisual.visualType"
+                                                        },
+                                                        "^deneb[A-Z0-9]+$"
+                                                    ]
+                                                },
+                                                {
+                                                    "some": [
+                                                        {
+                                                            "drillvar": "singleVisual.objects.vega.0.properties.jsonSpec.expr.Literal.Value>layer"
+                                                        },
+                                                        {
+                                                            "==": [
+                                                                {
+                                                                    "var": "mark.tooltip"
+                                                                },
+                                                                false
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "var": "name"
+                                }
+                            ]
+                        },
+                        {
+                            "visualsConfigArray": "."
+                        },
+                        []
+                    ]
+                },
+                {
+                    "name": "Check AdvancedSlicerVisual properties",
+                    "description": "Checks AdvancedSlicerVisual rectangleRoundedCurve property is set to 18L",
+                    "disabled": true,
+                    "logType": "warning",
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*].config",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                            "var": "visualsConfigArray"
+                                        },
+                                        {
+                                            "and": [
+                                                {
+                                                    "==": [
+                                                        {
+                                                            "var": "singleVisual.visualType"
+                                                        },
+                                                        "advancedSlicerVisual"
+                                                    ]
+                                                },
+                                                {
+                                                    "!=": [
+                                                        {
+                                                            "var": "singleVisual.objects.shapeCustomRectangle.0.properties.rectangleRoundedCurve.expr.Literal.Value"
+                                                        },
+                                                        "18L"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "var": "name"
+                                }
+                            ]
+                        },
+                        {
+                            "visualsConfigArray": "."
+                        },
+                        []
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Report theme",
+            "description": "Check report theme properties.",
+            "pbixEntryPath": "Report/StaticResources/SharedResources/BaseThemes/CY23SU04.json",
+            "pbipEntryPath": "StaticResources/SharedResources/BaseThemes/CY23SU04.json",
+            "contentType": "json",
+            "codepage": 65001,
+            "rules": [
+                {
+                    "name": "Report theme title font properties",
+                    "description": "Checks theme's' title foreground, fontface and fontsize",
+                    "disabled": true,
+                    "logType": "warning",
+                    "path": "$",
+                    "pathErrorWhenNoMatch": true,
+                    "test": [
+                        {
+                            "and": [
+                                {
+                                    "==": [
+                                        {
+                                            "var": "foreground"
+                                        },
+                                        "#252423"
+                                    ]
+                                },
+                                {
+                                    "==": [
+                                        {
+                                            "var": "fontface"
+                                        },
+                                        "DIN"
+                                    ]
+                                },
+                                {
+                                    ">=": [
+                                        {
+                                            "var": "fontsize"
+                                        },
+                                        10
+                                    ]
+                                },
+                                {
+                                    "<=": [
+                                        {
+                                            "var": "fontsize"
+                                        },
+                                        12
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "foreground": "/foreground",
+                            "fontface": "/textClasses/title/fontFace",
+                            "fontsize": "/textClasses/title/fontSize"
+                        },
+                        true
+                    ]
+                }
+            ]
+        }
+    ]
+}

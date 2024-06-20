@@ -36,8 +36,8 @@
       ]
     },
     {
-      "id": "CHARTS_WIDER_THAN_TALL",
-      "name": "Charts wider than tall",
+      "id": "MOBILE_CHARTS_WIDER_THAN_TALL",
+      "name": "Mobile charts wider than tall",
       "description": "Want to check that your charts are wider than tall?",
       "part": "Pages",
       "test": [
@@ -673,6 +673,26 @@
           "entities": "/entities"
         },
         []
+      ]
+    },
+    {
+      "id": "CHECK_VERSION",
+      "name": "Check version",
+      "description": "",
+      "test": [
+        {
+          "query": [
+            {
+              "part": "Version"
+            },
+            {
+              "var": "version"
+            }
+          ]
+        },
+        {
+        },
+        "1.0.0"
       ]
     }
   ]

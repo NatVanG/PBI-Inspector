@@ -215,6 +215,7 @@ namespace PBIXInspectorLibrary
             Json.Logic.RuleRegistry.AddRule<CustomRules.SetSymmetricDifferenceRule>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.SetEqualRule>();
             Json.Logic.RuleRegistry.AddRule<CustomRules.PartRule>();
+            Json.Logic.RuleRegistry.AddRule<CustomRules.QueryRule>();
         }
 
         private MessageTypeEnum ConvertRuleLogType(string ruleLogType)

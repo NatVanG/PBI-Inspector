@@ -20,7 +20,7 @@ namespace PBIXInspectorLibrary.Part
         
         public abstract Part Report(Part context);
 
-        public abstract Part ReportExtensions(Part context);
+        public abstract Part? ReportExtensions(Part context);
 
         public abstract Part Version(Part context);
 
@@ -42,7 +42,7 @@ namespace PBIXInspectorLibrary.Part
 
         public abstract List<Part> Bookmarks(Part context);
 
-        public abstract Part UniquePart(string query, Part context);
+        public abstract Part? UniquePart(string query, Part context);
 
         public abstract JsonNode? ToJsonNode(Part context);
 

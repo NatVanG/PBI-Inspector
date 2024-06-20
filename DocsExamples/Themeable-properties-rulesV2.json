@@ -1,0 +1,934 @@
+{
+  "rules": [
+    {
+      "id": "GENERAL_PROPERTIES_PRESENT",
+      "name": "Consider using a theme file to define general properties.",
+      "description": "",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "visual.visualType"
+                            },
+                            [
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "filter": [
+                                {
+                                  "var": "visual.visualContainerObjects.general"
+                                },
+                                { "!": { "var": "properties.altText" } }
+                              ]
+                            }
+                          ]
+                        },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "generalProperties",
+                {
+                  "filter": [
+                    {
+                      "var": "visual.visualContainerObjects.general"
+                    },
+                    { "!": { "var": "properties.altText" } }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+
+        },
+        []
+      ]
+    },
+    {
+      "id": "BORDER_PROPERTIES_PRESENT",
+      "name": "Consider using a theme file to define border properties.",
+      "description": "",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "visual.visualType"
+                            },
+                            [
+                              "specify comma separated list of excluded visual types here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "name"
+                            },
+                            [
+                              "specify comma separated list of excluded visual names here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "var": "visual.visualContainerObjects.border"
+                            }
+                          ]
+                        },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "borderProperties",
+                {
+                  "var": "visual.visualContainerObjects.border"
+                }
+              ]
+            }
+          ]
+        },
+        {},
+        []
+      ]
+    },
+    {
+      "id": "VISUALHEADER_PROPERTIES_PRESENT",
+      "name": "Consider using a theme file to define visualHeader properties.",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "visual.visualType"
+                            },
+                            [
+                              "specify comma separated list of excluded visual types here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "name"
+                            },
+                            [
+                              "specify comma separated list of excluded visual names here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "var": "visual.visualContainerObjects.visualHeader"
+                            }
+                          ]
+                        },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "visualHeaderProperties",
+                {
+                  "var": "visual.visualContainerObjects.visualHeader"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "visualsConfigArray": "."
+        },
+        []
+      ]
+    },
+    {
+      "id": "VISUALTOOLTIP_PROPERTIES_PRESENT",
+      "name": "Consider using a theme file to define visualTooltip properties.",
+      "description": "",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "visual.visualType"
+                            },
+                            [
+                              "specify comma separated list of excluded visual types here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "name"
+                            },
+                            [
+                              "specify comma separated list of excluded visual names here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "var": "visual.visualContainerObjects.visualTooltip"
+                            }
+                          ]
+                        },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "visualTooltipProperties",
+                {
+                  "var": "visual.visualContainerObjects.visualTooltip"
+                }
+              ]
+            }
+          ]
+        },
+        {},
+        []
+      ]
+    },
+    {
+      "id": "PADDING_PROPERTIES_PRESENT",
+      "name": "Consider using a theme file to define padding properties.",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "visual.visualType"
+                            },
+                            [
+                              "specify comma separated list of excluded visual types here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "name"
+                            },
+                            [
+                              "specify comma separated list of excluded visual names here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "var": "visual.visualContainerObjects.padding"
+                            }
+                          ]
+                        },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "paddingProperties",
+                {
+                  "var": "visual.visualContainerObjects.padding"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "visualsConfigArray": "."
+        },
+        []
+      ]
+    },
+    {
+      "id": "BACKGROUND_PROPERTIES_PRESENT",
+      "name": "Consider using a theme file to define background properties.",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "visual.visualType"
+                            },
+                            [
+                              "specify comma separated list of excluded visual types here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "name"
+                            },
+                            [
+                              "specify comma separated list of excluded visual names here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "var": "visual.visualContainerObjects.background"
+                            }
+                          ]
+                        },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "backgroundProperties",
+                {
+                  "var": "visual.visualContainerObjects.background"
+                }
+              ]
+            }
+          ]
+        },
+        {},
+        []
+      ]
+    },
+    {
+      "id": "DROPSHADOW_PROPERTIES_PRESENT",
+      "name": "Consider using a theme file to define dropShadow properties.",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "visual.visualType"
+                            },
+                            [
+                              "specify comma separated list of excluded visual types here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "name"
+                            },
+                            [
+                              "specify comma separated list of excluded visual names here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "var": "visual.visualContainerObjects.dropShadow"
+                            }
+                          ]
+                        },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "dropShadowProperties",
+                {
+                  "var": "visual.visualContainerObjects.dropShadow"
+                }
+              ]
+            }
+          ]
+        },
+        {},
+        []
+      ]
+    },
+    {
+      "id": "TITLE_PROPERTIES_PRESENT",
+      "name": "Consider using a theme file to define title properties.",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "visual.visualType"
+                            },
+                            [
+                              "specify comma separated list of excluded visual types here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "name"
+                            },
+                            [
+                              "specify comma separated list of excluded visual names here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "filter": [
+                                {
+                                  "var": "visual.visualContainerObjects.title"
+                                },
+                                { "!": { "var": "properties.text" } }
+                              ]
+                            }
+                          ]
+                        },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "titleProperties",
+                {
+                  "filter": [
+                    {
+                      "var": "visual.visualContainerObjects.title"
+                    },
+                    { "!": { "var": "properties.text" } }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {},
+        []
+      ]
+    },
+    {
+      "id": "SUBTITLE_PROPERTIES_PRESENT",
+      "name": "Consider using a theme file to define subtitle properties.",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "visual.visualType"
+                            },
+                            [
+                              "specify comma separated list of excluded visual types here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "name"
+                            },
+                            [
+                              "specify comma separated list of excluded visual names here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "var": "visual.visualContainerObjects.subtitle"
+                            }
+                          ]
+                        },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "subtitleProperties",
+                {
+                  "var": "visual.visualContainerObjects.subtitle"
+                }
+              ]
+            }
+          ]
+        },
+        {},
+        []
+      ]
+    },
+    {
+      "id": "SPACING_PROPERTIES_PRESENT",
+      "name": "Consider using a theme file to define spacing properties.",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "singleVisual.visualType"
+                            },
+                            [
+                              "specify comma separated list of excluded visual types here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "name"
+                            },
+                            [
+                              "specify comma separated list of excluded visual names here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "var": "visual.visualContainerObjects.spacing"
+                            }
+                          ]
+                        },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "spacingProperties",
+                {
+                  "var": "visual.visualContainerObjects.spacing"
+                }
+              ]
+            }
+          ]
+        },
+        { },
+        []
+      ]
+    },
+    {
+      "id": "DIVIDER_PROPERTIES_PRESENT",
+      "name": "Consider using a theme file to define divider properties.",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "visual.visualType"
+                            },
+                            [
+                              "specify comma separated list of excluded visual types here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "name"
+                            },
+                            [
+                              "specify comma separated list of excluded visual names here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "var": "visual.visualContainerObjects.divider"
+                            }
+                          ]
+                        },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "dividerProperties",
+                {
+                  "var": "visual.visualContainerObjects.divider"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "visualsConfigArray": "."
+        },
+        []
+      ]
+    },
+    {
+      "id": "STYLEPRESET_PROPERTIES_PRESENT",
+      "name": "Consider using a theme file to define stylePreset properties.",
+      "part": "Pages",
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "prt": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "visual.visualType"
+                            },
+                            [
+                              "specify comma separated list of excluded visual types here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "!": [
+                        {
+                          "in": [
+                            {
+                              "var": "name"
+                            },
+                            [
+                              "specify comma separated list of excluded visual names here"
+                            ]
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      ">": [
+                        {
+                          "count": [
+                            {
+                              "var": "visual.visualContainerObjects.stylePreset"
+                            }
+                          ]
+                        },
+                        0
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "torecord": [
+                "name",
+                {
+                  "var": "name"
+                },
+                "stylePresetProperties",
+                {
+                  "var": "visual.visualContainerObjects.stylePreset"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "visualsConfigArray": "."
+        },
+        []
+      ]
+    }
+  ]
+}

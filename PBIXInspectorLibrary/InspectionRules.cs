@@ -27,10 +27,5 @@
         public Test Test { get; set; }
 
         public bool PathErrorWhenNoMatch { get; set; }
-
-        public static implicit operator Rule(Json.Logic.Rule v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

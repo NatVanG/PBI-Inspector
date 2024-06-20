@@ -6,7 +6,7 @@
 
 This is a community project that is not supported by Microsoft. 
 
-This version of PBI Inspector only supports the new enhanced metadata file format (PBIR), see https://learn.microsoft.com/en-gb/power-bi/developer/projects/projects-report. For the older PBIR-legacy file format, please use the previous version of PBI Inspector available at https://github.com/NatVanG/PBI-Inspector.
+:exclamation: This version of PBI Inspector only supports the new enhanced metadata file format (PBIR), see https://learn.microsoft.com/en-gb/power-bi/developer/projects/projects-report. For the older PBIR-legacy file format, please use the previous version of PBI Inspector available at https://github.com/NatVanG/PBI-Inspector. To support the new enhanced metadata file format, a new "part" custom command was introduced which will be documented below.
 
 ## Thanks :pray:
 
@@ -31,13 +31,7 @@ Please report issues [here](https://github.com/NatVanG/PBI-Inspector/issues).
 
 So we've DevOps, MLOps and DataOps... but why not VisOps? How can we ensure that business intelligence charts and other visuals within report pages are published in a consistent, performance optimised and accessible state? For example, are local report settings set in a consistent manner for a consistent user experience? Are visuals deviating from the specified theme by, say, using custom colours? Are visuals kept lean so they render quickly? Are charts axes titles displayed? etc.
 
-With Microsoft Power BI, visuals are placed on a canvas and formatted as desired, images may be included and theme files referenced. Testing the consistency of the visuals output has thus far typically been a manual process. Recently, a [new Power BI file format (.pbip) was introduced](https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/) to enable pro developer application lifecycle management and source control. In particular, the report's layout definition and any associated theme are in json format and therefore readable by both machines and humans. However upon new releases of Power BI, the json structure may introduce changes without warning to include new features for example. Therefore an automated visual layout testing tool should be resilient to such changes while providing a powerful rule logic creation framework. PBI Inspector provides the ability to define fully configurable testing rules (themselves written in json) powered by Greg Dennis's Json Logic .NET implementation, see https://json-everything.net/json-logic. 
-
-### YouTube session with Reid Havens
-
-[![YouTube session with Reid Havens](DocsImages/ReidSession.png)](https://www.youtube.com/watch?v=Moxci_B7kv8)
-
-The rules files used in the session can be found at [Reid-rules.json](DocsExamples/Reid-rules.json). 
+With Microsoft Power BI, visuals are placed on a canvas and formatted as desired, images may be included and theme files referenced. Testing the consistency of the visuals output has thus far typically been a manual process. The [Power BI file format (.pbip) was introduced](https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/) then [enhanced](https://learn.microsoft.com/en-gb/power-bi/developer/projects/projects-report) to enable pro developer application lifecycle management and source control.  PBI Inspector provides the ability to define fully configurable testing rules powered by Greg Dennis's Json Logic .NET implementation, see https://json-everything.net/json-logic. 
 
 ## <a id="baserulesoverview"></a>Base rules
 
@@ -58,8 +52,6 @@ While PBI Inspector supports custom rules, it also includes the following base r
 To modify parameters, save a local copy of the Base-rulesV2.json file at https://github.com/NatVanG/PBI-Inspector/blob/part-concept/Rules/Base-rulesV2.json and point PBI Inspector to the new file.
 
 To disable a rule, edit the rule's json to specify ```"disabled": true```. At runtime PBI Inspector will ignore any disabled rule.
-
-Currently these changes need to be made directly in the rules file json, however the plan is to provide a more intuitive user interface in upcoming releases of PBI Inspector.
 
 ## <a id="gui"></a>Run from the graphical user interface (GUI)
 
@@ -83,7 +75,7 @@ All command line parameters are as follows:
 
 ```-pbix filepath```: Not currently supported. 
 
-```-rules filepath```: Required. The filepath to the rules file. Save a local copy of the base rules file at https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/Rules/Base-rules.json and modify as required.
+```-rules filepath```: Required. The filepath to the rules file. Save a local copy of the base rules file at https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/Rules/Base-rulesV2.json and modify as required.
 
 ```-verbose true|false```: Optional, false by default. If false then only rule violations will be shown otherwise all results will be listed.
 
@@ -100,15 +92,15 @@ All command line parameters are as follows:
 
 - Run "Base-rules.json" rule definitions against PBI report file at "Sales.Report and return results in Json and HTML formats:
 
-``` PBIXInspectorCLI.exe -pbip "C:\Files\Sales.pbip" -rules ".\Files\Base-rules.json" -output "C:\Files\TestRun" -formats "JSON,HTML"```
+``` PBIXInspectorCLI.exe -pbip "C:\Files\Sales.pbip" -rules ".\Files\Base-rulesV2.json" -output "C:\Files\TestRun" -formats "JSON,HTML"```
 
 - Run "Base-rules.json" rule definitions against PBI report file at "Sales.Report and return results to the console only:
 
-``` PBIXInspectorCLI.exe -pbip "C:\Files\Sales.pbip" -rules ".\Files\Base-rules.json" -output "C:\Files\TestRun" -formats "Console"```
+``` PBIXInspectorCLI.exe -pbip "C:\Files\Sales.pbip" -rules ".\Files\Base-rulesV2.json" -output "C:\Files\TestRun" -formats "Console"```
 
 - Run "Base-rules.json" rule definitions against PBI report file at "Sales.Report and return results as Azure DevOps compatible log and tasks commands (see https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&tabs=bash#task-commands):
 
-``` PBIXInspectorCLI.exe -pbip "C:\Files\Sales.pbip" -rules ".\Files\Base-rules.json"  -formats "ADO"```
+``` PBIXInspectorCLI.exe -pbip "C:\Files\Sales.pbip" -rules ".\Files\Base-rulesV2.json"  -formats "ADO"```
 
 ## <a id="results"></a>Interpreting results
 
