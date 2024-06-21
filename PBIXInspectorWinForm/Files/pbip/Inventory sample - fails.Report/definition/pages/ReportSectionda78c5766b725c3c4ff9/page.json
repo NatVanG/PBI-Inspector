@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSectionda78c5766b725c3c4ff9",
+  "displayName": "Measure filtering",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSection5f326c8a8185db501ad9",
+  "displayName": "Show items with no data",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

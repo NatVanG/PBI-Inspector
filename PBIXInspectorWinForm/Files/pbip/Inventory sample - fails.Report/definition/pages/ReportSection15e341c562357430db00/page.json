@@ -1,0 +1,30 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSection15e341c562357430db00",
+  "displayName": "Filter pane",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "317d3554c28d50002080",
+      "target": "51bd28a74d10071452b2",
+      "type": "NoFilter"
+    },
+    {
+      "source": "70decca9243ac7ec9b09",
+      "target": "51bd28a74d10071452b2",
+      "type": "NoFilter"
+    },
+    {
+      "source": "70decca9243ac7ec9b09",
+      "target": "ea105fd87310401a682d",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ea105fd87310401a682d",
+      "target": "51bd28a74d10071452b2",
+      "type": "NoFilter"
+    }
+  ]
+}

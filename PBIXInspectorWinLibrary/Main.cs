@@ -1,4 +1,5 @@
 ﻿using PBIXInspectorLibrary;
+using PBIXInspectorLibrary.Exceptions;
 using PBIXInspectorLibrary.Output;
 using PBIXInspectorWinLibrary.Drawing;
 using PBIXInspectorWinLibrary.Utils;

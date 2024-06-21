@@ -1,0 +1,30 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSection6b18d49925d7cb5d47ab",
+  "displayName": "Interactions",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "1ccdc7fd6ca0178e6096",
+      "target": "bbc75e5df52527942a69",
+      "type": "DataFilter"
+    },
+    {
+      "source": "12bdabcb27a547b75d69",
+      "target": "bbc75e5df52527942a69",
+      "type": "DataFilter"
+    },
+    {
+      "source": "12bdabcb27a547b75d69",
+      "target": "1954ea05ff0aabedcca0",
+      "type": "DataFilter"
+    },
+    {
+      "source": "1954ea05ff0aabedcca0",
+      "target": "bbc75e5df52527942a69",
+      "type": "DataFilter"
+    }
+  ]
+}

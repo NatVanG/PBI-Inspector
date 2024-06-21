@@ -42,9 +42,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsExamples", "DocsExample
 		DocsExamples\Example-ReportPageFieldMap.json = DocsExamples\Example-ReportPageFieldMap.json
 		DocsExamples\Example-ReportPageFieldMapV2.json = DocsExamples\Example-ReportPageFieldMapV2.json
 		DocsExamples\Example-rules.json = DocsExamples\Example-rules.json
-		Examples-rulesV2.json = Examples-rulesV2.json
 		DocsExamples\Examples-rulesV2.json = DocsExamples\Examples-rulesV2.json
 		DocsExamples\Reid-rules.json = DocsExamples\Reid-rules.json
+		DocsExamples\Reid-rulesV2.json = DocsExamples\Reid-rulesV2.json
 		DocsExamples\Themeable-properties-rules.json = DocsExamples\Themeable-properties-rules.json
 		DocsExamples\Themeable-properties-rulesV2.json = DocsExamples\Themeable-properties-rulesV2.json
 	EndProjectSection

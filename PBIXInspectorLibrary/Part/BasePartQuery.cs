@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PBIXInspectorLibrary.Part
 {
-    public class BasePartQuery
+    internal class BasePartQuery
     {
         private const string UNIQUEPARTMETHODNAME = "UniquePart";
 

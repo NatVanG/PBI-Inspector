@@ -1,0 +1,9 @@
+{
+  "version": "4.0",
+  "datasetReference": {
+    "byPath": {
+      "path": "../Example-rules-fails.SemanticModel"
+    },
+    "byConnection": null
+  }
+}

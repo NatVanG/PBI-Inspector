@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PBIXInspectorLibrary;
+using PBIXInspectorLibrary.Exceptions;
 using PBIXInspectorLibrary.Output;
 using System.Reflection.Metadata;
 using System.Text.Json;

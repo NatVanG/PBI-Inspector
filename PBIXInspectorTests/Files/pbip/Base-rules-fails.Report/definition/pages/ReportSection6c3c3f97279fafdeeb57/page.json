@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSection6c3c3f97279fafdeeb57",
+  "displayName": "Deneb custom visual",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

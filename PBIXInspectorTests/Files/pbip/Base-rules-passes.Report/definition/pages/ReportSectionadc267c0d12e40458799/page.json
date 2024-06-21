@@ -1,0 +1,48 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSectionadc267c0d12e40458799",
+  "displayName": "Tooltip page",
+  "displayOption": "ActualSize",
+  "height": 240,
+  "width": 320,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "Filter75e55e450b3309ffd834",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory"
+              }
+            },
+            "Property": "Quantity"
+          }
+        },
+        "howCreated": "Drillthrough"
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "pageBinding": {
+    "name": "Pod1",
+    "type": "Tooltip",
+    "parameters": [
+      {
+        "name": "Param_Filter75e55e450b3309ffd834",
+        "boundFilter": "Filter75e55e450b3309ffd834",
+        "asAggregation": true,
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory"
+              }
+            },
+            "Property": "Quantity"
+          }
+        }
+      }
+    ]
+  }
+}

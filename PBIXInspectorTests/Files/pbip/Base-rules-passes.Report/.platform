@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Base-rules-passes"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "2c22f7ac-b8a8-49c3-b59b-e431ad459bca"
+  }
+}

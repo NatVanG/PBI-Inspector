@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSectionc9582afbe6f823e9059c",
+  "displayName": "Scrolling page",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

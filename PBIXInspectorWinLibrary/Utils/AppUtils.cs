@@ -1,4 +1,5 @@
 ﻿using PBIXInspectorLibrary;
+using PBIXInspectorLibrary.Exceptions;
 using System.Diagnostics;
 
 namespace PBIXInspectorWinLibrary.Utils

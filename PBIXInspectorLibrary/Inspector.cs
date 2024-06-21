@@ -2,6 +2,7 @@
 using Json.More;
 using Json.Path;
 using Json.Pointer;
+using PBIXInspectorLibrary.Exceptions;
 using PBIXInspectorLibrary.Output;
 using PBIXInspectorLibrary.Part;
 using System.Data;
@@ -248,7 +249,7 @@ namespace PBIXInspectorLibrary
         /// <returns></returns>
         private JsonNode? MapRuleDataPointersToValues(JsonNode? target, Rule rule, JsonNode? contextNode)
         {
-            if (rule.Test.Data == null || rule.Test.Data is not JsonObject) return rule.Test.Data;
+            if (target == null || rule.Test.Data == null || rule.Test.Data is not JsonObject) return rule.Test.Data;
 
             var newdata = new JsonObject();
 

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSectionbdda58ae3cdce13a96ee",
+  "displayName": "PERCENTAGE_OF_CHARTS_USING_CUSTOM_COLOURS",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

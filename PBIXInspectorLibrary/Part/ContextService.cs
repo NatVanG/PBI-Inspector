@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace PBIXInspectorLibrary.Part
 {
     //TODO: not thread safe
-    public class ContextService
+    internal class ContextService
     {
         private static ContextService instance = null;
 

@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace PBIXInspectorLibrary.Part
 {
-    public class Part
+    internal class Part
     {
         public Part Parent { get; private set; }
 

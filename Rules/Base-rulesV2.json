@@ -97,7 +97,7 @@
             {
               "filter": [
                 {
-                  "var": "Visuals"
+                  "part": "Visuals"
                 },
                 {
                   ">": [
@@ -230,15 +230,10 @@
                 }
               ]
             },
-            {
-              "var": "paramMaxNumberOfPagesPerReport"
-            }
+            10
           ]
         },
-        {
-          "s": ".",
-          "paramMaxNumberOfPagesPerReport": 10
-        },
+        {},
         true
       ]
     },
@@ -254,7 +249,7 @@
             {
               "filter": [
                 {
-                  "var": "Visuals"
+                  "part": "Visuals"
                 },
                 {
                   "==": [
@@ -483,9 +478,7 @@
             }
           ]
         },
-        {
-          "visualsConfigArray": "."
-        },
+        {},
         []
       ]
     },

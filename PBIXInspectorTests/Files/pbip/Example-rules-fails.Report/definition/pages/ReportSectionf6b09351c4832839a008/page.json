@@ -1,0 +1,30 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSectionf6b09351c4832839a008",
+  "displayName": "Bookmarks",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "9b38eaac62c48d04a031",
+      "target": "ca510430264de0060d24",
+      "type": "NoFilter"
+    },
+    {
+      "source": "84ea064fb2e52a46eb62",
+      "target": "ca510430264de0060d24",
+      "type": "NoFilter"
+    },
+    {
+      "source": "84ea064fb2e52a46eb62",
+      "target": "c8a4a9ab08c29eb74671",
+      "type": "DataFilter"
+    },
+    {
+      "source": "c8a4a9ab08c29eb74671",
+      "target": "ca510430264de0060d24",
+      "type": "NoFilter"
+    }
+  ]
+}

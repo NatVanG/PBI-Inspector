@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using PBIXInspectorLibrary;
+using PBIXInspectorLibrary.Exceptions;
 using PBIXInspectorLibrary.Output;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -32,77 +33,37 @@ namespace PBIXInspectorTests;
 /// </summary>
 public class SuiteRunner
 {
-    #region PbixTestSuite
-    public static IEnumerable<TestCaseData> PbixTestSuite()
+    #region BasePassSuite
+    public static IEnumerable<TestCaseData> BasePassPBIPSuite()
     {
-        string PBIXFilePath = @"Files\Inventory test.pbix";
-        string RulesFilePath = @"Files\Inventory rules test.json";
+        string PBIPFilePath = @"Files\pbip\Base-rules-passes.Report";
+        string RulesFilePath = @"Files\Base-rulesV2.json";
 
-        Console.WriteLine("Running test suite...");
-        return Suite(PBIXFilePath, RulesFilePath);
-    }
-
-    [TestCaseSource(nameof(PbixTestSuite))]
-    public void RunPbixTest(TestResult testResult)
-    {
-        Assert.True(testResult.Pass, testResult.Message);
-    }
-    #endregion
-
-    #region PbipTestSuite
-    public static IEnumerable<TestCaseData> PbipTestSuite()
-    {
-        string PBIPFilePath = @"Files\pbip\Inventory test.Report";
-        string RulesFilePath = @"Files\Inventory rules test.json";
-
-        Console.WriteLine("Running test suite...");
+        Console.WriteLine("Running base pass PBIP suite...");
         return Suite(PBIPFilePath, RulesFilePath);
     }
 
-    [TestCaseSource(nameof(PbipTestSuite))]
-    public void RunPbipTest(TestResult testResult)
+    [TestCaseSource(nameof(BasePassPBIPSuite))]
+    public void RunBasePassPBIP(TestResult testResult)
     {
-        Assert.True(testResult.Pass, testResult.Message);
-    }
-    #endregion
-
-    #region BasePassSuite
-    public static IEnumerable<TestCaseData> BasePassPBIXSuite()
-    {
-        string PBIXFilePath = @"Files\Base-rules-passes.pbix";
-        string RulesFilePath = @"Files\Base-rules.json";
-
-        Console.WriteLine("Running base pass PBIX suite...");
-        return Suite(PBIXFilePath, RulesFilePath);
-    }
-
-    [TestCaseSource(nameof(BasePassPBIXSuite))]
-    public void RunBasePassPBIX(TestResult testResult)
-    {
-        Assert.True(testResult.Pass, testResult.Message);
+        switch (testResult.RuleId)
+        {
+            case "REDUCE_PAGES":
+                Assert.False(testResult.Pass, testResult.Message);
+                break;
+            default:
+                Assert.True(testResult.Pass, testResult.Message);
+                break;
+        }
     }
     #endregion
 
     #region BaseFailSuite 
-    public static IEnumerable<TestCaseData> BaseFailPBIXSuite()
-    {
-        string PBIXFilePath = @"Files\Base-rules-fails.pbix";
-        string RulesFilePath = @"Files\Base-rules.json";
-
-        Console.WriteLine("Running base fail PBIX suite...");
-        return Suite(PBIXFilePath, RulesFilePath);
-    }
-
-    [TestCaseSource(nameof(BaseFailPBIXSuite))]
-    public void RunBaseFailPBIX(TestResult testResult)
-    {
-        RunBaseFail(testResult);
-    }
 
     public static IEnumerable<TestCaseData> BaseFailPBIPSuite()
     {
-        string PBIPFilePath = @"Files\pbip\Inventory sample - fails.Report";
-        string RulesFilePath = @"Files\Base-rules.json";
+        string PBIPFilePath = @"Files\pbip\Inventory-sample-fails.Report";
+        string RulesFilePath = @"Files\Base-rulesV2.json";
 
         Console.WriteLine("Running base fail PBIP suite...");
         return Suite(PBIPFilePath, RulesFilePath);
@@ -121,7 +82,7 @@ public class SuiteRunner
         {
             case "REMOVE_UNUSED_CUSTOM_VISUALS":
                 expected = "[\"Aquarium1442671919391\"]";
-                JsonAssert.AreEquivalent(testResult.Actual, JsonNode.Parse(expected));
+                JsonAssert.AreEquivalent(JsonNode.Parse(expected), testResult.Actual);
                 break;
             case "REDUCE_VISUALS_ON_PAGE":
                 if (testResult.ParentName == "ReportSectionfb0835fa991786b43a3f")
@@ -164,13 +125,14 @@ public class SuiteRunner
                 }
                 break;
             case "REDUCE_PAGES":
-                Assert.True(testResult.Pass, testResult.Message);
+                Assert.False(testResult.Pass, testResult.Message);
                 break;
             case "AVOID_SHOW_ITEMS_WITH_NO_DATA":
+                //["797168e1f1e7658ceae6","97ad01a2b8fbfca3220c"]
                 expected = "[\"797168e1f1e7658ceae6\",\"97ad01a2b8fbfca3220c\"]";
                 if (testResult.ParentName == "ReportSection5f326c8a8185db501ad9")
                 {
-                    JsonAssert.AreEquivalent(testResult.Actual, JsonNode.Parse(expected));
+                    JsonAssert.AreEquivalent(JsonNode.Parse(expected), testResult.Actual);
                 }
                 else
                 {
@@ -178,21 +140,14 @@ public class SuiteRunner
                 }
                 break;
             case "HIDE_TOOLTIP_DRILLTROUGH_PAGES":
-                if (testResult.ParentName == "ReportSectionadc267c0d12e40458799"
-                        || testResult.ParentName == "ReportSection8952e5fd70dcea579d3b")
-                {
-                    Assert.False(testResult.Pass, testResult.Message);
-                }
-                else
-                {
-                    Assert.True(testResult.Pass, testResult.Message);
-                }
+                expected = "[\"Detail\", \"Tooltip page\"]";
+                JsonAssert.AreEquivalent(JsonNode.Parse(expected), testResult.Actual);
                 break;
             case "ENSURE_THEME_COLOURS":
                 if (testResult.ParentName == "ReportSection6c3c3f97279fafdeeb57")
                 {
                     expected = "[\"1a67964cf02b6170c3b8\"]";
-                    JsonAssert.AreEquivalent(testResult.Actual, JsonNode.Parse(expected));
+                    JsonAssert.AreEquivalent(JsonNode.Parse(expected), testResult.Actual);
                 }
                 else
                 {
@@ -201,7 +156,7 @@ public class SuiteRunner
                 break;
             case "ENSURE_PAGES_DO_NOT_SCROLL_VERTICALLY":
                 expected = "[\"Scrolling page\"]";
-                JsonAssert.AreEquivalent(testResult.Actual, JsonNode.Parse(expected));
+                JsonAssert.AreEquivalent(JsonNode.Parse(expected), testResult.Actual);
                 break;
             case "ENSURE_ALTTEXT":
                 Assert.False(testResult.Pass, testResult.Message);
@@ -215,17 +170,17 @@ public class SuiteRunner
 
     #region ExampleFailSuite
 
-    public static IEnumerable<TestCaseData> ExampleFailPBIXSuite()
+    public static IEnumerable<TestCaseData> ExampleFailPBIPSuite()
     {
-        string PBIXFilePath = @"Files\Example-rules-fails.pbix";
-        string RulesFilePath = @"Files\Example-rules.json";
+        string PBIPFilePath = @"Files\pbip\Inventory-sample-fails.Report";
+        string RulesFilePath = @"Files\Examples-rulesV2.json";
 
-        Console.WriteLine("Running example fail PBIX suite...");
-        return Suite(PBIXFilePath, RulesFilePath);
+        Console.WriteLine("Running base fail PBIP suite...");
+        return Suite(PBIPFilePath, RulesFilePath);
     }
 
-    [TestCaseSource(nameof(ExampleFailPBIXSuite))]
-    public void RunExampleFailPBIX(TestResult testResult)
+    [TestCaseSource(nameof(ExampleFailPBIPSuite))]
+    public void RunExampleFailPBIP(TestResult testResult)
     {
         RunExampleFail(testResult);
     }
@@ -342,7 +297,7 @@ public class SuiteRunner
     /// <returns></returns>
     public static IEnumerable<TestCaseData> JsonLogicSuite()
     {
-        string PBIXFilePath = @"Files\Inventory test.pbix";
+        string PBIPFilePath = @"Files\pbip\Inventory Sample.pbip";
         var testsPath = Path.Combine(TestContext.CurrentContext.WorkDirectory, @"Files\JsonLogicTests.json");
 
         return Task.Run(async () =>
@@ -351,7 +306,9 @@ public class SuiteRunner
             try
             {
                 using var client = new HttpClient();
-                using var request = new HttpRequestMessage(HttpMethod.Get, "https://jsonlogic.com/tests.json");
+                //https://raw.githubusercontent.com/json-everything/json-everything/master/src/JsonLogic.Tests/Files/tests.json
+                //https://jsonlogic.com/tests.json
+                using var request = new HttpRequestMessage(HttpMethod.Get, "https://raw.githubusercontent.com/json-everything/json-everything/master/src/JsonLogic.Tests/Files/tests.json");
                 using var response = await client.SendAsync(request);
 
                 content = await response.Content.ReadAsStringAsync();
@@ -367,10 +324,10 @@ public class SuiteRunner
 
             var testSuite = JsonSerializer.Deserialize<JsonLogicTestSuite>(content);
             var inspectionRules = new InspectionRules();
-            var rules = testSuite!.Tests.Select(t => new PBIXInspectorLibrary.Rule() { Name = t.Logic, Path = "$", PathErrorWhenNoMatch = false, Test = new PBIXInspectorLibrary.Test() { Logic = t.Logic!, Data = t.Data!, Expected = t.Expected! } });
+            var rules = testSuite!.Tests.Select(t => new PBIXInspectorLibrary.Rule() { Name = t.Logic, PathErrorWhenNoMatch = false, Test = new PBIXInspectorLibrary.Test() { Logic = t.Logic!, Data = t.Data!, Expected = t.Expected! } });
             inspectionRules.Rules = rules.ToList();
 
-            return Suite(PBIXFilePath, inspectionRules);
+            return Suite(PBIPFilePath, inspectionRules);
         }).Result;
     }
 
@@ -381,31 +338,14 @@ public class SuiteRunner
     }
     #endregion
 
-    #region SampleSuite 
-    public static IEnumerable<TestCaseData> SampleSuite()
-    {
-        string PBIXFilePath = @"Files\Inventory sample.pbix";
-        string RulesFilePath = @"Files\Inventory rules sample.json";
-
-        Console.WriteLine("Running sample suite...");
-        return Suite(PBIXFilePath, RulesFilePath);
-    }
-
-    [TestCaseSource(nameof(SampleSuite))]
-    public void RunSample(TestResult testResult)
-    {
-        Assert.True(testResult.Pass, testResult.Message);
-    }
-    #endregion
-
     #region BaseSuite 
     public static IEnumerable<TestCaseData> BaseSuite()
     {
-        string PBIXFilePath = @"Files\Inventory sample.pbix";
-        string RulesFilePath = @"Files\Base-rules.json";
+        string PBIPFilePath = @"Files\pbip\Inventory sample.Report";
+        string RulesFilePath = @"Files\Base-rulesV2.json";
 
         Console.WriteLine("Running base suite...");
-        return Suite(PBIXFilePath, RulesFilePath);
+        return Suite(PBIPFilePath, RulesFilePath);
     }
 
     [TestCaseSource(nameof(BaseSuite))]
@@ -415,11 +355,11 @@ public class SuiteRunner
     }
     #endregion
 
-    public static IEnumerable<TestCaseData> Suite(string PBIXFilePath, string RulesFilePath)
+    public static IEnumerable<TestCaseData> Suite(string PBIPFilePath, string RulesFilePath)
     {
         try
         {
-            Inspector insp = new Inspector(PBIXFilePath, RulesFilePath);
+            Inspector insp = new Inspector(PBIPFilePath, RulesFilePath);
 
             var testResults = insp.Inspect();
 
@@ -441,11 +381,11 @@ public class SuiteRunner
         return null;
     }
 
-    public static IEnumerable<TestCaseData> Suite(string PBIXFilePath, InspectionRules inspectionRules)
+    public static IEnumerable<TestCaseData> Suite(string PBIPFilePath, InspectionRules inspectionRules)
     {
         try
         {
-            Inspector insp = new Inspector(PBIXFilePath, inspectionRules);
+            Inspector insp = new Inspector(PBIPFilePath, inspectionRules);
 
             var testResults = insp.Inspect();
 

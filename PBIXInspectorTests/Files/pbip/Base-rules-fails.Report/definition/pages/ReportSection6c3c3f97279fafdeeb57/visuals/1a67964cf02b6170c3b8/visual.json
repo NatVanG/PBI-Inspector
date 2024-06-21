@@ -1,0 +1,180 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.0.0/schema.json",
+  "name": "1a67964cf02b6170c3b8",
+  "position": {
+    "x": 548.57142857142856,
+    "y": 8.4072249589490973,
+    "z": 0,
+    "width": 731.42857142857144,
+    "height": 692.54515599343188,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "deneb7E15AEF80B9E4D4F8E12924291ECE89A",
+    "query": {
+      "queryState": {
+        "dataset": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory"
+                    }
+                  },
+                  "Property": "Colour"
+                }
+              },
+              "queryRef": "Inventory.Colour",
+              "nativeQueryRef": "Colour"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory"
+                    }
+                  },
+                  "Property": "Sum of Qty"
+                }
+              },
+              "queryRef": "Inventory.Sum of Qty",
+              "nativeQueryRef": "Sum of Qty"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Inventory"
+                  }
+                },
+                "Property": "Sum of Qty"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "display": [
+        {
+          "properties": {
+            "viewportHeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "682.5451559934319D"
+                }
+              }
+            },
+            "viewportWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "721.4285714285714D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "developer": [
+        {
+          "properties": {
+            "version": {
+              "expr": {
+                "Literal": {
+                  "Value": "'1.5.1.0'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "vega": [
+        {
+          "properties": {
+            "provider": {
+              "expr": {
+                "Literal": {
+                  "Value": "'vegaLite'"
+                }
+              }
+            },
+            "jsonSpec": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\n  \"data\": {\"name\": \"dataset\"},\n  \"layer\": [\n    {\n      \"mark\": {\n        \"type\": \"bar\",\n        \"opacity\": 0.3,\n        \"tooltip\": true\n      },\n      \"encoding\": {\n        \"x\": {\"field\": \"Sum of Qty\"}\n      }\n    },\n    {\n      \"mark\": {\n        \"type\": \"bar\",\n        \"tooltip\": true\n      },\n      \"encoding\": {\n        \"x\": {\n          \"field\": \"Sum of Qty__highlight\"\n        },\n        \"opacity\": {\n          \"condition\": {\n            \"test\": {\n              \"field\": \"__selected__\",\n              \"equal\": \"off\"\n            },\n            \"value\": 0\n          },\n          \"value\": 1\n        }\n      }\n    }\n  ],\n  \"encoding\": {\n    \"y\": {\n      \"field\": \"Colour\",\n      \"type\": \"nominal\"\n    },\n    \"x\": {\n      \"type\": \"quantitative\",\n      \"axis\": {\"title\": \"Sum of Qty\"}\n    }\n  }\n}'"
+                }
+              }
+            },
+            "jsonConfig": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\n  \"view\": {\"stroke\": \"transparent\"},\n  \"font\": \"Segoe UI\",\n  \"arc\": {},\n  \"area\": {\n    \"line\": true,\n    \"opacity\": 0.6\n  },\n  \"bar\": {},\n  \"line\": {\n    \"strokeWidth\": 3,\n    \"strokeCap\": \"round\",\n    \"strokeJoin\": \"round\"\n  },\n  \"path\": {},\n  \"point\": {\"filled\": true, \"size\": 75},\n  \"rect\": {},\n  \"shape\": {},\n  \"symbol\": {\n    \"strokeWidth\": 1.5,\n    \"size\": 50\n  },\n  \"text\": {\n    \"font\": \"Segoe UI\",\n    \"fontSize\": 12,\n    \"fill\": \"#605E5C\"\n  },\n  \"axis\": {\n    \"ticks\": false,\n    \"grid\": false,\n    \"domain\": false,\n    \"labelColor\": \"#605E5C\",\n    \"labelFontSize\": 12,\n    \"titleFont\": \"wf_standard-font, helvetica, arial, sans-serif\",\n    \"titleColor\": \"#252423\",\n    \"titleFontSize\": 16,\n    \"titleFontWeight\": \"normal\"\n  },\n  \"axisQuantitative\": {\n    \"tickCount\": 3,\n    \"grid\": true,\n    \"gridColor\": \"#C8C6C4\",\n    \"gridDash\": [1, 5],\n    \"labelFlush\": false\n  },\n  \"axisX\": {\"labelPadding\": 5},\n  \"axisY\": {\"labelPadding\": 10},\n  \"header\": {\n    \"titleFont\": \"wf_standard-font, helvetica, arial, sans-serif\",\n    \"titleFontSize\": 16,\n    \"titleColor\": \"#252423\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#605E5C\"\n  },\n  \"legend\": {\n    \"titleFont\": \"Segoe UI\",\n    \"titleFontWeight\": \"bold\",\n    \"titleColor\": \"#605E5C\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#605E5C\",\n    \"symbolType\": \"circle\",\n    \"symbolSize\": 75\n  }\n}'"
+                }
+              }
+            },
+            "isNewDialogOpen": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "version": {
+              "expr": {
+                "Literal": {
+                  "Value": "'5.6.1'"
+                }
+              }
+            },
+            "enableTooltips": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "enableContextMenu": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "enableHighlight": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "enableSelection": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "selectionMaxDataPoints": {
+              "expr": {
+                "Literal": {
+                  "Value": "50D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

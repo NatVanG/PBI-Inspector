@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Base-rules-fails"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "a41c0a43-402e-4c79-a9ee-fd4378ad4e95"
+  }
+}

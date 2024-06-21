@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Inventory-sample-fails"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5aa99bad-2284-473f-85db-27ddd3d0bbae"
+  }
+}

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -9,39 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\PBIXInspectorWinForm\Files\pbip\Inventory sample - fails.Dataset\diagramLayout.json" Link="Files\pbip\Inventory sample - fails.Dataset\diagramLayout.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Include="..\PBIXInspectorWinForm\Files\pbip\Inventory sample - fails.Dataset\item.config.json" Link="Files\pbip\Inventory sample - fails.Dataset\item.config.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Include="..\PBIXInspectorWinForm\Files\pbip\Inventory sample - fails.Dataset\item.metadata.json" Link="Files\pbip\Inventory sample - fails.Dataset\item.metadata.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Include="..\PBIXInspectorWinForm\Files\pbip\Inventory sample - fails.pbip" Link="Files\pbip\Inventory sample - fails.pbip">
+    <None Include="Files\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\PBIXInspectorWinForm\Files\pbip\Inventory sample - fails.Report\item.config.json" Link="Files\pbip\Inventory sample - fails.Report\item.config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\DocsExamples\Examples-rulesV2.json" Link="Files\Examples-rulesV2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\PBIXInspectorWinForm\Files\pbip\Inventory sample - fails.Report\item.metadata.json" Link="Files\pbip\Inventory sample - fails.Report\item.metadata.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="..\PBIXInspectorWinLibrary\Files\ReportPageFieldMapV2.json" Link="Files\ReportPageFieldMapV2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\PBIXInspectorWinForm\Files\pbip\Inventory sample - fails.Report\report.json" Link="Files\pbip\Inventory sample - fails.Report\report.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <Content Include="..\DocsExamples\Example-rules.json" Link="Files\Example-rules.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\PBIXInspectorWinForm\Files\pbip\Inventory sample - fails.Report\StaticResources\RegisteredResources\pbilogo011716949638171492.png" Link="Files\pbip\Inventory sample - fails.Report\StaticResources\RegisteredResources\pbilogo011716949638171492.png" />
-    <None Include="..\PBIXInspectorWinForm\Files\pbip\Inventory sample - fails.Report\StaticResources\SharedResources\BaseThemes\CY22SU11.json" Link="Files\pbip\Inventory sample - fails.Report\StaticResources\SharedResources\BaseThemes\CY22SU11.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\PBIXInspectorWinLibrary\Files\ReportPageFieldMap.json" Link="Files\ReportPageFieldMap.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Rules\Base-rules.json" Link="Files\Base-rules.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="..\Rules\Base-rulesV2.json" Link="Files\Base-rulesV2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
@@ -65,77 +46,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Files\Example-rules-fails.pbix">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Files\Inventory rules sample.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Files\Inventory rules test.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\Base-rules-fails.pbix">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\Base-rules-passes.pbix">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\Inventory sample.pbix">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\Inventory test.pbix">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Files\JsonLogicTests.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory test.Dataset\definition.pbidataset">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory test.Dataset\diagramLayout.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory test.Dataset\item.config.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory test.pbip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory test.Report\datasetDiagramLayout.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory test.Report\definition.pbir">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory test.Report\item.config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory test.Report\item.metadata.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory test.Report\report.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\pbip\Inventory test.Report\StaticResources\SharedResources\BaseThemes\CY22SU11.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Files\pbip\Inventory sample - fails.Dataset\" />
-    <Folder Include="Files\pbip\Inventory sample - fails.Report\StaticResources\RegisteredResources\" />
-    <Folder Include="Files\pbip\Inventory sample - fails.Report\StaticResources\SharedResources\BaseThemes\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\PBIXInspectorWinForm\Files\pbip\Inventory sample - fails.Dataset\definition.pbidataset" Link="Files\pbip\Inventory sample - fails.Dataset\definition.pbidataset">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Include="..\PBIXInspectorWinForm\Files\pbip\Inventory sample - fails.Dataset\model.bim" Link="Files\pbip\Inventory sample - fails.Dataset\model.bim">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Include="..\PBIXInspectorWinForm\Files\pbip\Inventory sample - fails.Report\definition.pbir" Link="Files\pbip\Inventory sample - fails.Report\definition.pbir">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

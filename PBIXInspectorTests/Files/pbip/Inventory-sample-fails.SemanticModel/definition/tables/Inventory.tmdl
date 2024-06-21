@@ -1,0 +1,57 @@
+table Inventory
+	lineageTag: ea80bd49-4dd9-4dee-acbb-1ed20508760c
+
+	measure 'Sum of Qty' = ```
+			SUM(Inventory[Quantity]) 
+			```
+		formatString: 0
+		lineageTag: 553980d0-4af1-49e8-b495-94cdee5438a7
+
+	column Item
+		dataType: string
+		lineageTag: e1846c51-0e23-4518-ac8c-ef0d3eefff03
+		summarizeBy: none
+		sourceColumn: Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: b99d0c08-e6a7-4f8e-b1df-89d7849acb97
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Colour
+		dataType: string
+		lineageTag: d9c47ec3-d41c-44aa-86b7-15a2ede2366e
+		summarizeBy: none
+		sourceColumn: Colour
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Cost per item'
+		dataType: decimal
+		formatString: "£"#,0.###############;-"£"#,0.###############;"£"#,0.###############
+		lineageTag: 75083ca1-f602-43d3-ad05-4198e03093bf
+		summarizeBy: sum
+		sourceColumn: Cost per item
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	partition Inventory-8e9bfd81-45ee-4073-8d41-a12afe381650 = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WciwoyElV0lEyMgESQakpQNJQz8BQKVYnWsm/KDEvHSRpDJKE8wz1DI3A8gGpiUVAvqkpkHAvSk3NA0saQySdEvOAEGQySDoyNScnvxwsb2qmFBsLAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Item = _t, Quantity = _t, Colour = _t, #"Cost per item" = _t]),
+				    #"Changed Type1" = Table.TransformColumnTypes(Source,{{"Cost per item", Currency.Type}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Changed Type1",{{"Item", type text}, {"Quantity", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

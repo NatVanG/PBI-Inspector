@@ -22,7 +22,7 @@
 
         public string Part { get; set; }
 
-        public string Path { get; set; }
+        //public string Path { get; set; }
 
         public Test Test { get; set; }
 

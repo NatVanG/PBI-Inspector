@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Inventory sample - fails"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "1000013e-6374-4adb-9417-9edf0b95be00"
+  }
+}

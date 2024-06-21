@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PBIXInspectorLibrary.Part
 {
-    public interface IPBIPartQuery
+    internal interface IPBIPartQuery
     {
         public abstract Part RootPart { get; set; }
 

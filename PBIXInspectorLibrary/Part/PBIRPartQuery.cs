@@ -60,6 +60,7 @@ namespace PBIXInspectorLibrary.Part
             return val;
         }
 
+        //TODO: implement for folders
         public string PartName(Part context)
         {
             string val = string.Empty;
@@ -77,6 +78,7 @@ namespace PBIXInspectorLibrary.Part
             return val;
         }
 
+        //TODO: implement for folders
         public string PartDisplayName(Part context)
         {
             string val = string.Empty;

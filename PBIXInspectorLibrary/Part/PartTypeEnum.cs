@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PBIXInspectorLibrary.Part
 {
-    public enum PartTypeEnum
+    internal enum PartTypeEnum
     {
         Folder,
         File,
