@@ -1,4 +1,6 @@
-﻿namespace PBIXInspectorLibrary
+﻿using System.Runtime;
+
+namespace PBIXInspectorLibrary
 {
     /// <summary>
     /// Deserialises inspection rules from json 
@@ -22,9 +24,11 @@
 
         public string Part { get; set; }
 
-        //public string Path { get; set; }
-
         public Test Test { get; set; }
+
+        public bool ApplyPatch { get; set; }
+
+        public Patch? Patch { get; set; }
 
         public bool PathErrorWhenNoMatch { get; set; }
     }

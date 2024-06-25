@@ -1,5 +1,6 @@
 ﻿using Json.Logic;
 using Json.More;
+using Json.Patch;
 using Json.Path;
 using Json.Pointer;
 using PBIXInspectorLibrary.Exceptions;
@@ -9,6 +10,7 @@ using System.Data;
 using System.IO.Compression;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace PBIXInspectorLibrary
@@ -145,6 +147,37 @@ namespace PBIXInspectorLibrary
                         var ruleLogType = ConvertRuleLogType(rule.LogType);
                         string resultString = string.Format("Rule \"{0}\" {1} with result: {2}, expected: {3}.", rule != null ? rule.Name : string.Empty, result ? "PASSED" : "FAILED", jruleresult != null ? jruleresult.ToString() : string.Empty, rule.Test.Expected != null ? rule.Test.Expected.ToString() : string.Empty);
                         testResults.Add(new TestResult { RuleId = rule.Id, RuleName = rule.Name, LogType = ruleLogType, RuleDescription = rule.Description, ParentName = parentName, ParentDisplayName = parentDisplayName, Pass = result, Message = resultString, Expected = rule.Test.Expected, Actual = jruleresult });
+
+
+                        //PATCH
+                        if (!result && rule.ApplyPatch && rule.Patch != null && rule.Patch.Ops != null)
+                        {
+                            if (jruleresult != null && jruleresult is JsonArray arr)
+                            {
+                                //TODO:filter rule.Patch.Part  by jruleresult, iterated through filtered rule.Patch.Parts and apply patch.
+                                if (arr.Count() > 0)
+                                {
+                                    var allPatchParts = (List<Part.Part>)partQuery.Invoke(rule.Patch.PartName, part);
+                                    //TODO: use another method to filter parts i.e. other ToJSonString
+                                    var filteredPatchParts = allPatchParts.Where(_ => arr.ToJsonString().Contains(partQuery.PartName(_)));
+                                    foreach (var filteredPart in filteredPatchParts)
+                                    {
+                                        var filteredNode = partQuery.ToJsonNode(filteredPart);
+                                        var patchResult = rule.Patch.Ops.Apply(filteredNode);
+                                        filteredPart.Content = patchResult.Result;
+                                        filteredPart.Save();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                var patchPart = (Part.Part)partQuery.Invoke(rule.Patch.PartName, part);
+                                var patchNode = partQuery.ToJsonNode(patchPart);
+                                var patchResult = rule.Patch.Ops.Apply(patchNode);
+                                patchPart.Content = patchResult.Result;
+                                patchPart.Save();
+                            }
+                        }
                      }
                     
                 }

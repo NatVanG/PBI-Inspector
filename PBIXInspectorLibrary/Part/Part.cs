@@ -39,6 +39,14 @@ namespace PBIXInspectorLibrary.Part
                 }
             }
         }
+
+        public void Save()
+        {
+            if (this.Content == null) return;
+            var jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+            var updatedJson = Content.ToJsonString(jsonOptions);
+            File.WriteAllText(Path, updatedJson);
+        }
     }
 
 

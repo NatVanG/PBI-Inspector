@@ -39,6 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PBIXInspectorWinForm", "PBI
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsExamples", "DocsExamples", "{0DABAA35-C96D-4D84-96ED-C088A39D5CA0}"
 	ProjectSection(SolutionItems) = preProject
+		Example-patches.json = Example-patches.json
 		DocsExamples\Example-ReportPageFieldMap.json = DocsExamples\Example-ReportPageFieldMap.json
 		DocsExamples\Example-ReportPageFieldMapV2.json = DocsExamples\Example-ReportPageFieldMapV2.json
 		DocsExamples\Example-rules.json = DocsExamples\Example-rules.json

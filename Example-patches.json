@@ -1,0 +1,154 @@
+{
+  "rules": [
+    {
+      "id": "SHOW_AXES_TITLES",
+      "name": "Show visual axes titles",
+      "description": "Check that certain charts have both axes title showing.",
+      "part": "Pages",
+      "disabled": true,
+      "applyPatch": true,
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "in": [
+                        {
+                          "var": "visual.visualType"
+                        },
+                        [
+                          "lineChart",
+                          "barChart",
+                          "columnChart",
+                          "clusteredBarChart",
+                          "stackedBarChart"
+                        ]
+                      ]
+                    },
+                    {
+                      "or": [
+                        {
+                          "==": [
+                            {
+                              "var": "visual.objects.categoryAxis.0.properties.showAxisTitle.expr.Literal.Value"
+                            },
+                            "false"
+                          ]
+                        },
+                        {
+                          "==": [
+                            {
+                              "var": "visual.objects.valueAxis.0.properties.showAxisTitle.expr.Literal.Value"
+                            },
+                            "false"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "var": "name"
+            }
+          ]
+        },
+        {
+        },
+        []
+      ],
+      "patch": [
+        "Visuals",
+        [
+          {
+            "op": "replace",
+            "path": "/visual/objects/categoryAxis/0/properties/showAxisTitle/expr/Literal/Value",
+            "value": "true"
+          },
+          {
+            "op": "replace",
+            "path": "/visual/objects/valueAxis/0/properties/showAxisTitle/expr/Literal/Value",
+            "value": "true"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "DISABLE_SLOW_DATASOURCE_SETTINGS",
+      "name": "Disable local slow datasource settings",
+      "description": "Check that report slow data source settings are all disabled.",
+      "part": "Report",
+      "applyPatch": true,
+      "test": [
+        {
+          "!": [
+            {
+              "or": [
+                {
+                  "var": "isCrossHighlightingDisabled"
+                },
+                {
+                  "var": "isSlicerSelectionsButtonEnabled"
+                },
+                {
+                  "var": "isFilterSelectionsButtonEnabled"
+                },
+                {
+                  "var": "isFieldWellButtonEnabled"
+                },
+                {
+                  "var": "isApplyAllButtonEnabled"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "isCrossHighlightingDisabled": "/slowDataSourceSettings/isCrossHighlightingDisabled",
+          "isSlicerSelectionsButtonEnabled": "/slowDataSourceSettings/isSlicerSelectionsButtonEnabled",
+          "isFilterSelectionsButtonEnabled": "/slowDataSourceSettings/isFilterSelectionsButtonEnabled",
+          "isFieldWellButtonEnabled": "/slowDataSourceSettings/isFieldWellButtonEnabled",
+          "isApplyAllButtonEnabled": "/slowDataSourceSettings/isApplyAllButtonEnabled"
+        },
+        true
+      ],
+      "patch": [
+        "Report",
+        [
+          {
+            "op": "replace",
+            "path": "/slowDataSourceSettings/isCrossHighlightingDisabled",
+            "value": false
+          },
+          {
+            "op": "replace",
+            "path": "/slowDataSourceSettings/isSlicerSelectionsButtonEnabled",
+            "value": false
+          },
+          {
+            "op": "replace",
+            "path": "/slowDataSourceSettings/isFilterSelectionsButtonEnabled",
+            "value": false
+          },
+          {
+            "op": "replace",
+            "path": "/slowDataSourceSettings/isFieldWellButtonEnabled",
+            "value": false
+          },
+          {
+            "op": "replace",
+            "path": "/slowDataSourceSettings/isApplyAllButtonEnabled",
+            "value": false
+          }
+        ]
+      ]
+    }
+  ]
+}
