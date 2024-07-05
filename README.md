@@ -1,4 +1,4 @@
-# VisOps with PBI Inspector (i.e. automated visual layer testing for Microsoft Power BI)
+# VisOps with PBI Inspector V2 (i.e. automated visual layer testing for Microsoft Power BI)
 
 <img src="DocsImages/pbiinspector.png" alt="PBI Inspector logo" height="150"/>
 
@@ -6,7 +6,10 @@
 
 This is a community project that is not supported by Microsoft. 
 
-:exclamation: This version of PBI Inspector only supports the new enhanced metadata file format (PBIR), see https://learn.microsoft.com/en-gb/power-bi/developer/projects/projects-report. For the older PBIR-legacy file format, please use the previous version of PBI Inspector available at https://github.com/NatVanG/PBI-Inspector. To support the new enhanced metadata file format, a new "part" custom command was introduced which will be documented below.
+:exclamation: This version of PBI Inspector only supports the new enhanced metadata file format (PBIR), see https://learn.microsoft.com/en-gb/power-bi/developer/projects/projects-report. For the older PBIR-legacy file format, please use the previous version of PBI Inspector available at https://github.com/NatVanG/PBI-Inspector. 
+
+## Breaking changes :boom:
+To support the new enhanced report format (PBIR), a new "part" custom command has been introduced which helps to navigate to or iterate over the new metadata file format's parts such as "Pages", "Visuals", "Bookmarks" etc. Rules defined against the new format are not backward compatible with the older PBIR-legacy format and vice versa.
 
 ## Thanks :pray:
 
@@ -24,6 +27,8 @@ Please report issues [here](https://github.com/NatVanG/PBI-Inspector/issues).
 - [Run from the Command line](#cli)
 - [Interpreting results](#results)
 - [Running reports on reports](#reporting)
+- [Custom rules guide](#customerruleguide)
+- [Examples](#customrulesexamples)
 - [Known issues](#knownissues)
 - [Report an issue](#reportanissue)
 
@@ -31,7 +36,7 @@ Please report issues [here](https://github.com/NatVanG/PBI-Inspector/issues).
 
 So we've DevOps, MLOps and DataOps... but why not VisOps? How can we ensure that business intelligence charts and other visuals within report pages are published in a consistent, performance optimised and accessible state? For example, are local report settings set in a consistent manner for a consistent user experience? Are visuals deviating from the specified theme by, say, using custom colours? Are visuals kept lean so they render quickly? Are charts axes titles displayed? etc.
 
-With Microsoft Power BI, visuals are placed on a canvas and formatted as desired, images may be included and theme files referenced. Testing the consistency of the visuals output has thus far typically been a manual process. The [Power BI file format (.pbip) was introduced](https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/) then [enhanced](https://learn.microsoft.com/en-gb/power-bi/developer/projects/projects-report) to enable pro developer application lifecycle management and source control.  PBI Inspector provides the ability to define fully configurable testing rules powered by Greg Dennis's Json Logic .NET implementation, see https://json-everything.net/json-logic. 
+With Microsoft Power BI, visuals are placed on a canvas and formatted as desired, images may be included and theme files referenced. Testing the consistency of the visuals output has thus far typically been a manual process. The [Power BI file format (.pbip) was introduced](https://powerbi.microsoft.com/en-us/blog/deep-dive-into-power-bi-desktop-developer-mode-preview/) then recently [enhanced](https://learn.microsoft.com/en-gb/power-bi/developer/projects/projects-report) to enable pro developer application lifecycle management and source control.  PBI Inspector provides the ability to define fully configurable testing rules powered by Greg Dennis's Json Logic .NET implementation, see https://json-everything.net/json-logic. 
 
 ## <a id="baserulesoverview"></a>Base rules
 
@@ -112,9 +117,232 @@ Visuals with a dotted border are visuals hidden by default as the following exam
 
 ![Wireframe with hidden visual](DocsImages/WireframeWithHiddenVisual.png)
 
-## <a id="customrulesexamples"></a>Custom Rules Examples
+## <a id="customerruleguide"></a>Custom Rules Guide
 
-Documentation is in progress.
+Custom rules are defined in a JSON file. The JSON file should be an array of rule objects as follows:
+
+```json
+{
+  "rules": [
+  ...
+  ]
+}
+```
+
+Each rule object has the following properties:
+
+```json
+{
+    "id": "A unique ID",
+    "name": "A name that is shown in HTML results with wireframe images.",
+    "description": "Details to help you and others understand what this rule does",
+    "disabled": true|false(default),
+    "part": "Optional. One of Report|Pages|AllPages|Visuals|AllVisuals|Bookmarks|AllBookmarks. If the part defined, such as Pages, is an array with multiple items it will be iterated over and the rule will apply to each item.",
+    "test": [
+    //test logic
+    ,
+    //optional data variables
+    ,
+    //expected result
+    ],
+    "patch": 
+    [
+    //optional patch logic
+    ]
+}
+```
+
+For example (without patch logic):
+
+```json
+{
+      "id": "SHOW_AXES_TITLES",
+      "name": "Show visual axes titles",
+      "description": "Check that certain charts have both axes title showing, returns an array of visual names that fail the test.",
+      "part": "Pages",
+      "disabled": false,
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "in": [
+                        {
+                          "var": "visual.visualType"
+                        },
+                        [
+                          "lineChart",
+                          "barChart",
+                          "columnChart",
+                          "clusteredBarChart",
+                          "stackedBarChart"
+                        ]
+                      ]
+                    },
+                    {
+                      "or": [
+                        {
+                          "==": [
+                            {
+                              "var": "visual.objects.categoryAxis.0.properties.showAxisTitle.expr.Literal.Value"
+                            },
+                            "false"
+                          ]
+                        },
+                        {
+                          "==": [
+                            {
+                              "var": "visual.objects.valueAxis.0.properties.showAxisTitle.expr.Literal.Value"
+                            },
+                            "false"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "var": "name"
+            }
+          ]
+        },
+        {
+        },
+        []
+      ]
+    }
+ ```
+
+Optionally a rule can now also define a *patch* to fix items (e.g. visuals) failing the test.  For example a patch for the test above is as follows. The patch iterates through the failing visual names returned and fixes the "Visuals" part of the report definition by setting the "showAxisTitle" property to "true" for both the category and value axes:
+
+```json
+"patch": [
+        "Visuals",
+        [
+          {
+            "op": "replace",
+            "path": "/visual/objects/categoryAxis/0/properties/showAxisTitle/expr/Literal/Value",
+            "value": "true"
+          },
+          {
+            "op": "replace",
+            "path": "/visual/objects/valueAxis/0/properties/showAxisTitle/expr/Literal/Value",
+            "value": "true"
+          }
+        ]
+      ]
+```
+
+A patch definition has the following structure:
+
+```json
+"patch": [
+        "One of Report|Pages|AllPages|Visuals|AllVisuals|Bookmarks|AllBookmarks",
+        [patch logic operator array]
+      ]
+```
+
+The patch logic operator array uses the .NET implementation of JSON Patch, for syntax examples see https://docs.json-everything.net/patch/basics/.
+
+Therefore the full rule example including the patch is as follows:
+
+```json
+    {
+      "id": "SHOW_AXES_TITLES",
+      "name": "Show visual axes titles",
+      "description": "Check that certain charts have both axes title showing.",
+      "part": "Pages",
+      "disabled": true,
+      "applyPatch": true,
+      "test": [
+        {
+          "map": [
+            {
+              "filter": [
+                {
+                  "part": "Visuals"
+                },
+                {
+                  "and": [
+                    {
+                      "in": [
+                        {
+                          "var": "visual.visualType"
+                        },
+                        [
+                          "lineChart",
+                          "barChart",
+                          "columnChart",
+                          "clusteredBarChart",
+                          "stackedBarChart"
+                        ]
+                      ]
+                    },
+                    {
+                      "or": [
+                        {
+                          "==": [
+                            {
+                              "var": "visual.objects.categoryAxis.0.properties.showAxisTitle.expr.Literal.Value"
+                            },
+                            "false"
+                          ]
+                        },
+                        {
+                          "==": [
+                            {
+                              "var": "visual.objects.valueAxis.0.properties.showAxisTitle.expr.Literal.Value"
+                            },
+                            "false"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "var": "name"
+            }
+          ]
+        },
+        {
+        },
+        []
+      ],
+      "patch": [
+        "Visuals",
+        [
+          {
+            "op": "replace",
+            "path": "/visual/objects/categoryAxis/0/properties/showAxisTitle/expr/Literal/Value",
+            "value": "true"
+          },
+          {
+            "op": "replace",
+            "path": "/visual/objects/valueAxis/0/properties/showAxisTitle/expr/Literal/Value",
+            "value": "true"
+          }
+        ]
+      ]
+    }
+```
+
+## <a id="customrulesexamples"></a>Rule File Examples
+
+For full rule file examples see:
+- [Base Rules](Rules/Base-rulesV2.json)
+- [Example Rules](DocsExamples/Example-rulesV2.json)
+- [Example Rules with Patch](DocsExamples/Example-patches.json)
 
 ## <a id="knownissues"></a>Known issues
 

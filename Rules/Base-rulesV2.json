@@ -89,6 +89,7 @@
       "id": "REDUCE_OBJECTS_WITHIN_VISUALS",
       "name": "Reduce the number of objects within visuals",
       "description": "Reports a test fail if the rule's maximum number of objects within visuals on a page is exceeded. An object is a data field that is assigned to a visual. By default, the base rules file specifies 6 as the maximum objects within a visual. To disable this rule, mark it as disabled in the base rules file.",
+      "disabled": false,
       "part": "Pages",
       "test": [
         {
