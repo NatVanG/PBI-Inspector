@@ -6,7 +6,8 @@
 
 This is a community project that is not supported by Microsoft. 
 
-Please also note that while PBI Inspector can read Power BI Desktop files with the ".pbix" extension as well as files in the PBIP format, the former is not supported by Microsoft.
+:exclamation: UPDATE: This version of PBI Inspector does not support the new *enhanced report format (PBIR)* announced at https://powerbi.microsoft.com/en-us/blog/power-bi-june-2024-feature-summary/#post-27479-_Toc168491987 (also see https://learn.microsoft.com/en-gb/power-bi/developer/projects/projects-report#pbir-format). 
+Support for the new format is under development in this branch: https://github.com/NatVanG/PBI-Inspector/tree/part-concept.  
 
 ## Thanks :pray:
 
@@ -54,7 +55,7 @@ While PBI Inspector supports custom rules, it also includes the following base r
 4. Reduce usage of TopN filtering visuals by page (set ```paramMaxTopNFilteringPerPage```)
 5. Reduce usage of Advanced filtering visuals by page (set ```paramMaxAdvancedFilteringVisualsPerPage```)
 6. Reduce number of pages per report (set ```paramMaxNumberOfPagesPerReport```)
-7. Avoid setting ‘Show items with no data’ on columns (no user parameters)
+7. Avoid setting â€˜Show items with no dataâ€™ on columns (no user parameters)
 8. Tooltip and Drillthrough pages should be hidden (no user parameters)
 9. Ensure charts use theme colours (no user parameters)
 10. Ensure pages do not scroll vertically (no user parameters)
