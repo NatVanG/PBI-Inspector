@@ -140,7 +140,6 @@
             chckUseSamplePBIFile.TabIndex = 3;
             chckUseSamplePBIFile.Text = "Use sample";
             chckUseSamplePBIFile.UseVisualStyleBackColor = true;
-            chckUseSamplePBIFile.Visible = false;
             chckUseSamplePBIFile.CheckedChanged += chckUseSamplePBIFile_CheckedChanged;
             // 
             // txtRulesFilePath
