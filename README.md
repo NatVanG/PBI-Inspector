@@ -80,7 +80,7 @@ All command line parameters are as follows:
 
 ```-pbix filepath```: Not currently supported. 
 
-```-rules filepath```: Required. The filepath to the rules file. Save a local copy of the base rules file at https://raw.githubusercontent.com/NatVanG/PBI-Inspector/main/Rules/Base-rulesV2.json and modify as required.
+```-rules filepath```: Required. The filepath to the rules file. Save a local copy of the [Base Rules](Rules/Base-rulesV2.json) file and modify as required.
 
 ```-verbose true|false```: Optional, false by default. If false then only rule violations will be shown otherwise all results will be listed.
 
@@ -341,7 +341,7 @@ Therefore the full rule example including the patch is as follows:
 
 For full rule file examples see:
 - [Base Rules](Rules/Base-rulesV2.json)
-- [Example Rules](DocsExamples/Example-rulesV2.json)
+- [Example Rules](DocsExamples/Examples-rulesV2.json)
 - [Example Rules with Patches](DocsExamples/Example-patches.json)
 
 ## <a id="knownissues"></a>Known issues
