@@ -154,11 +154,10 @@ namespace PBIXInspectorLibrary
                         {
                             if (jruleresult != null && jruleresult is JsonArray arr)
                             {
-                                //TODO:filter rule.Patch.Part  by jruleresult, iterated through filtered rule.Patch.Parts and apply patch.
                                 if (arr.Count() > 0)
                                 {
                                     var allPatchParts = (List<Part.Part>)partQuery.Invoke(rule.Patch.PartName, part);
-                                    //TODO: use another method to filter parts i.e. other ToJSonString
+                                    //TODO: use another method to filter parts i.e. other than ToJSonString
                                     var filteredPatchParts = allPatchParts.Where(_ => arr.ToJsonString().Contains(partQuery.PartName(_)));
                                     foreach (var filteredPart in filteredPatchParts)
                                     {

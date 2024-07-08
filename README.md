@@ -119,7 +119,7 @@ Visuals with a dotted border are visuals hidden by default as the following exam
 
 ## <a id="customerruleguide"></a>Custom Rules Guide
 
-Custom rules are defined in a JSON file. The JSON file should be an array of rule objects as follows:
+Custom rules are defined in a JSON file as an array of rule objects as follows:
 
 ```json
 {
@@ -133,11 +133,11 @@ Each rule object has the following properties:
 
 ```json
 {
-    "id": "A unique ID",
+    "id": "A unique identifier of your choice for the rule",
     "name": "A name that is shown in HTML results with wireframe images.",
     "description": "Details to help you and others understand what this rule does",
     "disabled": true|false(default),
-    "part": "Optional. One of Report|Pages|AllPages|Visuals|AllVisuals|Bookmarks|AllBookmarks. If the part defined, such as Pages, is an array with multiple items it will be iterated over and the rule will apply to each item.",
+    "part": "Optional. One of Report|Pages|AllPages|Visuals|AllVisuals|Bookmarks|AllBookmarks. If the part specified is an array with multiple items (such as "Pages"), the rule will apply to each array item in sequence."
     "test": [
     //test logic
     ,
@@ -147,12 +147,12 @@ Each rule object has the following properties:
     ],
     "patch": 
     [
-    //optional patch logic
+    //optional patch logic to fix the issue
     ]
 }
 ```
 
-For example (without patch logic):
+For example (without the optional patch logic), the following rule checks that, for each Page, certain charts have both axes titles displayed. The rule returns the names of failing visuals in an array.
 
 ```json
 {
@@ -221,7 +221,7 @@ For example (without patch logic):
     }
  ```
 
-Optionally a rule can now also define a *patch* to fix items (e.g. visuals) failing the test.  For example a patch for the test above is as follows. The patch iterates through the failing visual names returned and fixes the "Visuals" part of the report definition by setting the "showAxisTitle" property to "true" for both the category and value axes:
+Optionally a rule can now also define a *patch* to fix items (e.g. visuals) failing the test. For example a patch for the test above is as follows. The patch iterates through the failing visual names returned and fixes the "Visuals" part of the report definition by setting the "showAxisTitle" property to "true" for both the category and value axes:
 
 ```json
 "patch": [
@@ -250,7 +250,7 @@ A patch definition has the following structure:
       ]
 ```
 
-The patch logic operator array uses the .NET implementation of JSON Patch, for syntax examples see https://docs.json-everything.net/patch/basics/.
+The patch logic operator array is defined as per the JSON Patch specification at https://tools.ietf.org/html/rfc6902. PBI Inspector uses the .NET implementation of JSON Patch, for see https://docs.json-everything.net/patch/basics/.
 
 Therefore the full rule example including the patch is as follows:
 
@@ -342,7 +342,7 @@ Therefore the full rule example including the patch is as follows:
 For full rule file examples see:
 - [Base Rules](Rules/Base-rulesV2.json)
 - [Example Rules](DocsExamples/Example-rulesV2.json)
-- [Example Rules with Patch](DocsExamples/Example-patches.json)
+- [Example Rules with Patches](DocsExamples/Example-patches.json)
 
 ## <a id="knownissues"></a>Known issues
 

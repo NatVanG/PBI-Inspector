@@ -40,19 +40,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocsExamples", "DocsExamples", "{0DABAA35-C96D-4D84-96ED-C088A39D5CA0}"
 	ProjectSection(SolutionItems) = preProject
 		Example-patches.json = Example-patches.json
-		DocsExamples\Example-ReportPageFieldMap.json = DocsExamples\Example-ReportPageFieldMap.json
 		DocsExamples\Example-ReportPageFieldMapV2.json = DocsExamples\Example-ReportPageFieldMapV2.json
-		DocsExamples\Example-rules.json = DocsExamples\Example-rules.json
 		DocsExamples\Examples-rulesV2.json = DocsExamples\Examples-rulesV2.json
-		DocsExamples\Reid-rules.json = DocsExamples\Reid-rules.json
 		DocsExamples\Reid-rulesV2.json = DocsExamples\Reid-rulesV2.json
-		DocsExamples\Themeable-properties-rules.json = DocsExamples\Themeable-properties-rules.json
 		DocsExamples\Themeable-properties-rulesV2.json = DocsExamples\Themeable-properties-rulesV2.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rules", "Rules", "{BB86A63C-BBD5-48DA-9481-343165781823}"
 	ProjectSection(SolutionItems) = preProject
-		Rules\Base-rules.json = Rules\Base-rules.json
 		Rules\Base-rulesV2.json = Rules\Base-rulesV2.json
 	EndProjectSection
 EndProject
