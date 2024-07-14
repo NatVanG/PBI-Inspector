@@ -6,8 +6,9 @@
 
 This is a community project that is not supported by Microsoft. 
 
-:exclamation: UPDATE: This version of PBI Inspector does not support the new *enhanced report format (PBIR)* announced at https://powerbi.microsoft.com/en-us/blog/power-bi-june-2024-feature-summary/#post-27479-_Toc168491987 (also see https://learn.microsoft.com/en-gb/power-bi/developer/projects/projects-report#pbir-format). 
-Support for the new format is under development in this branch: https://github.com/NatVanG/PBI-Inspector/tree/part-concept.  
+:exclamation: UPDATE: This version of PBI Inspector does not support the new *enhanced report format (PBIR)* announced at https://powerbi.microsoft.com/en-us/blog/power-bi-june-2024-feature-summary/#post-27479-_Toc168491987 (also see https://learn.microsoft.com/en-gb/power-bi/developer/projects/projects-report#pbir-format).
+
+:new: Support for the new enhanced report format (PBIR) is now available with [PBI Inspector V2](https://github.com/NatVanG/PBI-InspectorV2/) (published to a separate repository).  
 
 ## Thanks :pray:
 
