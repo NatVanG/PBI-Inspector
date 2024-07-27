@@ -4,24 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>1.9.6.0</AssemblyVersion>
-    <FileVersion>1.9.6.0</FileVersion>
-    <VersionPrefix>1.9.6</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PBIXInspectorLibrary\PBIXInspectorLibrary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Files\html\" />
-    <Folder Include="Files\icon\" />
-    <Folder Include="Files\png\" />
-    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,9 +23,6 @@
     </None>
     <None Update="Files\icon\pbiinspector.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\png\nowireframe.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="Files\ReportPageFieldMap.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

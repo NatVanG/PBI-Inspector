@@ -1,25 +1,27 @@
 ﻿using PBIXInspectorLibrary.Output;
-using System.Drawing;
+using SkiaSharp;
 using System.Text.Json.Nodes;
 
-namespace PBIXInspectorWinLibrary.Drawing
+namespace PBIXInspectorImageLibrary.Drawing
 {
     public class ImageUtils
     {
+
         public static string ConvertBitmapToBase64(string bitmapPath)
         {
-            using (Image image = Image.FromFile(bitmapPath))
-            {
-                using (MemoryStream m = new MemoryStream())
-                {
-                    image.Save(m, image.RawFormat);
-                    byte[] imageBytes = m.ToArray();
+            bitmapPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, bitmapPath);
+            using var bitmap = SKBitmap.Decode(bitmapPath);
+            var skData = bitmap.Encode(SKEncodedImageFormat.Png, 100);
 
-                    // Convert byte[] to Base64 String
-                    string base64String = Convert.ToBase64String(imageBytes);
-                    return base64String;
-                }
-            }
+            using MemoryStream m = new();
+
+            skData.SaveTo(m);
+
+            byte[] imageBytes = m.ToArray();
+
+            // Convert byte[] to Base64 String
+            string base64String = Convert.ToBase64String(imageBytes);
+            return base64String;
         }
 
         public static void DrawReportPages(IEnumerable<TestResult> fieldMapResults, IEnumerable<TestResult> testResults, string outputDir)
@@ -34,7 +36,7 @@ namespace PBIXInspectorWinLibrary.Drawing
                     var pageDisplayName = fields.ParentDisplayName;
                     //TODO: page size is currently hardcoded to 1280x720 (i.e. 16x9 aspect ratio). 
                     var pageSize = new ReportPage.PageSize { Height = 720, Width = 1280 };
-                    List<PBIXInspectorWinLibrary.Drawing.ReportPage.VisualContainer> visuals = new List<ReportPage.VisualContainer>();
+                    List<ReportPage.VisualContainer> visuals = new List<ReportPage.VisualContainer>();
                     foreach (var f in fields.Actual.AsArray())
                     {
                         var name = f["name"].ToString();
@@ -50,16 +52,16 @@ namespace PBIXInspectorWinLibrary.Drawing
                         var visualNameInTestActualArray = (testResult.Actual != null && testResult.Actual is JsonArray
                                                                 && testResult.Actual.AsArray().Any(_ => _ != null
                                                                     && _ is JsonValue && _.AsValue().ToString().Equals(name)))
-                                                          || (testResult.Actual != null && testResult.Actual is JsonArray 
+                                                          || (testResult.Actual != null && testResult.Actual is JsonArray
                                                         && testResult.Actual.AsArray().Any(_ => _ != null && _ is JsonObject && _ is not JsonValue
                                                             && _["name"] != null && _["name"] is JsonValue && _["name"].AsValue().ToString().Equals(name)));
-                        
+
 
                         bool visualPass = !visualNameInTestActualArray;
                         visuals.Add(new ReportPage.VisualContainer { Name = name.ToString(), VisualType = visualType.ToString(), X = x, Y = y, Height = height, Width = width, Pass = visualPass, Visible = visible });
-                    }
 
-                    var rp = new ReportPage(pageName, pageDisplayName, pageSize, visuals);
+                    }
+                    using var rp = new ReportPage(pageName, pageDisplayName, pageSize, visuals);
                     rp.Draw();
                     var filename = string.Concat(testResultId, ".png");
                     var filepath = Path.Combine(outputDir, filename);

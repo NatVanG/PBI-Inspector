@@ -1,7 +1,7 @@
 ﻿using PBIXInspectorLibrary;
 using System.Diagnostics;
 
-namespace PBIXInspectorWinLibrary.Utils
+namespace PBIXInspectorImageLibrary.Utils
 {
     public class AppUtils
     {

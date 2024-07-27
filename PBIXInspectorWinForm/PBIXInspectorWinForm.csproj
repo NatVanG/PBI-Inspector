@@ -40,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PBIXInspectorWinLibrary\PBIXInspectorWinLibrary.csproj" />
+    <ProjectReference Include="..\PBIXInspectorImageLibrary\PBIXInspectorImageLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

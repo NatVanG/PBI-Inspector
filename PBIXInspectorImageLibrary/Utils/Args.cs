@@ -1,5 +1,6 @@
-﻿
-namespace PBIXInspectorWinLibrary.Utils
+﻿using PBIXInspectorImageLibrary;
+
+namespace PBIXInspectorImageLibrary.Utils
 {
     public class Args
     {
@@ -18,7 +19,7 @@ namespace PBIXInspectorWinLibrary.Utils
                 }
                 else
                 {
-                    OutputDirPath = Path.Combine(Path.GetTempPath(), String.Concat(Constants.DefaultVisOpsFolder, Guid.NewGuid().ToString()));
+                    OutputDirPath = Path.Combine(Path.GetTempPath(), string.Concat(Constants.DefaultVisOpsFolder, Guid.NewGuid().ToString()));
                     DeleteOutputDirOnExit = true;
                 }
             }

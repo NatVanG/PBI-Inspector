@@ -1,5 +1,5 @@
-using PBIXInspectorWinLibrary;
-using PBIXInspectorWinLibrary.Utils;
+using PBIXInspectorImageLibrary;
+using PBIXInspectorImageLibrary.Utils;
 
 namespace PBIXInspectorWinForm
 {
