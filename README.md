@@ -6,9 +6,7 @@
 
 This is a community project that is not supported by Microsoft. 
 
-:exclamation: UPDATE: This version of PBI Inspector does not support the new *enhanced report format (PBIR)* announced at https://powerbi.microsoft.com/en-us/blog/power-bi-june-2024-feature-summary/#post-27479-_Toc168491987 (also see https://learn.microsoft.com/en-gb/power-bi/developer/projects/projects-report#pbir-format).
-
-:new: Support for the new enhanced report format (PBIR) is now available with [PBI Inspector V2](https://github.com/NatVanG/PBI-InspectorV2/) (published to a separate repository).  
+:warning: This repository is deprecated and pending archiving. Power BI Project (PBIP) is now Generally Available, and the Power BI Enhanced Report Format (PBIR) is now the default report format ([Power BI September 2026 feature summary](https://community.fabric.microsoft.com/blog/fbc_pbiupdatesblog/power-bi-september-2026-feature-summary/5325831)). For PBIP and PBIR support, use [Fab Inspector](https://github.com/NatVanG/fab-inspector).
 
 ## Thanks :pray:
 
