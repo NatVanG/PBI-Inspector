@@ -1,10 +1,10 @@
-﻿using PBIXInspectorLibrary;
+﻿using PBIXInspectorImageLibrary.Drawing;
+using PBIXInspectorImageLibrary.Utils;
+using PBIXInspectorLibrary;
 using PBIXInspectorLibrary.Output;
-using PBIXInspectorWinLibrary.Drawing;
-using PBIXInspectorWinLibrary.Utils;
 using System.Text.Json;
 
-namespace PBIXInspectorWinLibrary
+namespace PBIXInspectorImageLibrary
 {
     public class Main
     {
@@ -57,7 +57,7 @@ namespace PBIXInspectorWinLibrary
 
             var args = new Args { PBIFilePath = resolvedPbiFilePath, RulesFilePath = rulesFilePath, OutputPath = outputPath, FormatsString = formatsString, VerboseString = verboseString };
 
-            Run(args); 
+            Run(args);
         }
 
         public static void Run(Args args)
@@ -75,9 +75,12 @@ namespace PBIXInspectorWinLibrary
             try
             {
                 _insp = new Inspector(Main._args.PBIFilePath, Main._args.RulesFilePath);
+
                 _insp.MessageIssued += Insp_MessageIssued;
 
-                _testResults = _insp.Inspect().Where(_ => (!Main._args.Verbose && !_.Pass) || (Main._args.Verbose));
+                var inspectResult = _insp.Inspect();
+                _testResults = inspectResult.Where(_ => !Main._args.Verbose && _?.Pass == false || Main._args.Verbose);
+
 
                 if (Main._args.CONSOLEOutput || Main._args.ADOOutput)
                 {
@@ -138,13 +141,14 @@ namespace PBIXInspectorWinLibrary
                     }
                     Directory.CreateDirectory(outputPNGDirPath);
                     OnMessageIssued(MessageTypeEnum.Information, string.Format("Writing report page wireframe images to files at \"{0}\".", outputPNGDirPath));
+
                     ImageUtils.DrawReportPages(_fieldMapResults, _testResults, outputPNGDirPath);
                 }
 
                 if (!Main._args.ADOOutput && Main._args.HTMLOutput)
                 {
                     string pbiinspectorlogobase64 = string.Concat(Constants.Base64ImgPrefix, ImageUtils.ConvertBitmapToBase64(Constants.PBIInspectorPNG));
-                    //string nowireframebase64 = string.Concat(Base64ImgPrefix, ImageUtils.ConvertBitmapToBase64(@"Files\png\nowireframe.png"));
+
                     string template = File.ReadAllText(Constants.TestRunHTMLTemplate);
                     string html = template.Replace(Constants.LogoPlaceholder, pbiinspectorlogobase64, StringComparison.OrdinalIgnoreCase);
                     html = html.Replace(Constants.VersionPlaceholder, AppUtils.About(), StringComparison.OrdinalIgnoreCase);
@@ -187,9 +191,9 @@ namespace PBIXInspectorWinLibrary
                 _insp.MessageIssued -= Insp_MessageIssued;
             }
 
-            if (_args != null && _args.DeleteOutputDirOnExit && Directory.Exists(_args.OutputDirPath))
+            if (Main._args != null && Main._args.DeleteOutputDirOnExit && Directory.Exists(Main._args.OutputDirPath))
             {
-                Directory.Delete(_args.OutputDirPath, true);
+                Directory.Delete(Main._args.OutputDirPath, true);
             }
         }
 
@@ -213,7 +217,7 @@ namespace PBIXInspectorWinLibrary
 
         private static void MessageIssued(MessageIssuedEventArgs e)
         {
-            if (_args != null && _args.ADOOutput)
+            if (Main._args != null && Main._args.ADOOutput)
             {
                 if (e.MessageType == MessageTypeEnum.Error) ErrorCount++;
                 if (e.MessageType == MessageTypeEnum.Warning) WarningCount++;

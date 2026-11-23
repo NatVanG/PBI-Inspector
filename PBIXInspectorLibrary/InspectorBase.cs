@@ -1,5 +1,4 @@
-﻿//using Newtonsoft.Json;
-using PBIXInspectorLibrary.CustomRules;
+﻿using PBIXInspectorLibrary.CustomRules;
 using System.Text.Json;
 
 namespace PBIXInspectorLibrary
@@ -24,6 +23,8 @@ namespace PBIXInspectorLibrary
 
         public T? DeserialiseRulesFromFilePath<T>(string rulesFilePath)
         {
+            rulesFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, rulesFilePath);
+            
             if (!File.Exists(rulesFilePath)) throw new FileNotFoundException(string.Format("File with path \"{0}\" was not found", rulesFilePath));
 
             string jsonString = File.ReadAllText(rulesFilePath);

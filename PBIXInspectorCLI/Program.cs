@@ -1,6 +1,6 @@
 ﻿using PBIXInspectorLibrary;
-using PBIXInspectorWinLibrary;
-using PBIXInspectorWinLibrary.Utils;
+using PBIXInspectorImageLibrary.Utils;
+using PBIXInspectorImageLibrary;
 
 internal partial class Program
 {
@@ -19,8 +19,8 @@ internal partial class Program
 
             Welcome();
 
-            PBIXInspectorWinLibrary.Main.WinMessageIssued += Main_MessageIssued;
-            PBIXInspectorWinLibrary.Main.Run(_parsedArgs);
+            PBIXInspectorImageLibrary.Main.WinMessageIssued += Main_MessageIssued;
+            PBIXInspectorImageLibrary.Main.Run(_parsedArgs);
 
             Exit();
         }
@@ -30,8 +30,8 @@ internal partial class Program
         }
         finally
         {
-            PBIXInspectorWinLibrary.Main.WinMessageIssued -= Main_MessageIssued;
-            PBIXInspectorWinLibrary.Main.CleanUp();
+            PBIXInspectorImageLibrary.Main.WinMessageIssued -= Main_MessageIssued;
+            PBIXInspectorImageLibrary.Main.CleanUp();
         }
     }
 
@@ -62,7 +62,7 @@ internal partial class Program
             //ADO output only
             if (_parsedArgs.ADOOutput && e.MessageType == MessageTypeEnum.Complete)
             {
-                string completionStatus = PBIXInspectorWinLibrary.Main.ErrorCount > 0 ? "Failed" : ((PBIXInspectorWinLibrary.Main.WarningCount > 0) ? "SucceededWithIssues" : "Succeeded");
+                string completionStatus = PBIXInspectorImageLibrary.Main.ErrorCount > 0 ? "Failed" : ((PBIXInspectorImageLibrary.Main.WarningCount > 0) ? "SucceededWithIssues" : "Succeeded");
 
                 Console.WriteLine(Constants.ADOCompleteTemplate, completionStatus);
             }
